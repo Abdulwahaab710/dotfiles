@@ -1,16 +1,9 @@
-call plug#begin('~/.vim/plugged')
-Plug 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
-
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'python','html','twig','css','js','php']}
-Plug 'klen/python-mode'
-call plug#end()
+map <F8> :!python %<CR>
+map <F7> :!python -i %<CR>
+" call plug#begin('~/.vim/plugged')
+" " Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'python','html','twig','css','js','php']}
+" Plug 'klen/python-mode'
+" call plug#end()
 "Plugins Setting
 " Python-mode
 " Activate rope
