@@ -32,21 +32,34 @@ set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set laststatus=2
 " syntax sync minlines=256
 
 " set synmaxcol=300
 " set nocursorcolumn
 " set nocursorline
-" autocmd vimenter * if !argc() | NERDTree | endif
+autocmd VimEnter * if !argc() | NERDTree | endif
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+"indentline guide
 let g:indentLine_faster = 1
 
+"Airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='hybrid'
 
+"phpcomplete
+let g:phpcomplete_relax_static_constraint = 1
+let g:phpcomplete_complete_for_unknown_classes = 1
+let g:phpcomplete_search_tags_for_variables = 1
 call plug#begin('~/.vim/plugged')
 
 Plug 'Shougo/deoplete.nvim'
@@ -87,7 +100,6 @@ Plug 'SirVer/ultisnips' | Plug 'justinj/vim-react-snippets' | Plug 'colbycheeze/
 Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'python','html','twig','css','js','php']}
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color', {'for': 'css'}
-Plug 'bling/vim-airline'
 Plug 'docunext/closetag.vim'
 Plug 'ervandew/supertab'
 Plug 'gregsexton/matchtag'
@@ -98,14 +110,18 @@ Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/syntastic' "Run linters and display errors etc
 Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
-Plug 'tpope/vim-fugitive' | Plug 'bling/vim-airline'
+" Plug 'tpope/vim-fugitive' | Plug 'bling/vim-airline'
 Plug 'tpope/vim-repeat' "allow plugins to utilize . command
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'vim-scripts/HTML-AutoCloseTag' "close tags after >
 Plug 'vim-scripts/tComment' "Comment easily with gcc
+Plug 'klen/python-mode'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'shawncplus/phpcomplete.vim'
 call plug#end()
 colorscheme hybrid_material
-
+color hybrid_material
 "Load config based on filetype
 autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
