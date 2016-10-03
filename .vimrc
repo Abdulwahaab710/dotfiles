@@ -1,5 +1,5 @@
 syntax on
-
+filetype plugin indent on  
 set nocompatible
 " set ai "Auto indent
 set background=dark
@@ -33,16 +33,36 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
+
+"Leader Key
+let mapleader=";"
+noremap <leader>w :w<CR>
+noremap <leader>ml :!mac lock<CR>
+"disable arrow keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+
 " syntax sync minlines=256
 
 " set synmaxcol=300
 " set nocursorcolumn
 " set nocursorline
-autocmd VimEnter * if !argc() | NERDTree | endif
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
+" autocmd VimEnter * if !argc() | NERDTree | endif
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 "indentline guide
 let g:indentLine_faster = 1
+
+"neocomplete
+let g:neocomplcache_enable_at_startup = 1
 
 "Airline
 if !exists('g:airline_symbols')
@@ -60,9 +80,25 @@ let g:airline_theme='hybrid'
 let g:phpcomplete_relax_static_constraint = 1
 let g:phpcomplete_complete_for_unknown_classes = 1
 let g:phpcomplete_search_tags_for_variables = 1
-call plug#begin('~/.vim/plugged')
 
+"YCM
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+
+call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
+Plug 'mhinz/vim-startify'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 " Plug 'benekastah/neomake' "Async Jobs (can use it instead of syntastic, but hard to setup)
@@ -107,7 +143,8 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'mattn/emmet-vim'
 " Plug 'nathanaelkane/vim-indent-guides'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic' "Run linters and display errors etc
 Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
 " Plug 'tpope/vim-fugitive' | Plug 'bling/vim-airline'
