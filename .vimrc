@@ -110,6 +110,10 @@ let g:airline#extensions#tabline#enabled = 1
 
 "YCM
 
+"autocomplete for ruby\rails config
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_rails = 1
+
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
 Plug 'mhinz/vim-startify'
@@ -185,6 +189,8 @@ Plug 'KeitaNakamura/neodark.vim'
 Plug 'kamwitsta/nordisk'
 Plug 'digitaltoad/vim-pug'
 Plug 'statianzo/vim-jade'
+Plug 'tpope/vim-rails'
+Plug 'vim-ruby/vim-ruby'
 call plug#end()
 " colorscheme hybrid
 " colorscheme solarized
@@ -194,7 +200,7 @@ autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
 autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
 autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
-autocmd BufNewFile,BufRead *.php set noswapfile nobackup
+" autocmd BufNewFile,BufRead *.php set noswapfile nobackup
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
@@ -214,11 +220,11 @@ augroup configgroup
                 \:call <SID>StripTrailingWhitespaces()
     autocmd FileType java setlocal noexpandtab
     autocmd FileType java setlocal list
-    autocmd FileType java setlocal listchars=tab:+\ ,eol:-
+    " autocmd FileType java setlocal listchars=tab:+\ ,eol:-
     autocmd FileType java setlocal formatprg=par\ -w80\ -T4
     autocmd FileType php setlocal expandtab
     autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:-
+    autocmd FileType php setlocal listchars=tab:+\ ,eol:$
     autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
     autocmd FileType ruby setlocal shiftwidth=2
