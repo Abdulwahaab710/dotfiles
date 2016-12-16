@@ -1,6 +1,5 @@
 # dotFiles
-All my dot files
-
+![vim screenshot](https://github.com/Abdulwahaab710/dotFiles/raw/master/vimScreenShot.png)
 ### To install my vimrc configuration:
 
 1. Install [vim plug](https://github.com/junegunn/vim-plug)
