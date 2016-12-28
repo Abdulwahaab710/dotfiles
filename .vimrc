@@ -1,7 +1,7 @@
 syntax enable " enable syntax processing"
 filetype plugin indent on  
 set nocompatible
-" set ai "Auto indent
+set ai "Auto indent
 set background=dark
 set backspace=2
 set encoding=utf8
@@ -13,7 +13,7 @@ set nowrap
 set number " show line numbers"
 set re=1
 set relativenumber
-" set ruler
+set ruler
 set showcmd " show command in bottom bar
 set showmatch " highlight matching [{()}]
 set hlsearch " highlight matches
@@ -35,7 +35,6 @@ set softtabstop=4 " number of spaces in tab when editing
 set expandtab " tabs are spaces"
 set cursorline " highlight current line
 set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
-" set wildmode=list:full          " show a list when pressing tab and complete
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -78,7 +77,7 @@ map <F2> :NERDTreeToggle<CR>
 "set shell=bash\ -i
 " syntax sync minlines=256
 
-" set synmaxcol=300
+" set synmaxcol=80
 " set nocursorcolumn
 " set nocursorline
 " autocmd VimEnter * if !argc() | NERDTree | endif
@@ -191,16 +190,14 @@ Plug 'digitaltoad/vim-pug'
 Plug 'statianzo/vim-jade'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
+Plug 'vim-syntastic/syntastic'
 call plug#end()
-" colorscheme hybrid
-" colorscheme solarized
 color hybrid
 "Load config based on filetype
 autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
 autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
 autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
-" autocmd BufNewFile,BufRead *.php set noswapfile nobackup
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
