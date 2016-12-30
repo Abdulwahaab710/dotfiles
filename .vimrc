@@ -1,7 +1,7 @@
 syntax enable " enable syntax processing
 filetype plugin indent on  
 set nocompatible
-set ai "Auto indent
+set ai " Auto indent
 set background=dark
 set backspace=2
 set encoding=utf8
@@ -59,7 +59,7 @@ else
 endif
 
 " =========================================
-  Keyboard config
+" Keyboard config
 " =========================================
 let mapleader=";"  "Leader Key
 noremap <leader>w :w<CR>
@@ -74,7 +74,20 @@ imap <down> <nop>         " disable arrow keys
 imap <left> <nop>         " disable arrow keys
 imap <right> <nop>        " disable arrow keys
 
+map <C-c> "*y
+map <C-v> "*p
+map <C-x> "*d
+
 map <F2> :NERDTreeToggle<CR> " Show and hide nerd tree
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -108,62 +121,39 @@ let g:airline#extensions#tabline#enabled = 1
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
 
+" ===================================
+" Syntastic
+" ===================================
+let g:syntastic_ruby_checkers=['rubocop']
+let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
+
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
 Plug 'mhinz/vim-startify'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
-" Plug 'benekastah/neomake' "Async Jobs (can use it instead of syntastic, but hard to setup)
 Plug 'beyondwords/vim-twig', {'for': 'twig'}
 " Plug 'christoomey/vim-run-interactive'
 " Plug 'christoomey/vim-sort-motion'
 " Plug 'christoomey/vim-tmux-navigator'
 " Plug 'christoomey/vim-tmux-runner'
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'duff/vim-scratch' "Open a throwaway scratch buffer
-" Plug 'editorconfig/editorconfig-vim'
-" Plug 'endel/vim-github-colorscheme'
-" Plug 'jimmyhchan/dustjs.vim' "Highlighting for Dust
-" Plug 'junegunn/vim-easy-align'
-" Plug 'kien/ctrlp.vim'
-" Plug 'lfilho/cosco.vim'
-" Plug 'm2mdas/phpcomplete-extended'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'osyo-manga/vim-over'
 Plug 'majutsushi/tagbar'
-" Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
-" Plug 'mmozuras/vim-github-comment'
-" Plug 'Glench/Vim-Jinja2-Syntax'
-" Plug 'pangloss/vim-javascript' | Plug 'mxw/vim-jsx'
-" Plug 'shawncplus/phpcomplete.vim'
-" Plug 'sjl/gundo.vim'
-" Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
-" Plug 'terryma/vim-multiple-cursors'
-" Plug 'thinca/vim-ref'
-" Plug 'tpope/vim-commentary'
-" Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
-" Plug 'vim-scripts/taglist.vim'
-" Plug 'vimwiki/vimwiki'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-" Plug 'SirVer/ultisnips' | Plug 'justinj/vim-react-snippets' | Plug 'colbycheeze/vim-snippets'
 Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php']}
-" Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'python','html','twig','css','js','php']}
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color', {'for': 'css'}
 Plug 'docunext/closetag.vim'
 Plug 'ervandew/supertab'
 Plug 'gregsexton/matchtag'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-" Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'mattn/emmet-vim'
-" Plug 'nathanaelkane/vim-indent-guides'
-" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'scrooloose/nerdtree'
-" Plug 'scrooloose/syntastic' "Run linters and display errors etc
+Plug 'scrooloose/syntastic' "Run linters and display errors etc
 Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
-" Plug 'JamshedVesuna/vim-markdown-preview'
-" Plug 'tpope/vim-fugitive' | Plug 'bling/vim-airline'
 Plug 'tpope/vim-repeat' "allow plugins to utilize . command
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'vim-scripts/HTML-AutoCloseTag' "close tags after >
@@ -185,7 +175,6 @@ Plug 'digitaltoad/vim-pug'
 Plug 'statianzo/vim-jade'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
-Plug 'vim-syntastic/syntastic'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
