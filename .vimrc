@@ -1,4 +1,4 @@
-syntax enable " enable syntax processing"
+syntax enable " enable syntax processing
 filetype plugin indent on  
 set nocompatible
 set ai "Auto indent
@@ -21,8 +21,6 @@ set incsearch " search as characters are entered
 set foldenable          " enable folding
 set foldlevelstart=10   " open most folds by default
 set foldnestmax=10      " 10 nested fold max
-" set si "Smart indent
-" set smartcase
 set splitbelow
 set splitright
 set t_Co=256
@@ -39,6 +37,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
+set ttimeoutlen=10 
 " =========================================
 " backup
 " =========================================
@@ -59,31 +58,27 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-"Leader Key
-let mapleader=";"
+" =========================================
+  Keyboard config
+" =========================================
+let mapleader=";"  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
-"disable arrow keys
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
-imap <up> <nop>
-imap <down> <nop>
-imap <left> <nop>
-imap <right> <nop>
 
-map <F2> :NERDTreeToggle<CR>
-"set shell=bash\ -i
-" syntax sync minlines=256
+map <up> <nop>            " disable arrow keys
+map <down> <nop>          " disable arrow keys
+map <left> <nop>          " disable arrow keys
+map <right> <nop>         " disable arrow keys
+imap <up> <nop>           " disable arrow keys
+imap <down> <nop>         " disable arrow keys
+imap <left> <nop>         " disable arrow keys
+imap <right> <nop>        " disable arrow keys
 
-" set synmaxcol=80
-" set nocursorcolumn
-" set nocursorline
-" autocmd VimEnter * if !argc() | NERDTree | endif
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <F2> :NERDTreeToggle<CR> " Show and hide nerd tree
+
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 "indentline guide
 let g:indentLine_faster = 1
 
@@ -191,8 +186,20 @@ Plug 'statianzo/vim-jade'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-syntastic/syntastic'
+Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
-color hybrid
+" ===========================
+" Theme config
+" ===========================
+let g:onedark_termcolors=256
+colorscheme onedark
+hi MatchParen cterm=bold ctermbg=blue ctermfg=black     "Matching paren hightlight color change
+hi LineNr ctermfg=darkGrey                              "Lighter line numbers from OneDark theme
+hi CursorLineNr ctermfg=blue                            "Make current line number blue
+set cursorline                                          "Shows a visual cursor line
+hi CursorLine term=bold cterm=bold guibg=Grey40         "Light grey colour for cursorline
+"
 "Load config based on filetype
 autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
