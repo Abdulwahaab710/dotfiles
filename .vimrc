@@ -25,6 +25,8 @@ set splitbelow
 set splitright
 set t_Co=256
 set wildmenu " visual autocomplete for command menu
+set wildmode=longest:full,full
+set wildignore=*.o,*.class,*.pyc,*.git
 set path+=**
 set ttyfast
 filetype plugin indent on " load filetype-specific indent files
@@ -79,6 +81,17 @@ map <C-v> "*p
 map <C-x> "*d
 
 map <F2> :NERDTreeToggle<CR> " Show and hide nerd tree
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+" ===========
+" resizing
+" ===========
+nnoremap <C-w>> 20<C-w>>
+nnoremap <C-w>< 20<C-w><
+nnoremap <C-w>+ 20<C-w>+
+nnoremap <C-w>- 20<C-w>
+
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -94,9 +107,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 "indentline guide
 let g:indentLine_faster = 1
-
-"neocomplete
-let g:neocomplcache_enable_at_startup = 1
 
 "Airline
 if !exists('g:airline_symbols')
@@ -116,7 +126,7 @@ let g:airline#extensions#tabline#enabled = 1
 " let g:phpcomplete_search_tags_for_variables = 1
 
 "YCM
-
+let g:ycm_autoclose_preview_window_after_completion = 1
 "autocomplete for ruby\rails config
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
@@ -143,11 +153,11 @@ Plug 'osyo-manga/vim-over'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php']}
+Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'ruby']}
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color', {'for': 'css'}
 Plug 'docunext/closetag.vim'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 Plug 'gregsexton/matchtag'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'mattn/emmet-vim'
