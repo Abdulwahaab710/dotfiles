@@ -16,4 +16,4 @@ alias tmux='tmux -2'
 export TERM="xterm-256color"
 if [ -n $TMUX ]; then
    alias vim="TERM=screen-256color vim"
-if
+fi
