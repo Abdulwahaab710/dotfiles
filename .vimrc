@@ -60,6 +60,10 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+if $TMUX == ''
+    set clipboard+=unnamed
+endif
+
 " =========================================
 " Keyboard config
 " =========================================
@@ -187,6 +191,8 @@ Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 " ===========================
 " Theme config
