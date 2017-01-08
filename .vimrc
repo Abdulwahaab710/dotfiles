@@ -60,6 +60,10 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+if $TMUX == ''
+    set clipboard+=unnamed
+endif
+
 " =========================================
 " Keyboard config
 " =========================================
@@ -77,7 +81,7 @@ imap <left> <nop>         " disable arrow keys
 imap <right> <nop>        " disable arrow keys
 
 map <C-c> "*y
-map <C-v> "*p
+" map <C-V> "*p
 map <C-x> "*d
 
 map <F2> :NERDTreeToggle<CR> " Show and hide nerd tree
@@ -187,6 +191,8 @@ Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'rust-lang/rust.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 " ===========================
 " Theme config
