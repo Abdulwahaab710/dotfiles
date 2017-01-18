@@ -96,6 +96,12 @@ nnoremap <C-w>< 20<C-w><
 nnoremap <C-w>+ 20<C-w>+
 nnoremap <C-w>- 20<C-w>
 
+" ===========
+" Git
+" ===========
+nnoremap <C-g>c :Gcommit<CR>
+nnoremap <C-g>p :Gpull<CR>
+nnoremap <C-g>P :Gpush<CR>
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
