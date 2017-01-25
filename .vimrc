@@ -71,14 +71,14 @@ let mapleader=";"  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 
-map <up> <nop>            " disable arrow keys
-map <down> <nop>          " disable arrow keys
-map <left> <nop>          " disable arrow keys
-map <right> <nop>         " disable arrow keys
-imap <up> <nop>           " disable arrow keys
-imap <down> <nop>         " disable arrow keys
-imap <left> <nop>         " disable arrow keys
-imap <right> <nop>        " disable arrow keys
+" map <up> <nop>            " disable arrow keys
+" map <down> <nop>          " disable arrow keys
+" map <left> <nop>          " disable arrow keys
+" map <right> <nop>         " disable arrow keys
+" imap <up> <nop>           " disable arrow keys
+" imap <down> <nop>         " disable arrow keys
+" imap <left> <nop>         " disable arrow keys
+" imap <right> <nop>        " disable arrow keys
 
 map <C-c> "*y
 " map <C-V> "*p
@@ -232,7 +232,7 @@ augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
     autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-                \:call <SID>StripTrailingWhitespaces()
+                \:call <SID>StripTrailingWhitespaces()<cr>
     autocmd FileType java setlocal noexpandtab
     autocmd FileType java setlocal list
     " autocmd FileType java setlocal listchars=tab:+\ ,eol:-
