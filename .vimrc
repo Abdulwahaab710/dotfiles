@@ -146,6 +146,7 @@ let g:rubycomplete_rails = 1
 " ===================================
 let g:syntastic_ruby_checkers=['rubocop']
 let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
+let g:syntastic_javascript_checkers = ['jshint']
 
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
@@ -199,18 +200,22 @@ Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'w0ng/vim-hybrid'
 call plug#end()
 " ===========================
 " Theme config
 " ===========================
 let g:onedark_termcolors=256
-colorscheme onedark
+" colorscheme onedark
 hi MatchParen cterm=bold ctermbg=blue ctermfg=black     "Matching paren hightlight color change
 hi LineNr ctermfg=darkGrey                              "Lighter line numbers from OneDark theme
 hi CursorLineNr ctermfg=blue                            "Make current line number blue
 set cursorline                                          "Shows a visual cursor line
 hi CursorLine term=bold cterm=bold guibg=Grey40         "Light grey colour for cursorline
-"
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+colorscheme hybrid
+
 "Load config based on filetype
 autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
