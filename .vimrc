@@ -147,6 +147,7 @@ let g:rubycomplete_rails = 1
 let g:syntastic_ruby_checkers=['rubocop']
 let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
@@ -201,6 +202,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'w0ng/vim-hybrid'
+Plug 'vim-scripts/LanguageTool'
 call plug#end()
 " ===========================
 " Theme config
