@@ -112,6 +112,21 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+"===============
+" UltiSnips
+"===============
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
 autocmd VimEnter * if !argc() | Startify | NERDTree | wincmd w | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -140,13 +155,26 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 "autocomplete for ruby\rails config
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
-
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
 " ===================================
 " Syntastic
 " ===================================
 let g:syntastic_ruby_checkers=['rubocop']
 let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
-let g:syntastic_javascript_checkers = ['jshint']
+" let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 call plug#begin('~/.vim/plugged')
@@ -165,7 +193,7 @@ Plug 'osyo-manga/vim-over'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'ruby']}
+Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color', {'for': 'css'}
 Plug 'docunext/closetag.vim'
@@ -203,6 +231,11 @@ Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-scripts/LanguageTool'
+
+Plug 'SirVer/ultisnips'
+" Currently, es6 version of snippets is available in es6 branch only
+Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
+Plug 'honza/vim-snippets' "optional
 call plug#end()
 " ===========================
 " Theme config
