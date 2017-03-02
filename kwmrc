@@ -111,6 +111,7 @@ kwmc config spawn left
     This is because some applications do not have the
     AXWindowRole and AXStandardWindowSubRole
 */
+kwmc rule owner="iTerm" properties={role="AXDialog"}
 kwmc rule owner="iTerm2" properties={role="AXDialog"}
 
 /*
@@ -140,4 +141,5 @@ kwmc config border marked on
 kwmc config border marked size 2
 kwmc config border marked color 0xFFCC5577
 kwmc config border marked radius 6
-kwmc config add-role AXDialog iTerm2
+# kwmc config add-role AXDialog iTerm
+# kwmc config add-role AXDialog iTerm2
