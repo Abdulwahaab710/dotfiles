@@ -1,0 +1,4 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/Users/Abdulwahaab710/.zprezto/modules/prompt/functions'
+let g:netrw_dirhist_2='/Users/Abdulwahaab710/.zsh'
