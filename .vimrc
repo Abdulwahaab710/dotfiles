@@ -178,64 +178,34 @@ let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
 call plug#begin('~/.vim/plugged')
-Plug 'Shougo/deoplete.nvim'
-Plug 'mhinz/vim-startify'
-Plug 'airblade/vim-gitgutter'
-Plug 'altercation/vim-colors-solarized'
-Plug 'beyondwords/vim-twig', {'for': 'twig'}
-" Plug 'christoomey/vim-run-interactive'
-" Plug 'christoomey/vim-sort-motion'
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'christoomey/vim-tmux-runner'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'osyo-manga/vim-over'
-Plug 'majutsushi/tagbar'
-Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
-Plug 'Yggdroot/indentLine'
-Plug 'ap/vim-css-color', {'for': 'css'}
-Plug 'docunext/closetag.vim'
-" Plug 'ervandew/supertab'
-Plug 'gregsexton/matchtag'
-Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-Plug 'mattn/emmet-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic' "Run linters and display errors etc
-Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
-Plug 'tpope/vim-repeat' "allow plugins to utilize . command
-Plug 'tpope/vim-surround' "easily surround things...just read docs for info
-Plug 'vim-scripts/HTML-AutoCloseTag' "close tags after >
-Plug 'vim-scripts/tComment' "Comment easily with gcc
-Plug 'klen/python-mode'
+Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'shawncplus/phpcomplete.vim'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'kern/vim-es7'
-Plug 'jelera/vim-javascript-syntax'
-Plug 'w0ng/vim-hybrid'
-Plug 'joshdick/onedark.vim'
-Plug 'Abdulwahaab710/vim-use'
-Plug 'KeitaNakamura/neodark.vim'
-Plug 'kamwitsta/nordisk'
-Plug 'digitaltoad/vim-pug'
-Plug 'statianzo/vim-jade'
+Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
+Plug 'scrooloose/syntastic' "Run linters and display errors etc
+Plug 'tpope/vim-surround' "easily surround things...just read docs for info
+Plug 'tomtom/tcomment_vim' "Comment easily with gcc
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
-Plug 'joshdick/onedark.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'rust-lang/rust.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'w0ng/vim-hybrid'
-Plug 'vim-scripts/LanguageTool'
-
+Plug 'rust-lang/rust.vim'
 Plug 'SirVer/ultisnips'
+Plug 'jelera/vim-javascript-syntax'
 " Currently, es6 version of snippets is available in es6 branch only
 Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
-Plug 'honza/vim-snippets' "optional
+Plug 'honza/vim-snippets' "optionalcall plug#end()
+Plug 'vim-scripts/tComment' "Comment easily with gcc
+Plug 'ap/vim-css-color', {'for': 'css'}"
+Plug 'mattn/emmet-vim'
+Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
+Plug 'docunext/closetag.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'klen/python-mode'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 " ===========================
 " Theme config
