@@ -112,6 +112,11 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 0
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1 
+
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
@@ -135,15 +140,11 @@ let g:indentLine_faster = 1
 
 "Airline
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#enabled = 1
-" let g:airline_theme='hybrid'
 
 "phpcomplete
 " let g:phpcomplete_relax_static_constraint = 1
@@ -156,18 +157,18 @@ let g:ycm_autoclose_preview_window_after_completion = 1
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_rails = 1
 let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-  \             're!\[.*\]\s'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
+            \   'c' : ['->', '.'],
+            \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+            \             're!\[.*\]\s'],
+            \   'ocaml' : ['.', '#'],
+            \   'cpp,objcpp' : ['->', '.', '::'],
+            \   'perl' : ['->'],
+            \   'php' : ['->', '::'],
+            \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+            \   'ruby' : ['.', '::'],
+            \   'lua' : ['.', ':'],
+            \   'erlang' : [':'],
+            \ }
 " ===================================
 " Syntastic
 " ===================================
@@ -177,6 +178,7 @@ let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 
+let g:plug_url_format = 'https://git:@github.com/%s.git'
 call plug#begin('~/.vim/plugged')
 Plug 'Shougo/deoplete.nvim'
 Plug 'mhinz/vim-startify'
@@ -193,7 +195,7 @@ Plug 'osyo-manga/vim-over'
 Plug 'majutsushi/tagbar'
 Plug 'vim-scripts/matchit.zip' " % also matches HTML tags / words / etc
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
+Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby', 'tex']}
 Plug 'Yggdroot/indentLine'
 Plug 'ap/vim-css-color', {'for': 'css'}
 Plug 'docunext/closetag.vim'
@@ -203,7 +205,7 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic' "Run linters and display errors etc
-Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
+" Plug 'suan/vim-instant-markdown', {'do': 'npm install -g instant-markdown-d', 'for': 'md'}
 Plug 'tpope/vim-repeat' "allow plugins to utilize . command
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'vim-scripts/HTML-AutoCloseTag' "close tags after >
@@ -213,7 +215,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 Plug 'kern/vim-es7'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'w0ng/vim-hybrid'
@@ -236,6 +238,8 @@ Plug 'SirVer/ultisnips'
 " Currently, es6 version of snippets is available in es6 branch only
 Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
 Plug 'honza/vim-snippets' "optional
+Plug 'shime/vim-livedown', { 'do': 'npm install -g livedown', 'for': 'markdown'  }
+Plug 'lervag/vimtex'
 call plug#end()
 " ===========================
 " Theme config
@@ -285,7 +289,7 @@ augroup configgroup
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
-
+    autocmd FileType markdown setlocal spell spelllang=en_ca
     autocmd FileType javascript setlocal tabstop=2
     autocmd FileType javascript setlocal shiftwidth=2
     autocmd FileType javascript setlocal softtabstop=2
