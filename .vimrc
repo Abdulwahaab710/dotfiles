@@ -255,6 +255,9 @@ augroup configgroup
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
+    autocmd FileType eruby setlocal tabstop=2
+    autocmd FileType eruby setlocal shiftwidth=2
+    autocmd FileType eruby setlocal softtabstop=2
 
     autocmd FileType javascript setlocal tabstop=2
     autocmd FileType javascript setlocal shiftwidth=2
