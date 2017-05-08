@@ -1,5 +1,4 @@
 syntax enable " enable syntax processing
-filetype plugin indent on  
 set nocompatible
 set ai " Auto indent
 set background=dark
@@ -116,6 +115,15 @@ autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
+" ==============
+" CoVim
+" ==============
+" To connect to a running server: :CoVim connect [host address / 'localhost'][port] [name]
+" To start a new CoVim server: :CoVim start [port] [name] (or, from the
+" command line: ./CoVimServer.py [port])
+let CoVim_default_name = "abdulwahaab710"
+let CoVim_default_port = "9876" 
+
 "===============
 " UltiSnips
 "===============
@@ -150,6 +158,16 @@ let g:airline#extensions#tabline#enabled = 1
 " let g:phpcomplete_complete_for_unknown_classes = 1
 " let g:phpcomplete_search_tags_for_variables = 1
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
 "YCM
 let g:ycm_autoclose_preview_window_after_completion = 1
 "autocomplete for ruby\rails config
@@ -176,7 +194,7 @@ let g:syntastic_mode_map = { 'passive_filetypes': ['twig'] }
 " let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
-
+let g:plug_url_format = 'https://git:@github.com/%s.git'
 call plug#begin('~/.vim/plugged')
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
@@ -193,11 +211,12 @@ Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
+Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'jelera/vim-javascript-syntax'
 " Currently, es6 version of snippets is available in es6 branch only
 Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
-Plug 'honza/vim-snippets' "optionalcall plug#end()
 Plug 'vim-scripts/tComment' "Comment easily with gcc
 Plug 'ap/vim-css-color', {'for': 'css'}"
 Plug 'mattn/emmet-vim'
@@ -206,6 +225,8 @@ Plug 'docunext/closetag.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'klen/python-mode'
 Plug 'sheerun/vim-polyglot'
+Plug 'FredKSchott/CoVim'
+Plug 'danro/rename.vim'
 call plug#end()
 " ===========================
 " Theme config
