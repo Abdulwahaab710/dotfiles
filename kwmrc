@@ -1,4 +1,3 @@
-
 /*
 This is a sample config for Kwm
 
@@ -38,10 +37,10 @@ e.g: window-rules in a separate file called 'rules'
 */
 
 # Set default values for screen padding
-kwmc config padding 40 20 20 20
+kwmc config padding 30 20 20 20
 
 # Set default values for container gaps
-kwmc config gap 15 15
+kwmc config gap 5 5
 
 # Default tiling mode for Kwm (bsp | monocle | float)
 kwmc config tiling bsp
@@ -111,7 +110,6 @@ kwmc config spawn left
     This is because some applications do not have the
     AXWindowRole and AXStandardWindowSubRole
 */
-kwmc rule owner="iTerm" properties={role="AXDialog"}
 kwmc rule owner="iTerm2" properties={role="AXDialog"}
 
 /*
@@ -141,5 +139,3 @@ kwmc config border marked on
 kwmc config border marked size 2
 kwmc config border marked color 0xFFCC5577
 kwmc config border marked radius 6
-# kwmc config add-role AXDialog iTerm
-# kwmc config add-role AXDialog iTerm2
