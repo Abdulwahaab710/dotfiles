@@ -38,7 +38,7 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
-set ttimeoutlen=10 
+set ttimeoutlen=10
 " =========================================
 " backup
 " =========================================
@@ -79,12 +79,8 @@ noremap <leader>ml :!mac lock<CR>
 " imap <left> <nop>         " disable arrow keys
 " imap <right> <nop>        " disable arrow keys
 
-map <C-c> "*y
-" map <C-V> "*p
-map <C-x> "*d
-
-nmap <F2> :Vexplore<CR>
-imap <F2> <esc>:Vexplore<CR>
+nmap <F2> :NERDTreeToggle<CR>
+imap <F2> <esc>:NERDTreeToggle<CR>
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -166,6 +162,9 @@ augroup configgroup
     autocmd FileType javascript setlocal tabstop=2
     autocmd FileType javascript setlocal shiftwidth=2
     autocmd FileType javascript setlocal softtabstop=2
+    autocmd FileType go setlocal tabstop=4
+    autocmd FileType go setlocal shiftwidth=4
+    autocmd FileType go setlocal softtabstop=4
 
     autocmd FileType python setlocal commentstring=#\ %s
     autocmd BufEnter *.cls setlocal filetype=java
@@ -232,12 +231,14 @@ Plug 'sheerun/vim-polyglot'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-session'
+Plug 'xolox/vim-misc'
 Plug 'mattn/emmet-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'fatih/vim-go'
 Plug 'wojtekmach/vim-rename'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
+Plug 'scrooloose/nerdtree'
 call plug#end()
 
 " =========================================
@@ -247,10 +248,11 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 " Hybird
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+" let g:hybrid_custom_term_colors = 1
+" let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
 let g:impact_transbg=1
 colorscheme hybrid
+color base16-tomorrow-night
 set termguicolors
 
 " ==============================
@@ -265,8 +267,15 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='hybrid'
+" let g:airline_theme='hybrid'
+let g:airline_theme='base16_tomorrow'
 
+" ============================
+" NERDtree
+" ============================
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree like setup
 let g:netrw_banner = 1
