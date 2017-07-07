@@ -35,7 +35,7 @@ set expandtab " tabs are spaces"
 set cursorline " highlight current line
 set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
 set ttimeoutlen=10
@@ -70,17 +70,20 @@ let mapleader=";"  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 
-" map <up> <nop>            " disable arrow keys
-" map <down> <nop>          " disable arrow keys
-" map <left> <nop>          " disable arrow keys
-" map <right> <nop>         " disable arrow keys
-" imap <up> <nop>           " disable arrow keys
-" imap <down> <nop>         " disable arrow keys
-" imap <left> <nop>         " disable arrow keys
-" imap <right> <nop>        " disable arrow keys
+map <up> <nop>            " disable arrow keys
+map <down> <nop>          " disable arrow keys
+map <left> <nop>          " disable arrow keys
+map <right> <nop>         " disable arrow keys
+imap <up> <nop>           " disable arrow keys
+imap <down> <nop>         " disable arrow keys
+imap <left> <nop>         " disable arrow keys
+imap <right> <nop>        " disable arrow keys
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
+
+" Mapping jj to <esc>
+imap jj <esc>
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -110,6 +113,14 @@ nmap <F8> :TagbarToggle<CR>
 " ===============
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+" ===============
+" Rails
+" ===============
+set omnifunc=rubycomplete#Complete
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global=1
+let g:rubycomplete_rails = 1
 
 hi MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
 hi LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
@@ -177,19 +188,24 @@ augroup END
 
 let g:plug_url_format = 'https://git:@github.com/%s.git'
 
-let g:syntastic_ruby_checkers=['rubocop']
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_ruby_checkers=['rubocop']
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-x>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "YCM
 let g:ycm_autoclose_preview_window_after_completion = 1
 "autocomplete for ruby\rails config
 
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_rails = 1
 let g:ycm_semantic_triggers =  {
   \   'c' : ['->', '.'],
   \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
@@ -216,7 +232,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-Plug 'scrooloose/syntastic' "Run linters and display errors etc
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'tomtom/tcomment_vim' "Comment easily with gcc
 Plug 'tpope/vim-rails'
@@ -239,6 +254,8 @@ Plug 'wojtekmach/vim-rename'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
+Plug 'w0rp/ale'
+Plug 'tpope/vim-endwise'
 call plug#end()
 
 " =========================================
@@ -247,9 +264,6 @@ call plug#end()
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
-" Hybird
-" let g:hybrid_custom_term_colors = 1
-" let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
 let g:impact_transbg=1
 colorscheme hybrid
 color base16-tomorrow-night
@@ -296,11 +310,11 @@ function! s:DebugStatement()
 
     let debugMsg = ''
     if choice == 1
-        let debugMsg = 'puts "\e[42m"'
+        let debugMsg = 'puts "\e[42m#{}\e[0m"'
     elseif choice == 2
-        let debugMsg = 'puts "\e[41m"'
+        let debugMsg = 'puts "\e[41m#{}\e[0m"'
     elseif  choice == 3
-        let debugMsg = 'puts "\e[43m"'
+        let debugMsg = 'puts "\e[43m#{}\e[0m"'
     endif
     if debugMsg != ''
         call append(line('.'), debugMsg)
