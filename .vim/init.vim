@@ -66,7 +66,7 @@ endif
 " =========================================
 " Keyboard config
 " =========================================
-let mapleader=";"  "Leader Key
+let g:mapleader=';'  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 
@@ -81,6 +81,10 @@ imap <right> <nop>        " disable arrow keys
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
+
+" <C-\> - Open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a new tab
+map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a vertical split
 
 " Mapping jj to <esc>
 imap jj <esc>
@@ -184,6 +188,7 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
+    autocmd BufEnter *.ejson setlocal syntax=json
 augroup END
 
 let g:plug_url_format = 'https://git:@github.com/%s.git'
@@ -195,7 +200,7 @@ let g:plug_url_format = 'https://git:@github.com/%s.git'
 " let g:syntastic_check_on_wq = 0
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-x>"
+let g:UltiSnipsExpandTrigger="<c-z>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
@@ -233,8 +238,9 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
-Plug 'tomtom/tcomment_vim' "Comment easily with gcc
-Plug 'tpope/vim-rails'
+" Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+Plug 'tpope/vim-commentary'
+" Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
@@ -254,8 +260,11 @@ Plug 'wojtekmach/vim-rename'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
+Plug '~/dev/vim/vim-rails/'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-endwise'
+Plug 'vim-scripts/SyntaxRange'
+Plug 'mbbill/undotree'
 call plug#end()
 
 " =========================================
