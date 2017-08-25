@@ -66,7 +66,7 @@ endif
 " =========================================
 " Keyboard config
 " =========================================
-let mapleader=";"  "Leader Key
+let g:mapleader=';'  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 
@@ -74,13 +74,17 @@ map <up> <nop>            " disable arrow keys
 map <down> <nop>          " disable arrow keys
 map <left> <nop>          " disable arrow keys
 map <right> <nop>         " disable arrow keys
-imap <up> <nop>           " disable arrow keys
-imap <down> <nop>         " disable arrow keys
-imap <left> <nop>         " disable arrow keys
-imap <right> <nop>        " disable arrow keys
+imap <up> <esc>:!say 'You are lazy'<CR>           " disable arrow keys
+imap <down> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
+imap <left> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
+imap <right> <esc>:!say 'You are lazy'<CR>        " disable arrow keys
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
+
+" <C-\> - Open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a new tab
+map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a vertical split
 
 " Mapping jj to <esc>
 imap jj <esc>
@@ -128,10 +132,6 @@ hi CursorLineNr ctermfg=blue                            " Make current line numb
 set cursorline                                          " Shows a visual cursor line
 hi CursorLine term=bold cterm=bold guibg=Grey40         "Light grey colour for cursorline
 "Load config based on filetype
-autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
-" autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
-autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
-autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
@@ -184,6 +184,7 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
+    autocmd BufEnter *.ejson setlocal syntax=json
 augroup END
 
 let g:plug_url_format = 'https://git:@github.com/%s.git'
@@ -195,30 +196,9 @@ let g:plug_url_format = 'https://git:@github.com/%s.git'
 " let g:syntastic_check_on_wq = 0
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-x>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-"YCM
-let g:ycm_autoclose_preview_window_after_completion = 1
-"autocomplete for ruby\rails config
-
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-  \             're!\[.*\]\s'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
+let g:UltiSnipsExpandTrigger='<c-s>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 
 " =============================
 " Plugins
@@ -233,7 +213,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
-Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+" Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
@@ -254,8 +235,11 @@ Plug 'wojtekmach/vim-rename'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
+" Plug '~/dev/vim/vim-rails/'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-endwise'
+Plug 'vim-scripts/SyntaxRange'
+Plug 'mbbill/undotree'
 call plug#end()
 
 " =========================================
@@ -302,6 +286,27 @@ let g:netrw_winsize = 10
 "   autocmd VimEnter * :Vexplore
 " augroup END
 
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit='vertical'
+
+"YCM
+let g:ycm_autoclose_preview_window_after_completion = 1
+"autocomplete for ruby\rails config
+
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
+
 function! s:DebugStatement()
     echom "1)Success"
     echom "2)Failure" 
@@ -343,6 +348,35 @@ function! s:DiffWithGITCheckedOut()
   diffthis
 endfunction
 com! DiffGIT call s:DiffWithGITCheckedOut()
+
+function! s:OpenPR()
+  !/opt/dev/bin/dev open pr
+endfunction
+com! OpenPR call s:OpenPR()
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <C-Z> :ZoomToggle<cr>
+
+function! GrepToWindow()
+  let l:word = expand("<cword>")
+  execute "silent grep! " . l:word
+  redraw!
+  cw
+endfunc
+command! -nargs=0 Gw call GrepToWindow()
+nnoremap <leader>g :call GrepToWindow()<cr>
 
 " The Silver Searcher
 if executable('ag')
