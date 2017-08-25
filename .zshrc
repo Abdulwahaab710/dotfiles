@@ -23,7 +23,7 @@ alias stash='git stash'
 alias pop='git stash pop'
 alias checkout='git checkout'
 alias prebase='git pull rebase'
-alias git-nvim='git status -s -u | fzf -m --ansi --preview-window "right:33%" --preview "echo {} | cut -d' ' -f 3 | xargs head -$LINES" | cut -d' ' -f 3 | xargs vim'
+# alias git-nvim='git status -s -u | fzf -m --ansi --preview-window "right:33%" --preview "echo {} | cut -d' ' -f 3 | xargs head -$LINES" | cut -d' ' -f 3 | xargs vim'
 alias rtest='bundle exec rspec'
 alias s='fast_git_branch_select'
 alias ts='fast_tmux_session_select'
@@ -60,4 +60,8 @@ function fast_tmux_session_select {
     session="$(tmux ls | fzf-tmux -d 15)"
     SESSION_NAME="$(echo -e "${session}" | sed -e 's/^[[:space:]]*//' | sed -e 's/: .*//')"
     tmux attach -t $SESSION_NAME
+}
+
+function git-nvim {
+    git status -s -u | fzf -m --ansi --preview-window "right:33%" --preview "echo {} | cut -d' ' -f 3 | xargs head -$LINES" | cut -d' ' -f 3 | xargs nvim
 }
