@@ -128,10 +128,10 @@ hi CursorLineNr ctermfg=blue                            " Make current line numb
 set cursorline                                          " Shows a visual cursor line
 hi CursorLine term=bold cterm=bold guibg=Grey40         "Light grey colour for cursorline
 "Load config based on filetype
-autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
+" autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
 " autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
-autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
-autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
+" autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
+" autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
