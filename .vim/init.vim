@@ -439,7 +439,6 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-
 highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
 highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
 highlight CursorLineNr ctermfg=blue                            " Make current line number blue
