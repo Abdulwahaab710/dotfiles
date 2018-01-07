@@ -1,3 +1,4 @@
+set modelines=0        " CVE-2007-2438
 filetype plugin indent on " load filetype-specific indent files
 syntax enable " enable syntax processing
 set nocompatible
@@ -39,6 +40,13 @@ set statusline+=%#warningmsg#
 set statusline+=%*
 set laststatus=2
 set ttimeoutlen=10
+
+" =========================================
+" Undo persistent
+" =========================================
+set   undofile
+set   undodir=~/.vim/undofiles
+
 " =========================================
 " backup
 " =========================================
@@ -66,7 +74,7 @@ endif
 " =========================================
 " Keyboard config
 " =========================================
-let mapleader=";"  "Leader Key
+let g:mapleader=';'  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 
@@ -74,19 +82,29 @@ map <up> <nop>            " disable arrow keys
 map <down> <nop>          " disable arrow keys
 map <left> <nop>          " disable arrow keys
 map <right> <nop>         " disable arrow keys
-imap <up> <nop>           " disable arrow keys
-imap <down> <nop>         " disable arrow keys
-imap <left> <nop>         " disable arrow keys
-imap <right> <nop>        " disable arrow keys
+imap <up> <esc>:!say 'You are lazy'<CR>           " disable arrow keys
+imap <down> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
+imap <left> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
+imap <right> <esc>:!say 'You are lazy'<CR>        " disable arrow keys
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
 
+" <C-\> - Open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a new tab
+map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a vertical split
+
 " Mapping jj to <esc>
 imap jj <esc>
+map ;; $a;<esc>:w<CR>;
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+
+" ================
+" Better grepping
+" ================
+nnoremap \ :Ag<SPACE>
 
 " ===========
 " resizing
@@ -115,6 +133,16 @@ nmap <F8> :TagbarToggle<CR>
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " ===============
+" Makefile
+" ===============
+autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
+
+" ==========
+" latex
+" ==========
+let g:polyglot_disabled = ['latex']
+
+" ===============
 " Rails
 " ===============
 set omnifunc=rubycomplete#Complete
@@ -122,16 +150,7 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global=1
 let g:rubycomplete_rails = 1
 
-hi MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
-hi LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
-hi CursorLineNr ctermfg=blue                            " Make current line number blue
-set cursorline                                          " Shows a visual cursor line
-hi CursorLine term=bold cterm=bold guibg=Grey40         "Light grey colour for cursorline
 "Load config based on filetype
-" autocmd BufNewFile,BufRead *.cpp so ~/.vimrc_c++
-" autocmd BufNewFile,BufRead *.java so ~/.vimrc_java
-" autocmd BufNewFile,BufRead *.py so ~/.vimrc_python
-" autocmd BufNewFile,BufRead *.use so ~/.vimrc_use
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
@@ -144,18 +163,15 @@ function! HandleURL()
 endfunction
 map <leader>u :call HandleURL()<cr>
 
-" highlight OverLength ctermbg=gray
-" match OverLength /\%>121v.\+/
-highlight ColorColumn ctermbg=red
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
-    autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-                \:call <SID>StripTrailingWhitespaces()<cr>
-    autocmd FileType java setlocal noexpandtab
-    autocmd FileType java setlocal list
+    " autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
+    "             \:call <SID>striptrailingwhitespaces()<cr>
+    " autocmd FileType java setlocal noexpandtab
+    " autocmd FileType java setlocal list
     " autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-    autocmd FileType java setlocal formatprg=par\ -w80\ -T4
+    " autocmd FileType java setlocal formatprg=par\ -w80\ -T4
     autocmd FileType php setlocal expandtab
     autocmd FileType php setlocal list
     autocmd FileType php setlocal listchars=tab:+\ ,eol:$
@@ -176,6 +192,7 @@ augroup configgroup
     autocmd FileType go setlocal tabstop=4
     autocmd FileType go setlocal shiftwidth=4
     autocmd FileType go setlocal softtabstop=4
+    autocmd FileType python setlocal colorcolumn=120
 
     autocmd FileType python setlocal commentstring=#\ %s
     autocmd BufEnter *.cls setlocal filetype=java
@@ -184,41 +201,23 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal tabstop=2
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
+    autocmd BufEnter *.ejson setlocal syntax=json
+    autocmd FileType markdown setlocal spell
+    autocmd BufEnter *.md setlocal spell
+
+    autocmd FileType html setlocal spell
+    autocmd BufEnter *.html setlocal spell
+
+    autocmd BufEnter *.tex setlocal spell
+    autocmd BufRead *.tex let g:tex_conceal = ""
 augroup END
 
-let g:plug_url_format = 'https://git:@github.com/%s.git'
-
-" let g:syntastic_ruby_checkers=['rubocop']
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
+" let g:plug_url_format = 'https://git:@github.com:%s.git'
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-x>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
-
-"YCM
-let g:ycm_autoclose_preview_window_after_completion = 1
-"autocomplete for ruby\rails config
-
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-  \             're!\[.*\]\s'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
+let g:UltiSnipsExpandTrigger='<c-s>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 
 " =============================
 " Plugins
@@ -227,13 +226,14 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer --gocode-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
+" Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer --gocode-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
-Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+" Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
@@ -254,8 +254,21 @@ Plug 'wojtekmach/vim-rename'
 Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
+" Plug '~/dev/vim/vim-rails/'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-endwise'
+Plug 'vim-scripts/SyntaxRange'
+Plug 'mbbill/undotree'
+Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'bronson/vim-crosshairs'
+Plug 'kopischke/vim-stay'
+Plug 'lervag/vimtex'
+Plug 'mbbill/undotree'
+Plug 'xolox/vim-notes'
+Plug 'vimwiki/vimwiki'
+Plug 'roxma/nvim-completion-manager'
+Plug 'chrisbra/csv.vim'
 call plug#end()
 
 " =========================================
@@ -265,8 +278,9 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
-colorscheme hybrid
-color base16-tomorrow-night
+" colorscheme hybrid
+" color base16-tomorrow-night
+color hybrid
 set termguicolors
 
 " ==============================
@@ -275,14 +289,23 @@ set termguicolors
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#enabled = 1
-" let g:airline_theme='hybrid'
-let g:airline_theme='base16_tomorrow'
+let g:airline_theme='hybrid'
+" let g:airline_theme='base16_tomorrow'
+
+set nocursorline    " enable the horizontal line
+set nocursorcolumn  " enable the vertical line
+" highlight CursorLine   cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NON 
+" highlight CursorColumn cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
+
+" ============================
+" Vim-stay
+" ============================
+set viewoptions=cursor,folds,slash,unix
 
 " ============================
 " NERDtree
@@ -301,6 +324,27 @@ let g:netrw_winsize = 10
 "   autocmd!
 "   autocmd VimEnter * :Vexplore
 " augroup END
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit='vertical'
+
+"YCM
+let g:ycm_autoclose_preview_window_after_completion = 1
+"autocomplete for ruby\rails config
+
+let g:ycm_semantic_triggers =  {
+  \   'c' : ['->', '.'],
+  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \             're!\[.*\]\s'],
+  \   'ocaml' : ['.', '#'],
+  \   'cpp,objcpp' : ['->', '.', '::'],
+  \   'perl' : ['->'],
+  \   'php' : ['->', '::'],
+  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
+  \   'ruby' : ['.', '::'],
+  \   'lua' : ['.', ':'],
+  \   'erlang' : [':'],
+  \ }
 
 function! s:DebugStatement()
     echom "1)Success"
@@ -344,6 +388,41 @@ function! s:DiffWithGITCheckedOut()
 endfunction
 com! DiffGIT call s:DiffWithGITCheckedOut()
 
+function! s:OpenPR()
+  !/opt/dev/bin/dev open pr
+endfunction
+com! OpenPR call s:OpenPR()
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <C-Z> :ZoomToggle<cr>
+
+function! GrepToWindow()
+  let l:word = expand("<cword>")
+  execute "silent grep! " . l:word
+  redraw!
+  cw
+endfunc
+command! -nargs=0 Gw call GrepToWindow()
+nnoremap <leader>g :call GrepToWindow()<cr>
+
+function! s:OpenInChrome()
+    let l:url = expand('%:p')
+    execute "! /usr/bin/open" . l:url
+endfunction
+command! OpenInChrome call s:OpenInChrome()
+
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -356,4 +435,14 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
-" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+
+highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
+highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
+highlight CursorLineNr ctermfg=blue                            " Make current line number blue
+highlight Comment cterm=italic                                 " enable italicised comments in vim
+highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
+" highlight OverLength ctermbg=gray
+" match OverLength /\%>121v.\+/
+highlight ColorColumn ctermbg=red
+
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
