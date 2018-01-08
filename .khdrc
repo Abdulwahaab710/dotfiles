@@ -53,6 +53,9 @@ prefix-f               :    kwmc window -z fullscreen
 prefix-d               :    kwmc window -z parent
 prefix-w               :    kwmc window -t focused
 
+# Kill Finder
+prefix+shift-f         :    killall Finder
+
 # Mark Window
 cmd+alt+ctrl-m     :    kwmc window -mk focused
 cmd+alt+ctrl-h     :    kwmc window -mk west wrap
