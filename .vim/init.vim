@@ -96,7 +96,6 @@ map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a 
 
 " Mapping jj to <esc>
 imap jj <esc>
-map ;; $a;<esc>:w<CR>;
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
@@ -149,8 +148,6 @@ set omnifunc=rubycomplete#Complete
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global=1
 let g:rubycomplete_rails = 1
-
-"Load config based on filetype
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
@@ -219,29 +216,39 @@ let g:UltiSnipsExpandTrigger='<c-s>'
 let g:UltiSnipsJumpForwardTrigger='<c-b>'
 let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 
+let g:session_autosave = 'no'
+
 " =============================
 " Plugins
 " =============================
 call plug#begin('~/.config/nvim/plugged')
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets' "optional
+Plug 'roxma/nvim-completion-manager'
+Plug 'roxma/ncm-rct-complete'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 " Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer --gocode-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
+
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
+
 " Plug 'tomtom/tcomment_vim' "Comment easily with gcc
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rails'
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-fugitive'
 Plug 'rust-lang/rust.vim'
-Plug 'SirVer/ultisnips'
 " Currently, es6 version of snippets is available in es6 branch only
-Plug 'letientai299/vim-react-snippets', { 'branch': 'es6' }
-Plug 'honza/vim-snippets' "optional
 Plug 'sheerun/vim-polyglot'
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
@@ -255,6 +262,7 @@ Plug 'joshdick/onedark.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
 " Plug '~/dev/vim/vim-rails/'
+Plug 'chrisbra/csv.vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-endwise'
 Plug 'vim-scripts/SyntaxRange'
@@ -267,8 +275,6 @@ Plug 'lervag/vimtex'
 Plug 'mbbill/undotree'
 Plug 'xolox/vim-notes'
 Plug 'vimwiki/vimwiki'
-Plug 'roxma/nvim-completion-manager'
-Plug 'chrisbra/csv.vim'
 call plug#end()
 
 " =========================================
@@ -422,6 +428,13 @@ function! s:OpenInChrome()
     execute "! /usr/bin/open" . l:url
 endfunction
 command! OpenInChrome call s:OpenInChrome()
+
+function! s:Jsonify()
+    execute "%! python -m json.tool"
+endfunction
+command! Jsonify call s:Jsonify()
+
+command! Sorc source ~/.config/nvim/init.vim
 
 " The Silver Searcher
 if executable('ag')
