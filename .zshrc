@@ -15,9 +15,9 @@ export LANG="en_US.UTF-8"
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true # POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status rbenv)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status)
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="%F{014}\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
+POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
 
 
 # Customize to your needs...
@@ -64,8 +64,8 @@ setopt ZLE
 setopt NO_HUP
 
 # only fools wouldn't do this ;-)
-export EDITOR="vim"
-export GIT_EDITOR=vim
+export EDITOR="nvim"
+export GIT_EDITOR=nvim
 
 setopt IGNORE_EOF
 
@@ -108,7 +108,8 @@ bindkey -M vicmd "q" push-line
 bindkey -M viins ' ' magic-space
 
 # zsh-autosuggestions
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zplug
 export ZPLUG_HOME=/usr/local/opt/zplug
@@ -159,8 +160,18 @@ alias mk='make'
 alias v='nvim'
 alias kali='docker run -it --rm kalilinux/kali-linux-docker'
 alias ubuntu='docker run -it --rm dockerfile/ubuntu'
+alias mkube='minikube'
+alias sp='switch_project'
+alias rspec='bundle exec rspec'
+alias swap='swap_file_names'
 # Cheat => enabling syntax highligthing
 export CHEATCOLORS=true
+export EDITOR=nvim
+
+# kubectl autocomplete
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 if [ ! -f $HOME/$TERM.ti  ]; then
@@ -176,7 +187,6 @@ export PATH=$PATH:/Applications/nwjs.app/Contents/MacOS
 ###########################
 function print_welcome {
     clear
-    cat ~/.welcome_msg
     fortune | cowsay -f dragon-and-cow | cat
 }
 print_welcome
@@ -201,5 +211,27 @@ function push_upstram_origin {
     git push origin -u $BRANCH_NAME
 }
 
+function switch_project {
+    PROJECT_NAME="$(l ~/src/github.com/Shopify | fzf)"
+    cd "$HOME/src/github.com/Shopify/$PROJECT_NAME"
+}
+
+function swap_file_names {
+    first_file=$1
+    second_file=$2
+    tmp_name="tmp:$first_file+$second_file"
+    mv $first_file $tmp_name
+    mv $second_file $first_file
+    mv $tmp_name $second_file
+}
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+[ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
