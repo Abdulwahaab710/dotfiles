@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Set trackpad speed and key repeat
+defaults write -g com.apple.mouse.scaling 4
+defaults write nsglobaldomain keyrepeat -int 1
+defaults write nsglobaldomain initialkeyrepeat -int 10
+
+# Set battery percentage
+defaults write com.apple.menuextra.battery ShowPercent -string "YES"
+defaults write com.apple.menuextra.battery ShowTime -string "NO"
+
+# Reset changed apps
+for app in cfprefsd Dock finder systemuiserver; do
+  killall "${app}" &> /dev/null
+done
