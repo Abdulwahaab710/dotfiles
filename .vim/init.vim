@@ -30,13 +30,12 @@ set wildmode=longest:full,full
 set wildignore=*.o,*.class,*.pyc,*.git
 set path+=**
 set ttyfast
-set tabstop=4 shiftwidth=4 " number of visual spaces per TAB
-set softtabstop=4 " number of spaces in tab when editing
+set tabstop=2 shiftwidth=2 " number of visual spaces per TAB
+set softtabstop=2 " number of spaces in tab when editing
 set expandtab " tabs are spaces"
 set cursorline " highlight current line
 set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
 set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set laststatus=2
 set ttimeoutlen=10
@@ -77,6 +76,8 @@ endif
 let g:mapleader=';'  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
+noremap <leader>t :TestNearest<CR>
+noremap <leader>T :TestFile<CR>
 
 map <up> <nop>            " disable arrow keys
 map <down> <nop>          " disable arrow keys
@@ -129,7 +130,7 @@ nmap <F8> :TagbarToggle<CR>
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap K :Ag <C-R><C-W>
 
 " ===============
 " Makefile
@@ -144,10 +145,10 @@ let g:polyglot_disabled = ['latex']
 " ===============
 " Rails
 " ===============
-set omnifunc=rubycomplete#Complete
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global=1
-let g:rubycomplete_rails = 1
+" set omnifunc=rubycomplete#Complete
+" let g:rubycomplete_buffer_loading = 1
+" let g:rubycomplete_classes_in_global=1
+" let g:rubycomplete_rails = 1
 
 function! HandleURL()
   let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
@@ -163,8 +164,6 @@ map <leader>u :call HandleURL()<cr>
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
-    " autocmd BufWritePre *.php,*.py,*.js,*.txt,*.hs,*.java,*.md
-    "             \:call <SID>striptrailingwhitespaces()<cr>
     " autocmd FileType java setlocal noexpandtab
     " autocmd FileType java setlocal list
     " autocmd FileType java setlocal listchars=tab:+\ ,eol:-
@@ -218,14 +217,25 @@ let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 
 let g:session_autosave = 'no'
 
+let g:deoplete#enable_at_startup = 1
+
+let g:solargraph_install = 'sudo gem install solargraph && pip3 install solargraph-utils.py --user && yard gems && yard config --gem-install-yri'
+
 " =============================
 " Plugins
 " =============================
 call plug#begin('~/.config/nvim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-Plug 'roxma/nvim-completion-manager'
-Plug 'roxma/ncm-rct-complete'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'uplus/deoplete-solargraph', { 'for': 'ruby' }
+Plug 'zchee/deoplete-jedi'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
@@ -234,23 +244,25 @@ Plug 'autozimu/LanguageClient-neovim', {
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-" Plug 'Valloric/YouCompleteMe', {'do' : './install.py --clang-completer --gocode-completer', 'for' : ['c', 'cpp', 'haskell', 'javascript', 'java', 'html','twig','css','js','php', 'rb', 'ruby']}
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 
-" Plug 'tomtom/tcomment_vim' "Comment easily with gcc
+Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rails'
-Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
+
+" Plug 'vim-ruby/vim-ruby'
 Plug 'rust-lang/rust.vim'
-" Currently, es6 version of snippets is available in es6 branch only
 Plug 'sheerun/vim-polyglot'
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
@@ -264,7 +276,6 @@ Plug 'scrooloose/nerdtree'
 " Plug '~/dev/vim/vim-rails/'
 Plug 'chrisbra/csv.vim'
 Plug 'w0rp/ale'
-Plug 'tpope/vim-endwise'
 Plug 'vim-scripts/SyntaxRange'
 Plug 'mbbill/undotree'
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -275,23 +286,34 @@ Plug 'lervag/vimtex'
 Plug 'mbbill/undotree'
 Plug 'xolox/vim-notes'
 Plug 'vimwiki/vimwiki'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'janko-m/vim-test'
+Plug 'nanotech/jellybeans.vim'
 call plug#end()
 
 " =========================================
 " Colorscheme
 " =========================================
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
+if (has("termguicolors"))
+  set termguicolors
+endif
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
 " colorscheme hybrid
 " color base16-tomorrow-night
-color hybrid
-set termguicolors
+" color hybrid
+color space-vim-dark
 
 " ==============================
 " Plugins configs
 " ==============================
+
+let g:fzf_command_prefix = 'Fzf'
+
 if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
@@ -305,7 +327,7 @@ let g:airline_theme='hybrid'
 
 set nocursorline    " enable the horizontal line
 set nocursorcolumn  " enable the vertical line
-" highlight CursorLine   cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NON 
+" highlight CursorLine   cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NON
 " highlight CursorColumn cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
 
 " ============================
@@ -334,27 +356,9 @@ let g:netrw_winsize = 10
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit='vertical'
 
-"YCM
-let g:ycm_autoclose_preview_window_after_completion = 1
-"autocomplete for ruby\rails config
-
-let g:ycm_semantic_triggers =  {
-  \   'c' : ['->', '.'],
-  \   'objc' : ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-  \             're!\[.*\]\s'],
-  \   'ocaml' : ['.', '#'],
-  \   'cpp,objcpp' : ['->', '.', '::'],
-  \   'perl' : ['->'],
-  \   'php' : ['->', '::'],
-  \   'cs,java,javascript,typescript,d,python,perl6,scala,vb,elixir,go' : ['.'],
-  \   'ruby' : ['.', '::'],
-  \   'lua' : ['.', ':'],
-  \   'erlang' : [':'],
-  \ }
-
 function! s:DebugStatement()
     echom "1)Success"
-    echom "2)Failure" 
+    echom "2)Failure"
     echom "3)Warning"
     let choice = input(">>")
 
@@ -434,20 +438,21 @@ function! s:Jsonify()
 endfunction
 command! Jsonify call s:Jsonify()
 
+" Strip trailing whitespace
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
 command! Sorc source ~/.config/nvim/init.vim
-
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-
 
 highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
 highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
@@ -457,5 +462,3 @@ highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colo
 " highlight OverLength ctermbg=gray
 " match OverLength /\%>121v.\+/
 highlight ColorColumn ctermbg=red
-
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
