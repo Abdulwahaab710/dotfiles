@@ -1,5 +1,5 @@
-#
-# export TERM="xterm-256color"
+export TERM="xterm-256color"
+
 # Executes commands at the start of an interactive session.
 #
 # Authors:
@@ -14,10 +14,12 @@ fi
 export LANG="en_US.UTF-8"
 
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true # POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status)
+POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(rspec_stats chruby vi_mode status background_jobs)
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
+# POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
+POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
 
 
 # Customize to your needs...
@@ -163,7 +165,11 @@ alias ubuntu='docker run -it --rm dockerfile/ubuntu'
 alias mkube='minikube'
 alias sp='switch_project'
 alias rspec='bundle exec rspec'
-alias swap='swap_file_names'
+alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
+alias ghp='open https://github.com/pulls'
+alias tn='tmux new -s'
+# alias swap='swap_file_names'
+
 # Cheat => enabling syntax highligthing
 export CHEATCOLORS=true
 export EDITOR=nvim
@@ -180,7 +186,6 @@ if [ ! -f $HOME/$TERM.ti  ]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export PATH=$PATH:/Applications/nwjs.app/Contents/MacOS
 
 ###########################
 # Functions
@@ -235,3 +240,11 @@ if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH=$PATH:/Users/abdulwahaabahmed/swap
+export PATH="/usr/local/opt/python@2/bin:$PATH"
+#Neovim true color support
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+##Neovim cursor shape support
+export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+chruby 2.4.2
