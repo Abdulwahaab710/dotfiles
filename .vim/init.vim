@@ -1,44 +1,45 @@
-set modelines=0        " CVE-2007-2438
 filetype plugin indent on " load filetype-specific indent files
 syntax enable " enable syntax processing
-set nocompatible
+
 set ai " Auto indent
 set backspace=2
+set cursorline " highlight current line
 set encoding=utf8
+set expandtab " tabs are spaces"
+set foldenable          " enable folding
+set foldlevelstart=10   " open most folds by default
+set foldnestmax=10      " 10 nested fold max
+set hlsearch " highlight matches
+set incsearch " search as characters are entered
+set laststatus=2
 set lazyredraw " redraw only when we need to.
 set list
+set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
+set modelines=0        " CVE-2007-2438
 set mouse=a
-if !has('nvim')
-  set ttymouse=xterm2
-endif
+set nocompatible
 set nowrap
 set number " show line numbers"
+set path+=**
 set re=1
 set relativenumber
 set ruler
 set showcmd " show command in bottom bar
 set showmatch " highlight matching [{()}]
-set hlsearch " highlight matches
-set incsearch " search as characters are entered
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
+set softtabstop=2 " number of spaces in tab when editing
 set splitbelow
 set splitright
-set wildmenu " visual autocomplete for command menu
-set wildmode=longest:full,full
-set wildignore=*.o,*.class,*.pyc,*.git
-set path+=**
-set ttyfast
-set tabstop=2 shiftwidth=2 " number of visual spaces per TAB
-set softtabstop=2 " number of spaces in tab when editing
-set expandtab " tabs are spaces"
-set cursorline " highlight current line
-set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
 set statusline+=%#warningmsg#
 set statusline+=%*
-set laststatus=2
+set tabstop=2 shiftwidth=2 " number of visual spaces per TAB
 set ttimeoutlen=10
+set ttyfast
+if !has('nvim')
+  set ttymouse=xterm2
+endif
+set wildignore=*.o,*.class,*.pyc,*.git
+set wildmenu " visual autocomplete for command menu
+set wildmode=longest:full,full
 
 " =========================================
 " Undo persistent
@@ -79,14 +80,15 @@ noremap <leader>ml :!mac lock<CR>
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 
-map <up> <nop>            " disable arrow keys
-map <down> <nop>          " disable arrow keys
-map <left> <nop>          " disable arrow keys
-map <right> <nop>         " disable arrow keys
-imap <up> <esc>:!say 'You are lazy'<CR>           " disable arrow keys
-imap <down> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
-imap <left> <esc>:!say 'You are lazy'<CR>         " disable arrow keys
-imap <right> <esc>:!say 'You are lazy'<CR>        " disable arrow keys
+" disabling arrow keys
+map <up>     <nop>
+map <down>   <nop>
+map <left>   <nop>
+map <right>  <nop>
+imap <up>    <nop>
+imap <down>  <nop>
+imap <left>  <nop>
+imap <right> <nop>
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
@@ -141,6 +143,11 @@ autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
 " latex
 " ==========
 let g:polyglot_disabled = ['latex']
+
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" tern
+autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
 " ===============
 " Rails
@@ -227,6 +234,7 @@ let g:solargraph_install = 'sudo gem install solargraph && pip3 install solargra
 call plug#begin('~/.config/nvim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -234,18 +242,18 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'uplus/deoplete-solargraph', { 'for': 'ruby' }
+Plug 'uplus/deoplete-solargraph'
+Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
     \ 'do': 'bash install.sh',
     \ }
+Plug 'clojure-vim/async-clj-omni'
 
-Plug 'w0ng/vim-hybrid'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
@@ -270,26 +278,31 @@ Plug 'mattn/emmet-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'fatih/vim-go'
 Plug 'wojtekmach/vim-rename'
-Plug 'joshdick/onedark.vim'
-Plug 'chriskempson/base16-vim'
 Plug 'scrooloose/nerdtree'
 " Plug '~/dev/vim/vim-rails/'
 Plug 'chrisbra/csv.vim'
 Plug 'w0rp/ale'
-Plug 'vim-scripts/SyntaxRange'
-Plug 'mbbill/undotree'
 Plug 'JamshedVesuna/vim-markdown-preview'
-Plug 'liuchengxu/space-vim-dark'
-Plug 'bronson/vim-crosshairs'
 Plug 'kopischke/vim-stay'
-Plug 'lervag/vimtex'
 Plug 'mbbill/undotree'
-Plug 'xolox/vim-notes'
-Plug 'vimwiki/vimwiki'
-Plug 'liuchengxu/space-vim-dark'
 Plug 'janko-m/vim-test'
+
+Plug 'ekalinin/Dockerfile.vim'
+
+" Themes
+Plug 'joshdick/onedark.vim'
+Plug 'chriskempson/base16-vim'
 Plug 'nanotech/jellybeans.vim'
+Plug 'liuchengxu/space-vim-dark'
+Plug 'w0ng/vim-hybrid'
+Plug 'yaunj/vim-yara'
 call plug#end()
+
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
 
 " =========================================
 " Colorscheme
@@ -299,14 +312,17 @@ if (has("termguicolors"))
 endif
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+au VimLeave * set guicursor=a:block-blinkon0
 " colorscheme hybrid
 " color base16-tomorrow-night
 " color hybrid
-color space-vim-dark
+" color space-vim-dark
+color jellybeans
 
 " ==============================
 " Plugins configs
