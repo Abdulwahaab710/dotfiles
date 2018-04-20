@@ -318,11 +318,7 @@ set t_Co=256
 let g:impact_transbg=1
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 au VimLeave * set guicursor=a:block-blinkon0
-" colorscheme hybrid
-" color base16-tomorrow-night
-" color hybrid
-" color space-vim-dark
-color jellybeans
+silent! color base16-atelier-cave
 
 " ==============================
 " Plugins configs
