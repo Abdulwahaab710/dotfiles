@@ -1,3 +1,13 @@
+
+"  █████╗ ██████╗ ██████╗ ██╗   ██╗██╗     ██╗    ██╗ █████╗ ██╗  ██╗ █████╗  █████╗ ██████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
+" ██╔══██╗██╔══██╗██╔══██╗██║   ██║██║     ██║    ██║██╔══██╗██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
+" ███████║██████╔╝██║  ██║██║   ██║██║     ██║ █╗ ██║███████║███████║███████║███████║██████╔╝███████╗    ██║   ██║██║██╔████╔██║██████╔╝██║
+" ██╔══██║██╔══██╗██║  ██║██║   ██║██║     ██║███╗██║██╔══██║██╔══██║██╔══██║██╔══██║██╔══██╗╚════██║    ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
+" ██║  ██║██████╔╝██████╔╝╚██████╔╝███████╗╚███╔███╔╝██║  ██║██║  ██║██║  ██║██║  ██║██████╔╝███████║     ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
+" ╚═╝  ╚═╝╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝      ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
+
+" System Settings  ----------------------------------------------------------{{{
+
 filetype plugin indent on " load filetype-specific indent files
 syntax enable " enable syntax processing
 
@@ -40,6 +50,7 @@ endif
 set wildignore=*.o,*.class,*.pyc,*.git
 set wildmenu " visual autocomplete for command menu
 set wildmode=longest:full,full
+set viewoptions=cursor,slash,unix
 
 " =========================================
 " Undo persistent
@@ -55,6 +66,7 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+
 " =========================================
 " TMUX
 " =========================================
@@ -71,6 +83,9 @@ if $TMUX == ''
     set clipboard+=unnamed
 endif
 
+" }}}}
+
+" Keyboard config  ----------------------------------------------------------{{{{
 " =========================================
 " Keyboard config
 " =========================================
@@ -79,6 +94,8 @@ noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
+map <leader>vt :Vterm<CR>
+map <leader>st :Sterm<CR>
 
 " disabling arrow keys
 map <up>     <nop>
@@ -99,14 +116,13 @@ map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a 
 
 " Mapping jj to <esc>
 imap jj <esc>
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+tnoremap jj <C-\><C-n>
 
 " ================
 " Better grepping
 " ================
-nnoremap \ :Ag<SPACE>
+nnoremap \ :FzfAg<CR>
+nnoremap <C-p> :FZF<CR>
 
 " ===========
 " resizing
@@ -132,42 +148,13 @@ nmap <F8> :TagbarToggle<CR>
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
-nnoremap K :Ag <C-R><C-W>
-
-" ===============
-" Makefile
-" ===============
-autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-
-" ==========
-" latex
-" ==========
-let g:polyglot_disabled = ['latex']
+nnoremap K :FzfAg <C-R><C-W><CR>
 
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" tern
-autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+" }}}}
 
-" ===============
-" Rails
-" ===============
-" set omnifunc=rubycomplete#Complete
-" let g:rubycomplete_buffer_loading = 1
-" let g:rubycomplete_classes_in_global=1
-" let g:rubycomplete_rails = 1
-
-function! HandleURL()
-  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
-  echo s:uri
-  if s:uri != ""
-    silent exec "!open '".s:uri."'"
-  else
-    echo "No URI found in line."
-  endif
-endfunction
-map <leader>u :call HandleURL()<cr>
-
+" autocmd ---------------------------------------------------------------{{{
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
@@ -185,6 +172,7 @@ augroup configgroup
     autocmd FileType ruby setlocal commentstring=#\ %s
     " autocmd FileType ruby match OverLength /\%>121v.\+/
     autocmd FileType ruby setlocal colorcolumn=120
+    autocmd FileType ruby setlocal foldmethod=syntax
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
     autocmd FileType eruby setlocal shiftwidth=2
@@ -196,7 +184,6 @@ augroup configgroup
     autocmd FileType go setlocal shiftwidth=4
     autocmd FileType go setlocal softtabstop=4
     autocmd FileType python setlocal colorcolumn=120
-
     autocmd FileType python setlocal commentstring=#\ %s
     autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
@@ -215,25 +202,14 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
 augroup END
 
-" let g:plug_url_format = 'https://git:@github.com:%s.git'
+autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
+" }}}
 
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger='<c-s>'
-let g:UltiSnipsJumpForwardTrigger='<c-b>'
-let g:UltiSnipsJumpBackwardTrigger='<c-s>'
+" Plugins ---------------------------------------------------------------{{{
 
-let g:session_autosave = 'no'
-
-let g:deoplete#enable_at_startup = 1
-
-let g:solargraph_install = 'sudo gem install solargraph && pip3 install solargraph-utils.py --user && yard gems && yard config --gem-install-yri'
-
-" =============================
-" Plugins
-" =============================
 call plug#begin('~/.config/nvim/plugged')
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets' "optional
+
+" Code Completion and snippets --------------------{{{
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -242,71 +218,115 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+
 Plug 'uplus/deoplete-solargraph'
 Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-Plug 'clojure-vim/async-clj-omni'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets' "optional
+
+" }}}
+
+
+" git plugins -------------------------------------{{{
+
+Plug 'airblade/vim-gitgutter'
+Plug 'jreybert/vimagit'
+" Plug 'tpope/vim-fugitive'
+
+" }}}
+
+" Theme related plugins ---------------------------{{{
 
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'airblade/vim-gitgutter'
+Plug 'chriskempson/base16-vim'
+Plug 'Yggdroot/indentLine'
 
-Plug 'terryma/vim-multiple-cursors'
-Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
+" }}}
+
+" tpope plugins -----------------------------------{{{
 
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dadbod'
 
-" Plug 'vim-ruby/vim-ruby'
-Plug 'rust-lang/rust.vim'
-Plug 'sheerun/vim-polyglot'
+" }}}
+
+" misc --------------------------------------------{{{
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'mattn/emmet-vim'
-Plug 'Yggdroot/indentLine'
-Plug 'fatih/vim-go'
 Plug 'wojtekmach/vim-rename'
 Plug 'scrooloose/nerdtree'
-" Plug '~/dev/vim/vim-rails/'
-Plug 'chrisbra/csv.vim'
 Plug 'w0rp/ale'
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
+" }}}
 
+" Syntax plugins ----------------------------------{{{
+
+Plug 'vim-ruby/vim-ruby'
+Plug 'rust-lang/rust.vim'
 Plug 'ekalinin/Dockerfile.vim'
-
-" Themes
-Plug 'joshdick/onedark.vim'
-Plug 'chriskempson/base16-vim'
-Plug 'nanotech/jellybeans.vim'
-Plug 'liuchengxu/space-vim-dark'
-Plug 'w0ng/vim-hybrid'
+Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
+Plug 'sheerun/vim-polyglot'
+Plug 'fatih/vim-go'
+Plug 'suan/vim-instant-markdown'
+
+" }}}
+
 call plug#end()
+" }}}
 
-let g:deoplete#keyword_patterns = {}
-let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
+" Fold, gets it's own section  ----------------------------------------------{{{
 
-" =========================================
-" Colorscheme
-" =========================================
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction " }}}
+
+set foldtext=MyFoldText()
+
+autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
+autocmd FileType vim setlocal fdc=1
+set foldlevel=99
+" Space to toggle folds.
+autocmd FileType vim setlocal foldmethod=marker
+autocmd FileType vim setlocal foldlevel=0
+
+" au FileType html nnoremap <buffer> <leader>F zfat
+let ruby_fold = 1
+set foldlevelstart=1
+
+" }}}
+
+" Colorscheme -----------------------------------------------------------{{{
+
 if (has("termguicolors"))
   set termguicolors
 endif
@@ -318,11 +338,24 @@ set t_Co=256
 let g:impact_transbg=1
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 au VimLeave * set guicursor=a:block-blinkon0
-silent! color base16-atelier-cave
 
-" ==============================
-" Plugins configs
-" ==============================
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
+highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
+highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
+highlight CursorLineNr ctermfg=blue                            " Make current line number blue
+highlight Comment cterm=italic                                 " enable italicised comments in vim
+" highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
+highlight OverLength ctermbg=gray
+match OverLength /\%>121v.\+/
+highlight ColorColumn ctermbg=red
+
+" }}}
+
+" Plugins configs -------------------------------------------------------{{{
 
 let g:fzf_command_prefix = 'Fzf'
 
@@ -334,25 +367,48 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
-let g:airline_theme='hybrid'
 " let g:airline_theme='base16_tomorrow'
+let g:airline_theme='luna'
 
-set nocursorline    " enable the horizontal line
-set nocursorcolumn  " enable the vertical line
-" highlight CursorLine   cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NON
-" highlight CursorColumn cterm=NONE ctermbg=black ctermfg=NONE guibg=black guifg=NONE
+let test#strategy = {
+  \ 'nearest': 'neovim',
+  \ 'file':    'dispatch',
+  \ 'suite':   'basic',
+  \}
 
-" ============================
-" Vim-stay
-" ============================
-set viewoptions=cursor,folds,slash,unix
+let g:ale_fixers = {'ruby': 'rubocop'}
+let g:ale_fix_on_save = 1
+let g:ale_ruby_rubocop_executable = 'bin/rubocop'
+
+
+" let g:plug_url_format = 'https://git:@github.com:%s.git'
+
+let g:UltiSnipsExpandTrigger='<c-s>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-s>'
+
+
+let g:session_autosave = 'no'
+
+let g:deoplete#enable_at_startup = 1
+
+let g:deoplete#keyword_patterns = {}
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" NERDTree ----------------------------------------{{{
+
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+"}}}
 
 " ============================
 " NERDtree
 " ============================
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree like setup
 let g:netrw_banner = 1
@@ -365,8 +421,18 @@ let g:netrw_winsize = 10
 "   autocmd VimEnter * :Vexplore
 " augroup END
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit='vertical'
+" Custom Functions ----------------------------------------------------------{{{
+
+function! HandleURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!open '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+map <leader>u :call HandleURL()<cr>
 
 function! s:DebugStatement()
     echom "1)Success"
@@ -464,13 +530,15 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
-command! Sorc source ~/.config/nvim/init.vim
+ function! s:ChangeClassName(from_name, to_name, args)
+   " rg --files-with-matches 'from' . | xargs sed -i '' 's/from/to/g'
+   let rg = "!rg --files-with-matches . " . from_name
+   let xargs = "xargs sed -i '' 's/" . from_name . "/" . to_name . "/g'"
+   execute rg . " | " . xargs
+ endfunction
 
-highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
-highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
-highlight CursorLineNr ctermfg=blue                            " Make current line number blue
-highlight Comment cterm=italic                                 " enable italicised comments in vim
-highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
-" highlight OverLength ctermbg=gray
-" match OverLength /\%>121v.\+/
-highlight ColorColumn ctermbg=red
+command! Sorc source ~/.config/nvim/init.vim
+command! Vterm vsp | term
+command! Sterm sp | term
+
+" }}}}
