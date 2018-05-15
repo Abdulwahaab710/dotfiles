@@ -8,47 +8,47 @@
 
 " System Settings  ----------------------------------------------------------{{{
 
-filetype plugin indent on " load filetype-specific indent files
-syntax enable " enable syntax processing
+filetype plugin indent on                   " load filetype-specific indent files
+syntax enable                               " enable syntax processing
 
-set ai " Auto indent
+set ai                                      " Auto indent
 set backspace=2
-set cursorline " highlight current line
+set cursorline                              " highlight current line
 set encoding=utf8
-set expandtab " tabs are spaces"
-set foldenable          " enable folding
-set foldlevelstart=10   " open most folds by default
-set foldnestmax=10      " 10 nested fold max
-set hlsearch " highlight matches
-set incsearch " search as characters are entered
+set expandtab                               " tabs are spaces"
+set foldenable                              " enable folding
+set foldlevelstart=10                       " open most folds by default
+set foldnestmax=10                          " 10 nested fold max
+set hlsearch                                " highlight matches
+set incsearch                               " search as characters are entered
 set laststatus=2
-set lazyredraw " redraw only when we need to.
+set lazyredraw                              " redraw only when we need to.
 set list
-set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵
-set modelines=0        " CVE-2007-2438
+set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵   " show $ in the end of line
+set modelines=0                             " CVE-2007-2438
 set mouse=a
 set nocompatible
 set nowrap
-set number " show line numbers"
-set path+=**
+set number                                  " show line numbers"
+set path+=**                                " let find search in sub folders
 set re=1
 set relativenumber
 set ruler
-set showcmd " show command in bottom bar
-set showmatch " highlight matching [{()}]
-set softtabstop=2 " number of spaces in tab when editing
-set splitbelow
-set splitright
+set showcmd                                 " show command in bottom bar
+set showmatch                               " highlight matching [{()}]
+set softtabstop=2                           " number of spaces in tab when editing
+set splitbelow                              " open horizontal splits to the botton
+set splitright                              " open vertical splits to the right
 set statusline+=%#warningmsg#
 set statusline+=%*
-set tabstop=2 shiftwidth=2 " number of visual spaces per TAB
+set tabstop=2 shiftwidth=2                  " number of visual spaces per TAB
 set ttimeoutlen=10
 set ttyfast
 if !has('nvim')
   set ttymouse=xterm2
 endif
 set wildignore=*.o,*.class,*.pyc,*.git
-set wildmenu " visual autocomplete for command menu
+set wildmenu                                " visual autocomplete for command menu
 set wildmode=longest:full,full
 set viewoptions=cursor,slash,unix
 
@@ -85,10 +85,17 @@ endif
 
 " }}}}
 
-" Keyboard config  ----------------------------------------------------------{{{{
-" =========================================
-" Keyboard config
-" =========================================
+" Command -------------------------------------------------------------------{{{
+command! Q q " Bind :Q to :q
+command! Qall qall
+command! QA qall
+command! E e
+command! W w
+command! Wq wq
+"  }}}
+
+" Keyboard config  ----------------------------------------------------------{{{
+
 let g:mapleader=';'  "Leader Key
 noremap <leader>w :w<CR>
 noremap <leader>ml :!mac lock<CR>
@@ -96,6 +103,28 @@ noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 map <leader>vt :Vterm<CR>
 map <leader>st :Sterm<CR>
+nnoremap <leader><leader> :Magit<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>x :x<CR>
+nnoremap <leader>ot :tabe
+nnoremap <leader>os :sp
+nnoremap <leader>ov :vsp
+nnoremap <leader>n :nohl<CR>
+map <unique> <leader>em :Emodel<CR>
+map <unique> <leader>sm :Smodel<CR>
+map <unique> <leader>tm :Tmodel<CR>
+map <unique> <leader>vm :Vmodel<CR>
+map <unique> <leader>ec :Econtroller<CR>
+map <unique> <leader>sc :Scontroller<CR>
+map <unique> <leader>tc :Tcontroller<CR>
+map <unique> <leader>vc :Vcontroller<CR>
+map <unique> <leader>ev :Eview<CR>
+map <unique> <leader>sv :Sview<CR>
+map <unique> <leader>tv :Tview<CR>
+map <unique> <leader>vv :Vview<CR>
+
+nmap k gk
+nmap j gj
 
 " disabling arrow keys
 map <up>     <nop>
@@ -152,9 +181,16 @@ nnoremap K :FzfAg <C-R><C-W><CR>
 
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" }}}}
 
-" autocmd ---------------------------------------------------------------{{{
+nnoremap <Space> za
+
+autocmd FileType magit nmap gp :!git push<CR>
+
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+" }}}
+
+" autocmd -------------------------------------------------------------------{{{
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
@@ -185,7 +221,6 @@ augroup configgroup
     autocmd FileType go setlocal softtabstop=4
     autocmd FileType python setlocal colorcolumn=120
     autocmd FileType python setlocal commentstring=#\ %s
-    autocmd BufEnter *.cls setlocal filetype=java
     autocmd BufEnter *.zsh-theme setlocal filetype=zsh
     autocmd BufEnter Makefile setlocal noexpandtab
     autocmd BufEnter *.sh setlocal tabstop=2
@@ -205,7 +240,7 @@ augroup END
 autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
 " }}}
 
-" Plugins ---------------------------------------------------------------{{{
+" Plugins -------------------------------------------------------------------{{{
 
 call plug#begin('~/.config/nvim/plugged')
 
@@ -227,21 +262,11 @@ Plug 'honza/vim-snippets' "optional
 
 " }}}
 
-
 " git plugins -------------------------------------{{{
 
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
 " Plug 'tpope/vim-fugitive'
-
-" }}}
-
-" Theme related plugins ---------------------------{{{
-
-Plug 'vim-airline/vim-airline-themes'
-Plug 'vim-airline/vim-airline'
-Plug 'chriskempson/base16-vim'
-Plug 'Yggdroot/indentLine'
 
 " }}}
 
@@ -257,6 +282,7 @@ Plug 'tpope/vim-dadbod'
 " }}}
 
 " misc --------------------------------------------{{{
+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
@@ -272,6 +298,13 @@ Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
+Plug 'brooth/far.vim'
+Plug 'francoiscabrol/ranger.vim'
+Plug 'rbgrouleff/bclose.vim'
+Plug 'xavierchow/vim-sequence-diagram'
+
+" Plug 'gyim/vim-boxdraw'
+
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -287,7 +320,29 @@ Plug 'suan/vim-instant-markdown'
 
 " }}}
 
+" Theme related plugins ---------------------------{{{
+
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'chriskempson/base16-vim'
+Plug 'Yggdroot/indentLine'
+Plug 'ryanoasis/vim-devicons'
+
+" }}}
+
 call plug#end()
+" }}}
+
+" omnifuncs -----------------------------------------------------------------{{{
+
+augroup omnifuncs
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+augroup end
+
 " }}}
 
 " Fold, gets it's own section  ----------------------------------------------{{{
@@ -306,18 +361,24 @@ function! MyFoldText() " {{{
     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction " }}}
+endfunction
+
+" }}}
 
 set foldtext=MyFoldText()
 
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
-autocmd FileType vim setlocal fdc=1
 set foldlevel=99
 " Space to toggle folds.
+autocmd FileType vim setlocal fdc=1
 autocmd FileType vim setlocal foldmethod=marker
 autocmd FileType vim setlocal foldlevel=0
+
+autocmd FileType zsh setlocal fdc=1
+autocmd FileType zsh setlocal foldmethod=marker
+autocmd FileType zsh setlocal foldlevel=0
 
 " au FileType html nnoremap <buffer> <leader>F zfat
 let ruby_fold = 1
@@ -325,7 +386,7 @@ set foldlevelstart=1
 
 " }}}
 
-" Colorscheme -----------------------------------------------------------{{{
+" Colorscheme ---------------------------------------------------------------{{{
 
 if (has("termguicolors"))
   set termguicolors
@@ -337,6 +398,7 @@ set background=dark
 set t_Co=256
 let g:impact_transbg=1
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+set guifont=Hack\ Nerd\ Font:h11
 au VimLeave * set guicursor=a:block-blinkon0
 
 if filereadable(expand("~/.vimrc_background"))
@@ -345,17 +407,19 @@ if filereadable(expand("~/.vimrc_background"))
 endif
 
 highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
-highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
-highlight CursorLineNr ctermfg=blue                            " Make current line number blue
+" highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
+highlight CursorLineNr guifg=#0099ff                           " Make current line number blue
 highlight Comment cterm=italic                                 " enable italicised comments in vim
 " highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
-highlight OverLength ctermbg=gray
-match OverLength /\%>121v.\+/
-highlight ColorColumn ctermbg=red
+highlight CursorLine term=bold cterm=bold ctermbg=18 guibg=#26232a
+autocmd FileType ruby highlight OverLength guibg=#a06e3b ctermbg=3
+autocmd FileType ruby match OverLength /\%>121v.\+/
+highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
+highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 
 " }}}
 
-" Plugins configs -------------------------------------------------------{{{
+" Plugins configs -----------------------------------------------------------{{{
 
 let g:fzf_command_prefix = 'Fzf'
 
@@ -391,7 +455,7 @@ let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 let g:session_autosave = 'no'
 
 let g:deoplete#enable_at_startup = 1
-
+let g:deoplete#disable_auto_complete = 1
 let g:deoplete#keyword_patterns = {}
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
