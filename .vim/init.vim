@@ -92,6 +92,8 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
+command! Ctags
+\ execute "!ctags --extra=+f --exclude=.git --exclude=log -R *"
 "  }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
@@ -110,18 +112,18 @@ nnoremap <leader>ot :tabe
 nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
 nnoremap <leader>n :nohl<CR>
-map <unique> <leader>em :Emodel<CR>
-map <unique> <leader>sm :Smodel<CR>
-map <unique> <leader>tm :Tmodel<CR>
-map <unique> <leader>vm :Vmodel<CR>
-map <unique> <leader>ec :Econtroller<CR>
-map <unique> <leader>sc :Scontroller<CR>
-map <unique> <leader>tc :Tcontroller<CR>
-map <unique> <leader>vc :Vcontroller<CR>
-map <unique> <leader>ev :Eview<CR>
-map <unique> <leader>sv :Sview<CR>
-map <unique> <leader>tv :Tview<CR>
-map <unique> <leader>vv :Vview<CR>
+map <leader>em :Emodel<CR>
+map <leader>sm :Smodel<CR>
+map <leader>tm :Tmodel<CR>
+map <leader>vm :Vmodel<CR>
+map <leader>ec :Econtroller<CR>
+map <leader>sc :Scontroller<CR>
+map <leader>tc :Tcontroller<CR>
+map <leader>vc :Vcontroller<CR>
+map <leader>ev :Eview<CR>
+map <leader>sv :Sview<CR>
+map <leader>tv :Tview<CR>
+map <leader>vv :Vview<CR>
 
 nmap k gk
 nmap j gj
@@ -188,6 +190,14 @@ autocmd FileType magit nmap gp :!git push<CR>
 
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
+map <C-/> <Plug>Sneak_s
+map <C-?> <Plug>Sneak_S
+
+nmap s cl
+nmap S cc
+
+" imap <c-j> <plug>(MUcompleteFwd)
+
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
@@ -209,6 +219,12 @@ augroup configgroup
     " autocmd FileType ruby match OverLength /\%>121v.\+/
     autocmd FileType ruby setlocal colorcolumn=120
     autocmd FileType ruby setlocal foldmethod=syntax
+    autocmd FileType ruby,eruby
+          \ iabbrev <buffer> rw; attr_accessor|
+          \ iabbrev <buffer> rr; attr_reader|
+          \ iabbrev <buffer> ww; attr_writer
+    autocmd FileType eruby
+          \ iabbrev <buffer> link_to; <%= link_to 'text', 'path' %>
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
     autocmd FileType eruby setlocal shiftwidth=2
@@ -237,7 +253,7 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
 augroup END
 
-autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
+" autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
 " }}}
 
 " Plugins -------------------------------------------------------------------{{{
@@ -254,11 +270,13 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-Plug 'uplus/deoplete-solargraph'
+" Plug 'uplus/deoplete-solargraph'
 Plug 'fishbullet/deoplete-ruby'
 Plug 'zchee/deoplete-jedi'
+Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
+" Plug 'lifepillar/vim-mucomplete'
 
 " }}}
 
@@ -288,7 +306,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
-Plug 'mattn/emmet-vim'
+" Plug 'mattn/emmet-vim'
 Plug 'wojtekmach/vim-rename'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
@@ -300,10 +318,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'francoiscabrol/ranger.vim'
-Plug 'rbgrouleff/bclose.vim'
-Plug 'xavierchow/vim-sequence-diagram'
-
-" Plug 'gyim/vim-boxdraw'
+Plug 'justinmk/vim-sneak'
 
 " }}}
 
@@ -315,7 +330,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'suan/vim-instant-markdown'
 
 " }}}
@@ -455,7 +470,7 @@ let g:UltiSnipsJumpBackwardTrigger='<c-s>'
 let g:session_autosave = 'no'
 
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#disable_auto_complete = 1
+" let g:deoplete#disable_auto_complete = 1
 let g:deoplete#keyword_patterns = {}
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
@@ -469,6 +484,83 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "}}}
+
+" Tagbar ------------------------------------------{{{
+let g:tagbar_type_go = {
+  \ 'ctagstype' : 'go',
+  \ 'kinds'     : [
+    \ 'p:package',
+    \ 'i:imports:1',
+    \ 'c:constants',
+    \ 'v:variables',
+    \ 't:types',
+    \ 'n:interfaces',
+    \ 'w:fields',
+    \ 'e:embedded',
+    \ 'm:methods',
+    \ 'r:constructor',
+    \ 'f:functions'
+  \ ],
+  \ 'sro' : '.',
+  \ 'kind2scope' : {
+    \ 't' : 'ctype',
+    \ 'n' : 'ntype'
+  \ },
+  \ 'scope2kind' : {
+    \ 'ctype' : 't',
+    \ 'ntype' : 'n'
+  \ },
+  \ 'ctagsbin'  : 'gotags',
+  \ 'ctagsargs' : '-sort -silent'
+\ }
+
+let g:tagbar_type_css = {
+\  'ctagstype' : 'css',
+\  'kinds' : [
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'm:medias'
+\  ]
+\}
+
+let g:tagbar_type_less = {
+\  'ctagstype' : 'css',
+\  'kinds' : [
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'm:medias'
+\  ]
+\}
+
+let g:tagbar_type_scss = {
+\  'ctagstype' : 'css',
+\  'kinds' : [
+\    'v:variables',
+\    'c:classes',
+\    'i:identities',
+\    't:tags',
+\    'm:medias'
+\  ]
+\}
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+    \ }
+" }}}
+
+" Magit -------------------------------------------{{{
+let g:magit_discard_untracked_do_delete = 1
+" }}}
 
 " ============================
 " NERDtree
