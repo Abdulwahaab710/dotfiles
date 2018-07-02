@@ -1,11 +1,5 @@
 export TERM="xterm-256color"
 
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -18,8 +12,7 @@ POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(rspec_stats chruby vi_mode status background_jobs)
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-# POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
-POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
 
 
 # Customize to your needs...
@@ -67,7 +60,7 @@ setopt NO_HUP
 
 # only fools wouldn't do this ;-)
 export EDITOR="nvim"
-export GIT_EDITOR=nvim
+export GIT_EDITOR="nvim"
 
 setopt IGNORE_EOF
 
@@ -118,14 +111,37 @@ export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 zplug "supercrabtree/k"
 
+# aliases ---------------------------------------------{{{{
+
 alias fix='rm ~/.zcondump*;exec zsh;'
+# # git -------------------{{{{
+# alias add='git add'
+# alias checkout='git checkout'
+# alias clone='git clone'
+# alias commit='git commit'
+# alias prebase='git pull rebase'
+# alias pull='git pull'
+# alias push='git push'
+# alias stash='git stash'
+# alias status='git status'
+# # }}}}
 
-# export TERM
-# export PATH
+alias k=kubectl
+alias d=docker
+alias rtest='bundle exec rspec'
+alias gpu=push_upstram_origin
+alias ccat=/bin/cat
+alias cat=/usr/local/bin/ccat
+alias mk=make
+alias v=nvim
+alias kali='docker run -it --rm kalilinux/kali-linux-docker'
+alias ubuntu='docker run -it --rm dockerfile/ubuntu'
+alias mkube='minikube'
+alias rspec='bundle exec rspec'
+alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
+alias ghp='open https://github.com/pulls'
+alias tn='tmux new -s'
 
-##########################
-# Aliases
-##########################
 alias ll='exa -bghHliSFa'
 alias py='python'
 alias tmux='tmux -2'
@@ -136,39 +152,12 @@ if [ -n $TMUX  ]; then
     alias vim="TERM=screen-256color vim"
 fi
 alias disableChrome='defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool FALSE'
+alias tf='terraform'
+alias bsl='brew services list'
+alias so='source'
+alias o=open
 
-
-# ============
-# GIT ALIASES
-# ============
-alias add='git add'
-alias checkout='git checkout'
-alias clone='git clone'
-alias commit='git commit'
-alias prebase='git pull rebase'
-alias pull='git pull'
-alias push='git push'
-alias stash='git stash'
-alias status='git status'
-
-alias k='kubectl'
-alias rtest='bundle exec rspec'
-alias s='fast_git_branch_select'
-alias ts='fast_tmux_session_select'
-alias gpu='push_upstram_origin'
-alias ccat='/bin/cat'
-alias cat='/usr/local/bin/ccat'
-alias mk='make'
-alias v='nvim'
-alias kali='docker run -it --rm kalilinux/kali-linux-docker'
-alias ubuntu='docker run -it --rm dockerfile/ubuntu'
-alias mkube='minikube'
-alias sp='switch_project'
-alias rspec='bundle exec rspec'
-alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
-alias ghp='open https://github.com/pulls'
-alias tn='tmux new -s'
-# alias swap='swap_file_names'
+# }}}}
 
 # Cheat => enabling syntax highligthing
 export CHEATCOLORS=true
@@ -187,24 +176,38 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-###########################
-# Functions
-###########################
-function print_welcome {
-    clear
-    fortune | cowsay -f dragon-and-cow | cat
+# functions -------------------------------------------{{{{
+function update {
+  sudo softwareupdate -i -a
+  brew update
+  brew upgrade --all
+  brew cask upgrade --all
+  brew cleanup
+  sudo gem update --system
+  sudo gem update
+  $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
-print_welcome
-function fast_git_branch_select {
+
+
+function start {
+  clear
+  neofetch
+}
+start
+
+function s {
     branch="$(git branch | fzf-tmux -d 15)"
     BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
     git checkout $BRANCH_NAME
 }
 
-function fast_tmux_session_select {
+function ts {
     session="$(tmux ls | fzf-tmux -d 15)"
-    SESSION_NAME="$(echo -e "${session}" | sed -e 's/^[[:space:]]*//' | sed -e 's/: .*//')"
-    tmux attach -t $SESSION_NAME
+    if [ ! -z $session ]
+    then
+      SESSION_NAME="$(echo -e "${session}" | sed -e 's/^[[:space:]]*//' | sed -e 's/: .*//')"
+      tmux attach -t $SESSION_NAME
+    fi
 }
 
 function git-nvim {
@@ -213,12 +216,18 @@ function git-nvim {
 
 function push_upstram_origin {
     BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
-    git push origin -u $BRANCH_NAME
+    if [ ! -z $BRANCH_NAME ]
+    then
+      git push origin -u $BRANCH_NAME
+    fi
 }
 
-function switch_project {
-    PROJECT_NAME="$(l ~/src/github.com/Shopify | fzf)"
-    cd "$HOME/src/github.com/Shopify/$PROJECT_NAME"
+function sp {
+    PROJECT_NAME="$(ls -1A ~/src/github.com/Shopify | fzf-tmux -d 15)"
+    if [ ! -z $PROJECT_NAME ]
+    then
+      cd "$HOME/src/github.com/Shopify/$PROJECT_NAME"
+    fi
 }
 
 function swap_file_names {
@@ -229,6 +238,24 @@ function swap_file_names {
     mv $second_file $first_file
     mv $tmp_name $second_file
 }
+
+unalias g 2>/dev/null
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
+}
+
+function rm_orig {
+  find . -name *.orig | xargs rm
+}
+
+compdef g=git
+
+
+# }}}}
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
@@ -244,7 +271,18 @@ export PATH=$PATH:/Users/abdulwahaabahmed/swap
 export PATH="/usr/local/opt/python@2/bin:$PATH"
 #Neovim true color support
 export NVIM_TUI_ENABLE_TRUE_COLOR=1
-##Neovim cursor shape support
+# Neovim cursor shape support
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
-chruby 2.4.2
+# Added by Krypton
+export GPG_TTY=$(tty)
+export GOPATH=$HOME
+export PATH=$GOPATH/bin:$PATH
+export KUBECONFIG=$HOME/.kube/config
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+# Bindkeys --------------------------------------------{{{
+bindkey -s jj '\e'
+# }}}
