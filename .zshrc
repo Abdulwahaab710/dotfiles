@@ -156,6 +156,7 @@ alias tf='terraform'
 alias bsl='brew services list'
 alias so='source'
 alias o=open
+source ~/.aliases
 
 # }}}}
 
