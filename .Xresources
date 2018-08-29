@@ -1,0 +1,15 @@
+URxvt.scrollBar: false
+URxvt.font: xft:Source\ Code\ Pro\ for\ Powerline:pixelsize=13,xft:PowerlineSymbols
+
+Xft.dpi: 150
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
+
+XTerm*selectToClipboard: true
+XTerm*termName: xterm-256color
+XTerm*locale: true
+XTerm*metaSendsEscape: true
+UXTerm*faceName: Source Code Pro for Powerline:style=Medium
+UXTerm*faceSize:10
