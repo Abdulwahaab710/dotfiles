@@ -51,6 +51,8 @@ set wildignore=*.o,*.class,*.pyc,*.git
 set wildmenu                                " visual autocomplete for command menu
 set wildmode=longest:full,full
 set viewoptions=cursor,slash,unix
+set shell=$SHELL                            " Change vim's shell to use $SHELL
+" set scrolloff=15
 
 " =========================================
 " Undo persistent
@@ -92,26 +94,31 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
-command! Ctags
-\ execute "!ctags --extra=+f --exclude=.git --exclude=log -R *"
+command! MakeTags
+\ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 "  }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
 
 let g:mapleader=';'  "Leader Key
-noremap <leader>w :w<CR>
+
 noremap <leader>ml :!mac lock<CR>
+
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
+
 map <leader>vt :Vterm<CR>
 map <leader>st :Sterm<CR>
+
 nnoremap <leader><leader> :Magit<CR>
+noremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>x :x<CR>
 nnoremap <leader>ot :tabe
 nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
 nnoremap <leader>n :nohl<CR>
+
 map <leader>em :Emodel<CR>
 map <leader>sm :Smodel<CR>
 map <leader>tm :Tmodel<CR>
@@ -124,6 +131,8 @@ map <leader>ev :Eview<CR>
 map <leader>sv :Sview<CR>
 map <leader>tv :Tview<CR>
 map <leader>vv :Vview<CR>
+
+nmap <leader>g <Plug>GenerateDiagram
 
 nmap k gk
 nmap j gj
@@ -138,8 +147,14 @@ imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
 
+nnoremap <C-j> <C-W><C-J>
+nnoremap <C-k> <C-W><C-K>
+nnoremap <C-l> <C-W><C-L>
+nnoremap <C-h> <C-W><C-H>
+
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
+imap <F8> <esc>:TagbarToggle<CR>i
 
 " <C-\> - Open the definition in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a new tab
@@ -219,12 +234,18 @@ augroup configgroup
     " autocmd FileType ruby match OverLength /\%>121v.\+/
     autocmd FileType ruby setlocal colorcolumn=120
     autocmd FileType ruby setlocal foldmethod=syntax
-    autocmd FileType ruby,eruby
+    autocmd FileType ruby
           \ iabbrev <buffer> rw; attr_accessor|
           \ iabbrev <buffer> rr; attr_reader|
-          \ iabbrev <buffer> ww; attr_writer
+          \ iabbrev <buffer> ww; attr_writer|
+          \ iabbrev <buffer> hmd; has_many :<++>, dependent: :destroy|
+          \ iabbrev <buffer> validp; validates :<++>, presence: true
+    autocmd FileType ruby,eruby setlocal spell
     autocmd FileType eruby
           \ iabbrev <buffer> link_to; <%= link_to 'text', 'path' %>
+          \ iabbrev <buffer> if; <%= if some_condition %>
+          \ <CR>do something here
+          \ <CR><% end %>
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
     autocmd FileType eruby setlocal shiftwidth=2
@@ -271,7 +292,11 @@ else
 endif
 
 " Plug 'uplus/deoplete-solargraph'
-Plug 'fishbullet/deoplete-ruby'
+" Plug 'fishbullet/deoplete-ruby'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
@@ -296,6 +321,7 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
+Plug 'tpope/vim-eunuch'
 
 " }}}
 
@@ -307,7 +333,6 @@ Plug 'majutsushi/tagbar'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 " Plug 'mattn/emmet-vim'
-Plug 'wojtekmach/vim-rename'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
 Plug 'JamshedVesuna/vim-markdown-preview'
@@ -319,6 +344,14 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
+Plug 'xavierchow/vim-sequence-diagram', { 'for': 'sequence' }
+Plug 'vim-scripts/ReplaceWithRegister'
+Plug 'junkblocker/patchreview-vim'
+Plug 'codegram/vim-codereview'
+Plug 'Shougo/denite.nvim'
+Plug 'wellle/targets.vim'
+Plug 'christoomey/vim-tmux-navigator'
 
 " }}}
 
@@ -332,8 +365,23 @@ Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'suan/vim-instant-markdown'
+Plug 'tpope/vim-liquid'
+Plug 'PProvost/vim-markdown-jekyll'
+Plug 'kana/vim-textobj-user'
+Plug 'benjifisher/matchit.zip'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
+Plug 'RRethy/vim-illuminate'
 
 " }}}
+
+" " Refactor ----------------------------------------{{{
+" Plug 'LucHermitte/lh-vim-lib'
+" Plug 'LucHermitte/lh-tags'
+" Plug 'LucHermitte/lh-dev'
+" Plug 'LucHermitte/lh-brackets'
+" Plug 'LucHermitte/vim-refactor'
+" " }}}
 
 " Theme related plugins ---------------------------{{{
 
@@ -342,6 +390,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'chriskempson/base16-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
+Plug 'NLKNguyen/papercolor-theme'
 
 " }}}
 
@@ -421,6 +470,8 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
+colorscheme PaperColor
+
 highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
 " highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
 highlight CursorLineNr guifg=#0099ff                           " Make current line number blue
@@ -431,6 +482,7 @@ autocmd FileType ruby highlight OverLength guibg=#a06e3b ctermbg=3
 autocmd FileType ruby match OverLength /\%>121v.\+/
 highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
+highlight illuminatedWord cterm=underline gui=underline
 
 " }}}
 
@@ -457,7 +509,7 @@ let test#strategy = {
 
 let g:ale_fixers = {'ruby': 'rubocop'}
 let g:ale_fix_on_save = 1
-let g:ale_ruby_rubocop_executable = 'bin/rubocop'
+let g:ale_ruby_rubocop_executable = 'rubocop'
 
 
 " let g:plug_url_format = 'https://git:@github.com:%s.git'
@@ -479,9 +531,9 @@ autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " NERDTree ----------------------------------------{{{
 
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "}}}
 
@@ -562,6 +614,18 @@ let g:tagbar_type_ruby = {
 let g:magit_discard_untracked_do_delete = 1
 " }}}
 
+" LanguageClient_RUBY -----------------------------{{{
+let g:LanguageClient_autoStop = 0
+let g:LanguageClient_serverCommands = {
+    \ 'ruby': ['tcp://localhost:7658']
+    \ }
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+" }}}
 " ============================
 " NERDtree
 " ============================
@@ -576,6 +640,9 @@ let g:netrw_winsize = 10
 "   autocmd!
 "   autocmd VimEnter * :Vexplore
 " augroup END
+
+let ruby_spellcheck_strings = 1
+" }}}
 
 " Custom Functions ----------------------------------------------------------{{{
 
@@ -697,4 +764,19 @@ command! Sorc source ~/.config/nvim/init.vim
 command! Vterm vsp | term
 command! Sterm sp | term
 
-" }}}}
+" Tab completion
+" will insert tab at beginning of line,
+" will use completion if not at beginning
+set wildmode=list:longest,list:full
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<Tab>"
+    else
+        return "\<C-p>"
+    endif
+endfunction
+inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
+inoremap <S-Tab> <C-n>
+
+" }}}
