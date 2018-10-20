@@ -1,5 +1,11 @@
 export TERM="xterm-256color"
 
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -156,13 +162,20 @@ alias tf='terraform'
 alias bsl='brew services list'
 alias so='source'
 alias o=open
+alias sync_branches='git fetch --all --prune && git branch -vv --no-color | grep "\[.*: gone\]" | awk "{print \$1}" | xargs git branch -D'
+alias nvim='echo "Use e"'
 source ~/.aliases
+
+# dev -------------{{{{
+alias dcl='dev clone'
+# }}}}
 
 # }}}}
 
 # Cheat => enabling syntax highligthing
 export CHEATCOLORS=true
-export EDITOR=nvim
+export EDITOR=/usr/local/bin/nvim
+export VISUAL=/usr/local/bin/nvim
 
 # kubectl autocomplete
 if [ $commands[kubectl] ]; then
@@ -177,6 +190,32 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+[ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH=$PATH:/Users/abdulwahaabahmed/swap
+export PATH="/usr/local/opt/python@2/bin:$PATH"
+#Neovim true color support
+export NVIM_TUI_ENABLE_TRUE_COLOR=1
+# Neovim cursor shape support
+export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+# Added by Krypton
+export GPG_TTY=$(tty)
+export GOPATH=$HOME
+export PATH=$GOPATH/bin:$PATH
+export KUBECONFIG=$HOME/.kube/config
+
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 # functions -------------------------------------------{{{{
 function update {
   sudo softwareupdate -i -a
@@ -189,7 +228,6 @@ function update {
   $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
 
-
 function start {
   clear
   neofetch
@@ -198,8 +236,11 @@ start
 
 function s {
     branch="$(git branch | fzf-tmux -d 15)"
-    BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
-    git checkout $BRANCH_NAME
+    if [ ! -z $branch ]
+    then
+      BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
+      git checkout $BRANCH_NAME
+    fi
 }
 
 function ts {
@@ -240,6 +281,15 @@ function swap_file_names {
     mv $tmp_name $second_file
 }
 
+function dmenu_apps {
+  APP_NAME=$(ls -1A /Applications | sed 's/\.app//g' | dmenu)
+  if [ ! -z $APP_NAME ]
+  then
+    open -F -a $APP_NAME
+  fi
+}
+
+
 unalias g 2>/dev/null
 function g {
   if [[ $# > 0 ]]; then
@@ -255,34 +305,35 @@ function rm_orig {
 
 compdef g=git
 
+function RANDOM_THEME {
+  THEMES=($(alias | awk -F'=' '/base16_[A-Za-z0-9]*/ {print $1}'))
+  THEMES_ARRAY_SIZE=${#THEMES[@]}
+  THEME_INDEX=$(( ( RANDOM % THEMES_ARRAY_SIZE )  + 1 ))
+  shopt $THEMES[$THEME_INDEX]
+}
 
+function brakeman_scan {
+  chruby 2.5.1
+  brakeman -o report.html
+  open report.html
+  rm -rf report.html
+}
+
+# function test_connection {
+#   if [ $(ping 1.1.1.1 -c 4) -eq 0 ]; then
+#     echo 'Your device is connectted to the internet'
+#   fi
+# }
 # }}}}
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-[ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
-export PATH=$PATH:/Users/abdulwahaabahmed/swap
-export PATH="/usr/local/opt/python@2/bin:$PATH"
-#Neovim true color support
-export NVIM_TUI_ENABLE_TRUE_COLOR=1
-# Neovim cursor shape support
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-# Added by Krypton
-export GPG_TTY=$(tty)
-export GOPATH=$HOME
-export PATH=$GOPATH/bin:$PATH
-export KUBECONFIG=$HOME/.kube/config
-
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+function docker_clean_all {
+  alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
+  alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
+  docker kill $(docker ps -q) 2>/dev/null
+  docker_clean_ps 2>/dev/null
+  docker_clean_images 2>/dev/null
+  docker rmi $(docker images -a -q) 2>/dev/null
+}
 
 # Bindkeys --------------------------------------------{{{
 bindkey -s jj '\e'
