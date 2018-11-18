@@ -53,6 +53,7 @@ set wildmode=longest:full,full
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 " set scrolloff=15
+" set timeoutlen=500
 
 " =========================================
 " Undo persistent
@@ -119,20 +120,32 @@ nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
 nnoremap <leader>n :nohl<CR>
 
-map <leader>em :Emodel<CR>
-map <leader>sm :Smodel<CR>
-map <leader>tm :Tmodel<CR>
-map <leader>vm :Vmodel<CR>
-map <leader>ec :Econtroller<CR>
-map <leader>sc :Scontroller<CR>
-map <leader>tc :Tcontroller<CR>
-map <leader>vc :Vcontroller<CR>
-map <leader>ev :Eview<CR>
-map <leader>sv :Sview<CR>
-map <leader>tv :Tview<CR>
-map <leader>vv :Vview<CR>
+nmap <leader>em :Emodel<CR>
+nmap <leader>sm :Smodel<CR>
+nmap <leader>tm :Tmodel<CR>
+nmap <leader>vm :Vmodel<CR>
+nmap <leader>ec :Econtroller<CR>
+nmap <leader>sc :Scontroller<CR>
+nmap <leader>tc :Tcontroller<CR>
+nmap <leader>vc :Vcontroller<CR>
+nmap <leader>ev :Eview<CR>
+nmap <leader>sv :Sview<CR>
+nmap <leader>tv :Tview<CR>
+nmap <leader>vv :Vview<CR>
+
+nnoremap <leader>rap  :RAddParameter<CR>
+nnoremap <leader>rcpc :RConvertPostConditional<CR>
+nnoremap <leader>rel  :RExtractLet<CR>
+vnoremap <leader>rec  :RExtractConstant<CR>
+vnoremap <leader>relv :RExtractLocalVariable<CR>
+nnoremap <leader>rit  :RInlineTemp<CR>
+vnoremap <leader>rrlv :RRenameLocalVariable<CR>
+vnoremap <leader>rriv :RRenameInstanceVariable<CR>
+vnoremap <leader>rem  :RExtractMethod<CR>
 
 nmap <leader>g <Plug>GenerateDiagram
+nnoremap <silent> <leader> :WhichKey ';'<CR>
+
 
 nmap k gk
 nmap j gj
@@ -147,18 +160,25 @@ imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
 
-nnoremap <C-j> <C-W><C-J>
-nnoremap <C-k> <C-W><C-K>
-nnoremap <C-l> <C-W><C-L>
-nnoremap <C-h> <C-W><C-H>
+" nnoremap <C-j> <C-w><C-j>
+" nnoremap <C-k> <C-w><C-k>
+" nnoremap <C-l> <C-w><C-l>
+" nnoremap <C-h> <C-w><C-h>
+" imap <C-j> <C-w><C-j>
+" imap <C-k> <C-w><C-k>
+" imap <C-l> <C-w><C-l>
+" imap <C-h> <C-w><C-h>
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
 imap <F8> <esc>:TagbarToggle<CR>i
 
 " <C-\> - Open the definition in a new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a new tab
-map ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR> " Open the definition in a vertical split
+
+" Open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+" Open the definition in a vertical split Option+Shift+]
+nmap ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Mapping jj to <esc>
 imap jj <esc>
@@ -205,11 +225,16 @@ autocmd FileType magit nmap gp :!git push<CR>
 
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-map <C-/> <Plug>Sneak_s
-map <C-?> <Plug>Sneak_S
+nmap <leader>f <Plug>Sneak_s
+nmap <leader>F <Plug>Sneak_S
 
 nmap s cl
 nmap S cc
+vmap s c
+vmap S c
+
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit! " save file when you get E45: 'readonly' option is set (add ! to override)
+
 
 " imap <c-j> <plug>(MUcompleteFwd)
 
@@ -272,6 +297,8 @@ augroup configgroup
 
     autocmd BufEnter *.tex setlocal spell
     autocmd BufRead *.tex let g:tex_conceal = ""
+    autocmd FileType vimwiki setlocal spell
+    autocmd FileType vimwiki setlocal wrap
 augroup END
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
@@ -293,10 +320,10 @@ endif
 
 " Plug 'uplus/deoplete-solargraph'
 " Plug 'fishbullet/deoplete-ruby'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'bash install.sh',
+"     \ }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
@@ -322,6 +349,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
 
 " }}}
 
@@ -335,14 +363,12 @@ Plug 'xolox/vim-misc'
 " Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
-Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
-Plug 'francoiscabrol/ranger.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
 Plug 'xavierchow/vim-sequence-diagram', { 'for': 'sequence' }
@@ -352,6 +378,9 @@ Plug 'codegram/vim-codereview'
 Plug 'Shougo/denite.nvim'
 Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+Plug 'metakirby5/codi.vim'
+
 
 " }}}
 
@@ -364,7 +393,7 @@ Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'suan/vim-instant-markdown'
+" Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-liquid'
 Plug 'PProvost/vim-markdown-jekyll'
 Plug 'kana/vim-textobj-user'
@@ -375,13 +404,9 @@ Plug 'RRethy/vim-illuminate'
 
 " }}}
 
-" " Refactor ----------------------------------------{{{
-" Plug 'LucHermitte/lh-vim-lib'
-" Plug 'LucHermitte/lh-tags'
-" Plug 'LucHermitte/lh-dev'
-" Plug 'LucHermitte/lh-brackets'
-" Plug 'LucHermitte/vim-refactor'
-" " }}}
+" Refactor ----------------------------------------{{{
+Plug 'ecomba/vim-ruby-refactoring'
+" }}}
 
 " Theme related plugins ---------------------------{{{
 
@@ -470,7 +495,9 @@ if filereadable(expand("~/.vimrc_background"))
   source ~/.vimrc_background
 endif
 
-colorscheme PaperColor
+" colorscheme PaperColor
+
+hi Normal ctermbg=NONE guibg=NONE
 
 highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren hightlight color change
 " highlight LineNr ctermfg=darkGrey                              " Lighter line numbers from OneDark theme
@@ -488,6 +515,10 @@ highlight illuminatedWord cterm=underline gui=underline
 
 " Plugins configs -----------------------------------------------------------{{{
 
+" let g:LanguageClient_serverCommands = {
+" \ 'ruby': ['solargraph', 'stdio'],
+" \ }
+
 let g:fzf_command_prefix = 'Fzf'
 
 if !exists('g:airline_symbols')
@@ -498,7 +529,6 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
-" let g:airline_theme='base16_tomorrow'
 let g:airline_theme='luna'
 
 let test#strategy = {
@@ -507,16 +537,21 @@ let test#strategy = {
   \ 'suite':   'basic',
   \}
 
+let g:ale_fixers = {'python': ['pylint', 'flake8']}
+
 let g:ale_fixers = {'ruby': 'rubocop'}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
+let g:ale_completion_enabled = 1
+set completeopt=menu,menuone,preview,noselect,noinsert
 
 
 " let g:plug_url_format = 'https://git:@github.com:%s.git'
 
 let g:UltiSnipsExpandTrigger='<c-s>'
+let g:UltiSnipsListSnippets='<leader>ss'
 let g:UltiSnipsJumpForwardTrigger='<c-b>'
-let g:UltiSnipsJumpBackwardTrigger='<c-s>'
+let g:UltiSnipsJumpBackwardTrigger='<c-S>'
 
 
 let g:session_autosave = 'no'
@@ -599,15 +634,17 @@ let g:tagbar_type_scss = {
 \  ]
 \}
 let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-    \ }
+            \ 'kinds' : [
+                \ 'm:modules',
+                \ 'c:classes',
+                \ 'f:methods',
+                \ 'F:singleton methods',
+                \ 'C:constants',
+                \ 'a:aliases'
+            \ ],
+            \ 'ctagsbin':  'ripper-tags',
+            \ 'ctagsargs': ['-f', '-']
+            \ }
 " }}}
 
 " Magit -------------------------------------------{{{
@@ -615,16 +652,16 @@ let g:magit_discard_untracked_do_delete = 1
 " }}}
 
 " LanguageClient_RUBY -----------------------------{{{
-let g:LanguageClient_autoStop = 0
-let g:LanguageClient_serverCommands = {
-    \ 'ruby': ['tcp://localhost:7658']
-    \ }
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" let g:LanguageClient_autoStop = 0
+" let g:LanguageClient_serverCommands = {
+"     \ 'ruby': ['tcp://localhost:7658']
+"     \ }
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
-autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+" autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
 " }}}
 " ============================
 " NERDtree
@@ -773,10 +810,24 @@ function! InsertTabWrapper()
     if !col || getline('.')[col - 1] !~ '\k'
         return "\<Tab>"
     else
-        return "\<C-p>"
+        return "\<C-x>\<C-o>"
     endif
 endfunction
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
+
+function! OpenFileOnGithub()
+  let l:file_path = expand("%")
+  let l:repo_url = system("git config --get remote.origin.url")
+  let l:repo_url = substitute(l:repo_url, "git\@", 'https://', 1)
+  let l:repo_url = substitute(l:repo_url, "com:", 'com/', 1)
+  let l:repo_url = substitute(l:repo_url, '\.git', '', 1)
+  let l:branch = system("git rev-parse --abbrev-ref HEAD")
+  let l:file_url = join([l:repo_url, 'blob', l:branch, l:file_path], '/')
+  let l:file_url = join(split(l:file_url, "\n"), "")
+  let l:open_file = join(['!open', l:file_url], ' ')
+  execute l:open_file
+endfunction
+command! OpenFileOnGithub call OpenFileOnGithub()
 
 " }}}
