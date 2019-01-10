@@ -105,6 +105,8 @@ let g:mapleader=';'  "Leader Key
 
 noremap <leader>ml :!mac lock<CR>
 
+nmap <unique> <leader>gd <Plug>GenerateDiagram
+
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 
@@ -146,6 +148,8 @@ vnoremap <leader>rem  :RExtractMethod<CR>
 nmap <leader>g <Plug>GenerateDiagram
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
+nmap <leader>gb :Gbrowse<CR>
+vmap <leader>gb :Gbrowse<CR>
 
 nmap k gk
 nmap j gj
@@ -350,6 +354,7 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 
 " }}}
 
@@ -815,19 +820,5 @@ function! InsertTabWrapper()
 endfunction
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
-
-function! OpenFileOnGithub()
-  let l:file_path = expand("%")
-  let l:repo_url = system("git config --get remote.origin.url")
-  let l:repo_url = substitute(l:repo_url, "git\@", 'https://', 1)
-  let l:repo_url = substitute(l:repo_url, "com:", 'com/', 1)
-  let l:repo_url = substitute(l:repo_url, '\.git', '', 1)
-  let l:branch = system("git rev-parse --abbrev-ref HEAD")
-  let l:file_url = join([l:repo_url, 'blob', l:branch, l:file_path], '/')
-  let l:file_url = join(split(l:file_url, "\n"), "")
-  let l:open_file = join(['!open', l:file_url], ' ')
-  execute l:open_file
-endfunction
-command! OpenFileOnGithub call OpenFileOnGithub()
 
 " }}}
