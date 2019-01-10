@@ -1,3 +1,4 @@
+#! /bin/zsh
 alias gCa='git add $(gCl)'
 alias gCe='git mergetool $(gCl)'
 alias gCl='git --no-pager diff --name-only --diff-filter=U'
@@ -185,3 +186,5 @@ alias gwd='git diff --no-ext-diff'
 alias gwr='git reset --soft'
 alias gws='git status --ignore-submodules=${_git_status_ignore_submodules} --short'
 alias gwx='git rm -r'
+alias docker_stop_all='docker stop $(docker ps -aq)'
+alias wiki='e $HOME/vimwiki/index.wiki'
