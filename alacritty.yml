@@ -23,8 +23,8 @@ dimensions:
 # Units are physical pixels; this is not DPI aware.
 # (change requires restart)
 padding:
-  x: 2
-  y: 2
+  x: 0
+  y: 0
 
 # The FreeType rasterizer needs to know the device DPI for best results
 # (changes require restart)
@@ -59,7 +59,7 @@ font:
     style: Italic
 
   # Point size of the font
-  size: 12.0
+  size: 14.0
 
   # Offset is the extra space around each character. offset.y can be thought of
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
@@ -145,6 +145,8 @@ visual_bell:
   animation: EaseOutExpo
   duration: 0
 
+background_opacity: 0.6
+
 # Key bindings
 #
 # Each binding is defined as an object with some properties. Most of the
@@ -229,6 +231,9 @@ key_bindings:
   - { key: Back,     mods: Alt,     chars: "\x1b\x7f"                    }
   - { key: Insert,                  chars: "\x1b[2~"                     }
   - { key: Delete,                  chars: "\x1b[3~"                     }
+
+# window:
+#   decorations: false
 
 # Mouse bindings
 #
