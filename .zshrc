@@ -163,7 +163,6 @@ alias bsl='brew services list'
 alias so='source'
 alias o=open
 alias sync_branches='git fetch --all --prune && git branch -vv --no-color | grep "\[.*: gone\]" | awk "{print \$1}" | xargs git branch -D'
-alias nvim='echo "Use e"'
 source ~/.aliases
 
 # dev -------------{{{{
@@ -316,6 +315,7 @@ function brakeman_scan {
   chruby 2.5.1
   brakeman -o report.html
   open report.html
+  sleep 2
   rm -rf report.html
 }
 
