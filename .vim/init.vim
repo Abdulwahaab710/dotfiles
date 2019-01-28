@@ -151,6 +151,8 @@ nnoremap <silent> <leader> :WhichKey ';'<CR>
 nmap <leader>gb :Gbrowse<CR>
 vmap <leader>gb :Gbrowse<CR>
 
+nmap <leader>gB :Gblame<CR>
+
 nmap k gk
 nmap j gj
 
@@ -226,6 +228,7 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 nnoremap <Space> za
 
 autocmd FileType magit nmap gp :!git push<CR>
+autocmd FileType go nmap <leader>gr :GoRun %<CR>
 
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
@@ -238,6 +241,9 @@ vmap s c
 vmap S c
 
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit! " save file when you get E45: 'readonly' option is set (add ! to override)
+
+" Copy current file path to the unamed register
+nmap cp :let @" = expand("%")<cr>
 
 
 " imap <c-j> <plug>(MUcompleteFwd)
@@ -548,6 +554,7 @@ let g:ale_fixers = {'ruby': 'rubocop'}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ale_completion_enabled = 1
+let g:ale_ruby_solargraph_executable = 'solargraph'
 set completeopt=menu,menuone,preview,noselect,noinsert
 
 
@@ -557,6 +564,7 @@ let g:UltiSnipsExpandTrigger='<c-s>'
 let g:UltiSnipsListSnippets='<leader>ss'
 let g:UltiSnipsJumpForwardTrigger='<c-b>'
 let g:UltiSnipsJumpBackwardTrigger='<c-S>'
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 
 let g:session_autosave = 'no'
