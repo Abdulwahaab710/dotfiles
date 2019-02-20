@@ -9,6 +9,10 @@ defaults write nsglobaldomain initialkeyrepeat -int 10
 defaults write com.apple.menuextra.battery ShowPercent -string "YES"
 defaults write com.apple.menuextra.battery ShowTime -string "NO"
 
+# Disable dock bouncing icons
+defaults write com.apple.dock no-bouncing -bool TRUE
+killall Dock
+
 # Reset changed apps
 for app in cfprefsd Dock finder systemuiserver; do
   killall "${app}" &> /dev/null
