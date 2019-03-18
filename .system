@@ -17,3 +17,9 @@ killall Dock
 for app in cfprefsd Dock finder systemuiserver; do
   killall "${app}" &> /dev/null
 done
+
+# Enable aptx codec
+sudo defaults write bluetoothaudiod "Enable AptX codec" -bool true 
+
+# Enable aac codec
+sudo defaults write bluetoothaudiod "Enable AAC codec" -bool true 
