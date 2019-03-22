@@ -8,6 +8,7 @@
 
 " System Settings  ----------------------------------------------------------{{{
 
+filetype plugin on
 filetype plugin indent on                   " load filetype-specific indent files
 syntax enable                               " enable syntax processing
 
@@ -49,7 +50,12 @@ if !has('nvim')
 endif
 set wildignore=*.o,*.class,*.pyc,*.git
 set wildmenu                                " visual autocomplete for command menu
-set wildmode=longest:full,full
+if has('wildoptions') && has('pumblend')
+  set wildoptions=pum
+  set pumblend=20
+else
+  set wildmode=longest:full,full
+endif
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 " set scrolloff=15
@@ -193,7 +199,7 @@ tnoremap jj <C-\><C-n>
 " ================
 " Better grepping
 " ================
-nnoremap \ :FzfAg<CR>
+nnoremap \ :FzfRg<CR>
 nnoremap <C-p> :FZF<CR>
 
 " ===========
@@ -281,6 +287,9 @@ augroup configgroup
           \ iabbrev <buffer> if; <%= if some_condition %>
           \ <CR>do something here
           \ <CR><% end %>
+    autocmd FileType javascript,html
+          \ iabbrev <buffer> domloaded; document.addEventListener('DOMContentLoaded', () => {
+          \ <CR><CR> })
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
     autocmd FileType eruby setlocal shiftwidth=2
@@ -309,6 +318,8 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd FileType vimwiki setlocal spell
     autocmd FileType vimwiki setlocal wrap
+
+    autocmd FileType magit setlocal spell
 augroup END
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
@@ -328,17 +339,16 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-" Plug 'uplus/deoplete-solargraph'
-" Plug 'fishbullet/deoplete-ruby'
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
 Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-" Plug 'lifepillar/vim-mucomplete'
+Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+
+if executable('look')
+  Plug 'ujihisa/neco-look'
+endif
 
 " }}}
 
@@ -346,7 +356,6 @@ Plug 'honza/vim-snippets' "optional
 
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
-" Plug 'tpope/vim-fugitive'
 
 " }}}
 
@@ -391,8 +400,12 @@ Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'metakirby5/codi.vim'
-
-
+Plug 'icatalina/vim-case-change'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'shime/vim-livedown'
+" Plug 'Shopify/shadowenv.vim'
+Plug 'skwp/greplace.vim'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -435,13 +448,15 @@ call plug#end()
 
 " omnifuncs -----------------------------------------------------------------{{{
 
-augroup omnifuncs
-  autocmd!
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-augroup end
+" augroup omnifuncs
+"   autocmd!
+"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" augroup end
+
+set omnifunc=syntaxcomplete#Complete
 
 " }}}
 
@@ -501,12 +516,12 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr
 set guifont=Hack\ Nerd\ Font:h11
 au VimLeave * set guicursor=a:block-blinkon0
 
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
+" if filereadable(expand("~/.vimrc_background"))
+"   let base16colorspace=256
+"   source ~/.vimrc_background
+" endif
 
-" colorscheme PaperColor
+colorscheme wip
 
 hi Normal ctermbg=NONE guibg=NONE
 
@@ -540,7 +555,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
-let g:airline_theme='luna'
+let g:airline_theme='powerlineish'
 
 let test#strategy = {
   \ 'nearest': 'neovim',
@@ -554,7 +569,7 @@ let g:ale_fixers = {'ruby': 'rubocop'}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ale_completion_enabled = 1
-let g:ale_ruby_solargraph_executable = 'solargraph'
+" let g:ale_ruby_solargraph_executable = 'solargraph'
 set completeopt=menu,menuone,preview,noselect,noinsert
 
 
@@ -566,7 +581,6 @@ let g:UltiSnipsJumpForwardTrigger='<c-b>'
 let g:UltiSnipsJumpBackwardTrigger='<c-S>'
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
-
 let g:session_autosave = 'no'
 
 let g:deoplete#enable_at_startup = 1
@@ -576,6 +590,33 @@ if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+function! GalaxyUrl(opts, ...) abort
+  if a:0 || type(a:opts) != type({})
+    return ''
+  endif
+
+  let remote = matchlist(a:opts.remote, '\v^https:\/\/git-mirror.shopifycloud.com\/(.{-1,})(\.git)?$')
+  let remote_galaxy = matchlist(a:opts.remote, '\v^galaxy::(.{-1,})(\.git)?$')
+
+  if empty(remote) && empty(remote_galaxy)
+    return ''
+  end
+
+  let opts = copy(a:opts)
+  let opts.remote = "https://github.com/" . remote[1] . ".git"
+  return call("rhubarb#FugitiveUrl", [opts])
+endfunction
+
+if !exists('g:fugitive_browse_handlers')
+  let g:fugitive_browse_handlers = []
+endif
+
+if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
+  call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
+endif
+
+"}}}
 
 " NERDTree ----------------------------------------{{{
 
@@ -646,39 +687,43 @@ let g:tagbar_type_scss = {
 \    'm:medias'
 \  ]
 \}
-let g:tagbar_type_ruby = {
-            \ 'kinds' : [
-                \ 'm:modules',
-                \ 'c:classes',
-                \ 'f:methods',
-                \ 'F:singleton methods',
-                \ 'C:constants',
-                \ 'a:aliases'
-            \ ],
-            \ 'ctagsbin':  'ripper-tags',
-            \ 'ctagsargs': ['-f', '-']
-            \ }
+
+if executable('ripper-tags')
+  let g:tagbar_type_ruby = {
+      \ 'kinds'      : ['m:modules',
+                      \ 'c:classes',
+                      \ 'C:constants',
+                      \ 'F:singleton methods',
+                      \ 'f:methods',
+                      \ 'a:aliases'],
+      \ 'kind2scope' : { 'c' : 'class',
+                       \ 'm' : 'class' },
+      \ 'scope2kind' : { 'class' : 'c' },
+      \ 'ctagsbin'   : 'ripper-tags',
+      \ 'ctagsargs'  : ['-f', '-']
+      \ }
+else
+  let g:tagbar_type_ruby = {
+     \ 'kinds' : [
+         \ 'm:modules',
+         \ 'c:classes',
+         \ 'f:methods',
+         \ 'F:singleton methods',
+         \ 'C:constants',
+         \ 'a:aliases'
+     \ ],
+     \ 'ctagsbin':  'ripper-tags',
+     \ 'ctagsargs': ['-f', '-']
+     \ }
+endif
+
 " }}}
 
 " Magit -------------------------------------------{{{
 let g:magit_discard_untracked_do_delete = 1
 " }}}
 
-" LanguageClient_RUBY -----------------------------{{{
-" let g:LanguageClient_autoStop = 0
-" let g:LanguageClient_serverCommands = {
-"     \ 'ruby': ['tcp://localhost:7658']
-"     \ }
-" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-" autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
-" }}}
-" ============================
-" NERDtree
-" ============================
+" NERDtree ----------------------------------------{{{
 
 " NERDTree like setup
 let g:netrw_banner = 1
@@ -814,19 +859,26 @@ command! Sorc source ~/.config/nvim/init.vim
 command! Vterm vsp | term
 command! Sterm sp | term
 
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-set wildmode=list:longest,list:full
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<Tab>"
-    else
-        return "\<C-x>\<C-o>"
-    endif
-endfunction
-inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
-inoremap <S-Tab> <C-n>
+function! Smart_TabComplete()
+  let line = getline('.')                         " current line
 
+  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
+                                                  " line to one character right
+                                                  " of the cursor
+  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+  if (strlen(substr)==0)                          " nothing to match on empty string
+    return "\<tab>"
+  endif
+  let has_period = match(substr, '\.') != -1      " position of period, if any
+  let has_slash = match(substr, '\/') != -1       " position of slash, if any
+  if (!has_period && !has_slash)
+    return "\<C-X>\<C-P>"                         " existing text matching
+  elseif ( has_slash )
+    return "\<C-X>\<C-F>"                         " file matching
+  else
+    return "\<C-X>\<C-O>"                         " plugin matching
+  endif
+endfunction
+inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+" https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
 " }}}
