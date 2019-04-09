@@ -107,7 +107,7 @@ command! MakeTags
 
 " Keyboard config  ----------------------------------------------------------{{{
 
-let g:mapleader=';'  "Leader Key
+let g:mapleader=';'  " Leader Key
 
 noremap <leader>ml :!mac lock<CR>
 
@@ -151,6 +151,10 @@ vnoremap <leader>rrlv :RRenameLocalVariable<CR>
 vnoremap <leader>rriv :RRenameInstanceVariable<CR>
 vnoremap <leader>rem  :RExtractMethod<CR>
 
+" QuickFix
+nmap <leader>cn :cn<CR>
+nmap <leader>cN :cp<CR>
+
 nmap <leader>g <Plug>GenerateDiagram
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
@@ -183,7 +187,6 @@ imap <right> <nop>
 
 nmap <F2> :NERDTreeToggle<CR>
 imap <F2> <esc>:NERDTreeToggle<CR>
-imap <F8> <esc>:TagbarToggle<CR>i
 
 " <C-\> - Open the definition in a new tab
 
@@ -220,7 +223,8 @@ nnoremap <C-g>P :Gpush<CR>
 " ===========
 " Tagbar
 " ===========
-nmap <F8> :TagbarToggle<CR>
+nmap <F8> :Vista!!<CR>
+imap <F8> <esc>:Vista!!<CR>i
 
 " ===============
 " Silver Searcher
@@ -377,7 +381,7 @@ Plug 'tpope/vim-rhubarb'
 
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'majutsushi/tagbar'
+Plug 'liuchengxu/vista.vim'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 " Plug 'mattn/emmet-vim'
@@ -404,8 +408,8 @@ Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'shime/vim-livedown'
-" Plug 'Shopify/shadowenv.vim'
 Plug 'skwp/greplace.vim'
+Plug 'rhysd/vim-grammarous'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -425,6 +429,7 @@ Plug 'benjifisher/matchit.zip'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
 Plug 'RRethy/vim-illuminate'
+Plug 'HerringtonDarkholme/yats.vim'
 
 " }}}
 
@@ -440,6 +445,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'liuchengxu/space-vim-dark'
 
 " }}}
 
@@ -512,8 +518,8 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-set guifont=Hack\ Nerd\ Font:h11
+" set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+" set guifont=Hack\ Nerd\ Font:h11
 au VimLeave * set guicursor=a:block-blinkon0
 
 " if filereadable(expand("~/.vimrc_background"))
@@ -521,7 +527,10 @@ au VimLeave * set guicursor=a:block-blinkon0
 "   source ~/.vimrc_background
 " endif
 
-colorscheme wip
+colorscheme space-vim-dark
+
+hi Comment gui=italic cterm=italic
+hi htmlArg gui=italic cterm=italic
 
 hi Normal ctermbg=NONE guibg=NONE
 
@@ -536,6 +545,12 @@ autocmd FileType ruby match OverLength /\%>121v.\+/
 highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
+
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
+
+highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
+highlight ALEWarning NONE
 
 " }}}
 
@@ -555,7 +570,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline_symbols.space = "\ua0"
 let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
+let g:airline_theme='violet'
 
 let test#strategy = {
   \ 'nearest': 'neovim',
@@ -618,105 +633,12 @@ endif
 
 "}}}
 
-" NERDTree ----------------------------------------{{{
+" Vista.vim ---------------------------------------{{{
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
 
-" autocmd StdinReadPre * let s:std_in=1
-" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-"}}}
-
-" Tagbar ------------------------------------------{{{
-let g:tagbar_type_go = {
-  \ 'ctagstype' : 'go',
-  \ 'kinds'     : [
-    \ 'p:package',
-    \ 'i:imports:1',
-    \ 'c:constants',
-    \ 'v:variables',
-    \ 't:types',
-    \ 'n:interfaces',
-    \ 'w:fields',
-    \ 'e:embedded',
-    \ 'm:methods',
-    \ 'r:constructor',
-    \ 'f:functions'
-  \ ],
-  \ 'sro' : '.',
-  \ 'kind2scope' : {
-    \ 't' : 'ctype',
-    \ 'n' : 'ntype'
-  \ },
-  \ 'scope2kind' : {
-    \ 'ctype' : 't',
-    \ 'ntype' : 'n'
-  \ },
-  \ 'ctagsbin'  : 'gotags',
-  \ 'ctagsargs' : '-sort -silent'
-\ }
-
-let g:tagbar_type_css = {
-\  'ctagstype' : 'css',
-\  'kinds' : [
-\    'v:variables',
-\    'c:classes',
-\    'i:identities',
-\    't:tags',
-\    'm:medias'
-\  ]
-\}
-
-let g:tagbar_type_less = {
-\  'ctagstype' : 'css',
-\  'kinds' : [
-\    'v:variables',
-\    'c:classes',
-\    'i:identities',
-\    't:tags',
-\    'm:medias'
-\  ]
-\}
-
-let g:tagbar_type_scss = {
-\  'ctagstype' : 'css',
-\  'kinds' : [
-\    'v:variables',
-\    'c:classes',
-\    'i:identities',
-\    't:tags',
-\    'm:medias'
-\  ]
-\}
-
-if executable('ripper-tags')
-  let g:tagbar_type_ruby = {
-      \ 'kinds'      : ['m:modules',
-                      \ 'c:classes',
-                      \ 'C:constants',
-                      \ 'F:singleton methods',
-                      \ 'f:methods',
-                      \ 'a:aliases'],
-      \ 'kind2scope' : { 'c' : 'class',
-                       \ 'm' : 'class' },
-      \ 'scope2kind' : { 'class' : 'c' },
-      \ 'ctagsbin'   : 'ripper-tags',
-      \ 'ctagsargs'  : ['-f', '-']
-      \ }
-else
-  let g:tagbar_type_ruby = {
-     \ 'kinds' : [
-         \ 'm:modules',
-         \ 'c:classes',
-         \ 'f:methods',
-         \ 'F:singleton methods',
-         \ 'C:constants',
-         \ 'a:aliases'
-     \ ],
-     \ 'ctagsbin':  'ripper-tags',
-     \ 'ctagsargs': ['-f', '-']
-     \ }
-endif
-
+set statusline+=%{NearestMethodOrFunction()}
 " }}}
 
 " Magit -------------------------------------------{{{
