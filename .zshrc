@@ -1,4 +1,8 @@
-export TERM="xterm-256color"
+if [ -f $HOME/xterm-256color-italic.ti ]; then
+  export TERM="xterm-256color-italic"
+else
+  export TERM="xterm-256color"
+fi
 
 # Executes commands at the start of an interactive session.
 #
@@ -18,7 +22,6 @@ POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(rspec_stats chruby vi_mode status background_jobs)
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─%\u2570%F{cyan} ❯%F{073}❯%F{109}❯%f "
 
 
 # Customize to your needs...
@@ -179,9 +182,9 @@ export EDITOR=/usr/local/bin/nvim
 export VISUAL=/usr/local/bin/nvim
 
 # kubectl autocomplete
-if [ $commands[kubectl] ]; then
-  source <(kubectl completion zsh)
-fi
+# if [ $commands[kubectl] ]; then
+#   source <(kubectl completion zsh)
+# fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 if [ ! -f $HOME/$TERM.ti  ]; then
@@ -194,10 +197,10 @@ fi
 [ -f /opt/dev/dev.sh ] && source /opt/dev/dev.sh
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc'; fi
+# if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
+# if [ -f '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/abdulwahaabahmed/google-cloud-sdk/completion.zsh.inc'; fi
 export PATH=$PATH:$HOME/swap
 export PATH="/usr/local/opt/python@2/bin:$PATH"
 export PATH="$HOME/.config/zsh/fp:$PATH"
@@ -319,13 +322,6 @@ function brakeman_scan {
   rm -rf report.html
 }
 
-# function test_connection {
-#   if [ $(ping 1.1.1.1 -c 4) -eq 0 ]; then
-#     echo 'Your device is connectted to the internet'
-#   fi
-# }
-# }}}}
-
 function docker_clean_all {
   alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
   alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
@@ -334,6 +330,13 @@ function docker_clean_all {
   docker_clean_images 2>/dev/null
   docker rmi $(docker images -a -q) 2>/dev/null
 }
+# function test_connection {
+#   if [ $(ping 1.1.1.1 -c 4) -eq 0 ]; then
+#     echo 'Your device is connectted to the internet'
+#   fi
+# }
+# }}}}
+
 
 # Bindkeys --------------------------------------------{{{
 bindkey -s jj '\e'
