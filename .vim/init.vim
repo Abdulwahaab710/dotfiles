@@ -111,7 +111,7 @@ let g:mapleader=';'  " Leader Key
 
 noremap <leader>ml :!mac lock<CR>
 
-nmap <unique> <leader>gd <Plug>GenerateDiagram
+" nmap <unique> <leader>gd <Plug>GenerateDiagram
 
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
@@ -203,7 +203,8 @@ tnoremap jj <C-\><C-n>
 " Better grepping
 " ================
 nnoremap \ :FzfRg<CR>
-nnoremap <C-p> :FZF<CR>
+nnoremap <silent> <C-p> :call Fzf_dev()<CR>
+nnoremap <silent> <C-P> :FZF<CR>
 
 " ===========
 " resizing
@@ -230,7 +231,7 @@ imap <F8> <esc>:Vista!!<CR>i
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
-nnoremap K :FzfAg <C-R><C-W><CR>
+nnoremap K :FzfRg <C-R><C-W><CR>
 
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
@@ -349,6 +350,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
   Plug 'ujihisa/neco-look'
@@ -395,21 +397,22 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-Plug 'xavierchow/vim-sequence-diagram', { 'for': 'sequence' }
-Plug 'vim-scripts/ReplaceWithRegister'
-Plug 'junkblocker/patchreview-vim'
+" Plug 'xavierchow/vim-sequence-diagram', { 'for': 'sequence' }
+" Plug 'vim-scripts/ReplaceWithRegister'
+" Plug 'junkblocker/patchreview-vim'
 Plug 'codegram/vim-codereview'
 Plug 'Shougo/denite.nvim'
 Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-Plug 'metakirby5/codi.vim'
+" Plug 'metakirby5/codi.vim'
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
 Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
+Plug 'soywod/kronos.vim'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -423,13 +426,17 @@ Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-liquid'
-Plug 'PProvost/vim-markdown-jekyll'
+" Plug 'PProvost/vim-markdown-jekyll'
+Plug 'gabrielelana/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
 Plug 'RRethy/vim-illuminate'
 Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'maksimr/vim-jsbeautify'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'mxw/vim-jsx'
 
 " }}}
 
@@ -555,6 +562,21 @@ highlight ALEWarning NONE
 " }}}
 
 " Plugins configs -----------------------------------------------------------{{{
+
+" WIKI -------{{{
+"
+ let g:vimwiki_list = [{'path': '~/wiki/',
+                       \ 'syntax': 'markdown', 'ext': '.md'}]
+"" let wiki_1 = {}
+" let wiki_1.path = '~/vimwiki/'
+" let wiki_1.syntax = 'markdown'
+" let wiki_1.ext = '.md'
+
+" let g:vimwiki_list = [wiki_1]
+" let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+" }}}
+
+let g:polyglot_disabled = ['typescript']
 
 " let g:LanguageClient_serverCommands = {
 " \ 'ruby': ['solargraph', 'stdio'],
@@ -804,3 +826,45 @@ endfunction
 inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
 " }}}
+
+" FZF -----------------------------------------------------------------------{{{
+" ripgrep
+if executable('rg')
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+  set grepprg=rg\ --vimgrep
+  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+endif
+
+" Files + devicons
+function! Fzf_dev()
+  let l:fzf_files_options = '--preview "bat --theme="OneHalfDark" --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
+
+  function! s:files()
+    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+    return s:prepend_icon(l:files)
+  endfunction
+
+  function! s:prepend_icon(candidates)
+    let l:result = []
+    for l:candidate in a:candidates
+      let l:filename = fnamemodify(l:candidate, ':p:t')
+      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+      call add(l:result, printf('%s %s', l:icon, l:candidate))
+    endfor
+
+    return l:result
+  endfunction
+
+  function! s:edit_file(item)
+    let l:pos = stridx(a:item, ' ')
+    let l:file_path = a:item[pos+1:-1]
+    execute 'silent e' l:file_path
+  endfunction
+
+  call fzf#run({
+        \ 'source': <sid>files(),
+        \ 'sink':   function('s:edit_file'),
+        \ 'options': '-m ' . l:fzf_files_options,
+        \ 'down':    '40%' })
+endfunction
+"}}}
