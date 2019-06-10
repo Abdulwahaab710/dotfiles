@@ -267,10 +267,10 @@ function push_upstram_origin {
 }
 
 function sp {
-    PROJECT_NAME="$(ls -1A ~/src/github.com/Shopify | fzf-tmux -d 15)"
+    PROJECT_NAME="$((cd $HOME/src/github.com; ls -dl1 * */*) | fzf-tmux -d 15)"
     if [ ! -z $PROJECT_NAME ]
     then
-      cd "$HOME/src/github.com/Shopify/$PROJECT_NAME"
+      cd "$HOME/src/github.com/$PROJECT_NAME"
     fi
 }
 
