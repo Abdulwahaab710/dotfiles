@@ -141,6 +141,21 @@ nmap <leader>sv :Sview<CR>
 nmap <leader>tv :Tview<CR>
 nmap <leader>vv :Vview<CR>
 
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+
 nnoremap <leader>rap  :RAddParameter<CR>
 nnoremap <leader>rcpc :RConvertPostConditional<CR>
 nnoremap <leader>rel  :RExtractLet<CR>
@@ -241,8 +256,6 @@ nnoremap <Space> za
 autocmd FileType magit nmap gp :!git push<CR>
 autocmd FileType go nmap <leader>gr :GoRun %<CR>
 
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 nmap <leader>f <Plug>Sneak_s
 nmap <leader>F <Plug>Sneak_S
 
@@ -336,16 +349,16 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Code Completion and snippets --------------------{{{
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" if has('nvim')
+"   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+"   Plug 'Shougo/deoplete.nvim'
+"   Plug 'roxma/nvim-yarp'
+"   Plug 'roxma/vim-hug-neovim-rpc'
+" endif
 
-Plug 'zchee/deoplete-jedi'
-Plug 'zchee/deoplete-clang'
+" Plug 'zchee/deoplete-jedi'
+" Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
@@ -413,6 +426,9 @@ Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 Plug 'soywod/kronos.vim'
+" NOTE TAKING RELATED PLUGINS ---{{{
+Plug 'junegunn/goyo.vim'
+" }}}
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -423,7 +439,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-liquid'
 " Plug 'PProvost/vim-markdown-jekyll'
@@ -437,6 +453,7 @@ Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'maksimr/vim-jsbeautify'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'mxw/vim-jsx'
+Plug 'jparise/vim-graphql'
 
 " }}}
 
@@ -576,6 +593,11 @@ highlight ALEWarning NONE
 " let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
 " }}}
 
+" NOTE TAKING CONFIGS --- {{{
+autocmd FileType markdown setlocal listchars=tab:␉·,trail:␠,nbsp:⎵
+
+" }}}
+
 let g:polyglot_disabled = ['typescript']
 
 " let g:LanguageClient_serverCommands = {
@@ -620,12 +642,12 @@ let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 let g:session_autosave = 'no'
 
-let g:deoplete#enable_at_startup = 1
-" let g:deoplete#disable_auto_complete = 1
-let g:deoplete#keyword_patterns = {}
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
+" let g:deoplete#enable_at_startup = 1
+" " let g:deoplete#disable_auto_complete = 1
+" let g:deoplete#keyword_patterns = {}
+" if !exists('g:deoplete#omni#input_patterns')
+"   let g:deoplete#omni#input_patterns = {}
+" endif
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 function! GalaxyUrl(opts, ...) abort
