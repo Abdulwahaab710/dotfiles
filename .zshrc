@@ -219,7 +219,7 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 # functions -------------------------------------------{{{{
-function update {
+update() {
   sudo softwareupdate -i -a
   brew update
   brew upgrade --all
@@ -230,7 +230,7 @@ function update {
   $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
 
-function start {
+start() {
   clear
   neofetch
 }
@@ -330,13 +330,14 @@ function docker_clean_all {
   docker_clean_images 2>/dev/null
   docker rmi $(docker images -a -q) 2>/dev/null
 }
-# function test_connection {
-#   if [ $(ping 1.1.1.1 -c 4) -eq 0 ]; then
-#     echo 'Your device is connectted to the internet'
-#   fi
-# }
-# }}}}
 
+fm() {
+  if [[ $# > 0 ]]; then
+    CURRENT_DIR=$(pwd) vifm $@
+  else
+    CURRENT_DIR=$(pwd) vifm .
+  fi
+}
 
 # Bindkeys --------------------------------------------{{{
 bindkey -s jj '\e'
