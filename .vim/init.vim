@@ -1,4 +1,3 @@
-
 "  █████╗ ██████╗ ██████╗ ██╗   ██╗██╗     ██╗    ██╗ █████╗ ██╗  ██╗ █████╗  █████╗ ██████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 " ██╔══██╗██╔══██╗██╔══██╗██║   ██║██║     ██║    ██║██╔══██╗██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
 " ███████║██████╔╝██║  ██║██║   ██║██║     ██║ █╗ ██║███████║███████║███████║███████║██████╔╝███████╗    ██║   ██║██║██╔████╔██║██████╔╝██║
@@ -348,8 +347,8 @@ Plug 'zchee/deoplete-jedi'
 Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+" Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+" Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
 Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
@@ -381,6 +380,7 @@ Plug 'tpope/vim-rhubarb'
 
 " misc --------------------------------------------{{{
 
+Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
@@ -413,6 +413,7 @@ Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 Plug 'soywod/kronos.vim'
+Plug 'junegunn/goyo.vim'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -423,7 +424,7 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-liquid'
 " Plug 'PProvost/vim-markdown-jekyll'
@@ -432,11 +433,13 @@ Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
-Plug 'RRethy/vim-illuminate'
-Plug 'HerringtonDarkholme/yats.vim'
+" Plug 'RRethy/vim-illuminate'
+" Plug 'HerringtonDarkholme/yats.vim'
 " Plug 'maksimr/vim-jsbeautify'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'mxw/vim-jsx'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'leafgarland/typescript-vim'
 
 " }}}
 
@@ -454,6 +457,10 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'liuchengxu/space-vim-dark'
 
+" }}}
+
+" Tools -------------------------------------------{{{
+Plug 'mhinz/vim-rfc'
 " }}}
 
 call plug#end()
@@ -600,9 +607,12 @@ let test#strategy = {
   \ 'suite':   'basic',
   \}
 
-let g:ale_fixers = {'python': ['pylint', 'flake8']}
-
-let g:ale_fixers = {'ruby': 'rubocop'}
+let g:ale_fixers = {
+  \'python': ['pylint', 'flake8'],
+  \'ts': ['prettier'],
+  \'tsx': ['prettier'],
+  \'ruby': 'rubocop'
+  \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ale_completion_enabled = 1
