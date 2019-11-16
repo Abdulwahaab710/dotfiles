@@ -101,7 +101,7 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 # zstyle ':prezto:module:prompt' theme 'sorin'
-zstyle ':prezto:module:prompt' theme 'powerlevel9k'
+zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 #
 # Ruby
 #
@@ -168,9 +168,6 @@ zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
 
 # Auto start a session when Zsh is launched in a SSH connection.
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
-
-# Integrate with iTerm2.
-zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # See also https://github.com/Falkor/dotfiles/blob/master/oh-my-zsh/
 # Font taken from https://github.com/stefano-meschiari/dotemacs/blob/master/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf
