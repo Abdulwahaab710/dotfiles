@@ -170,6 +170,8 @@ command! reload :write | restart
 
 " Pdf
 filetype *.pdf
+       \ {Open in zathura}
+       \ zathura,
        \ {Open in Preview}
        \ open -a Preview.app,
        \ {Open in Skim}
@@ -292,6 +294,7 @@ fileviewer *.docx docx2txt.pl %f -
 " 256-color terminal
 " fileviewer *.[ch],*.[ch]pp highlight -O xterm256 -s dante --syntax c %c
 " fileviewer Makefile,Makefile.* highlight -O xterm256 -s dante --syntax make %c
+fileviewer *.go highlight -O xterm256 -s dante --syntax go %c
 fileviewer *.rb highlight -O xterm256 -s dante --syntax rb %c
 fileviewer *.erb highlight -O xterm256 -s dante --syntax erb %c
 fileviewer *.py highlight -O xterm256 -s dante --syntax py %c
@@ -432,3 +435,33 @@ set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.m
 set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
 " office files
 set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
+
+" zenburn like color scheme for vifm
+" http://kippura.org/zenburnpage/
+
+" Reset all styles first
+highlight clear
+
+highlight Border	cterm=none	ctermfg=235	ctermbg=237
+
+highlight TopLine	cterm=none	ctermfg=108	ctermbg=235
+highlight TopLineSel	cterm=bold	ctermfg=186	ctermbg=235
+
+highlight Win		cterm=none	ctermfg=188	ctermbg=237
+highlight Directory	cterm=none	ctermfg=108	ctermbg=237
+highlight CurrLine	cterm=none	ctermfg=223	ctermbg=235
+highlight OtherLine	cterm=none	ctermfg=247	ctermbg=237
+highlight Selected	cterm=none	ctermfg=116	ctermbg=238
+
+highlight JobLine	cterm=bold	ctermfg=116	ctermbg=238
+highlight StatusLine	cterm=bold	ctermfg=144	ctermbg=236
+highlight ErrorMsg	cterm=bold	ctermfg=115	ctermbg=237
+highlight WildMenu	cterm=bold	ctermfg=235	ctermbg=144
+highlight CmdLine	cterm=none	ctermfg=188	ctermbg=237
+
+highlight Executable	cterm=none	ctermfg=172	ctermbg=237
+highlight Link		cterm=none	ctermfg=142	ctermbg=237
+highlight BrokenLink	cterm=none	ctermfg=174	ctermbg=237
+highlight Device	cterm=none	ctermfg=228	ctermbg=237
+highlight Fifo		cterm=none	ctermfg=109	ctermbg=237
+highlight Socket	cterm=none	ctermfg=110	ctermbg=237
