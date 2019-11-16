@@ -1,4 +1,7 @@
 #! /bin/zsh
+
+export BIN=/usr/local/bin
+
 alias gCa='git add $(gCl)'
 alias gCe='git mergetool $(gCl)'
 alias gCl='git --no-pager diff --name-only --diff-filter=U'
@@ -186,5 +189,12 @@ alias gwd='git diff --no-ext-diff'
 alias gwr='git reset --soft'
 alias gws='git status --ignore-submodules=${_git_status_ignore_submodules} --short'
 alias gwx='git rm -r'
-alias docker_stop_all='docker stop $(docker ps -aq)'
-alias wiki='e $HOME/vimwiki/index.wiki'
+alias docker_stop_all='$BIN/docker stop $(docker ps -aq)'
+alias wiki='$BIN/nvim $HOME/vimwiki/index.wiki'
+alias n='$BIN/nnn'
+alias t='$BIN/ultralist'
+alias tl='$BIN/ultralist list'
+alias td='$BIN/ultralist list due'
+alias tod='$BIN/ultralist list due today'
+alias tdw='$BIN/ultralist list due week'
+alias lock='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
