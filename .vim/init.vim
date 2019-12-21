@@ -1,4 +1,3 @@
-
 "  █████╗ ██████╗ ██████╗ ██╗   ██╗██╗     ██╗    ██╗ █████╗ ██╗  ██╗ █████╗  █████╗ ██████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 " ██╔══██╗██╔══██╗██╔══██╗██║   ██║██║     ██║    ██║██╔══██╗██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
 " ███████║██████╔╝██║  ██║██║   ██║██║     ██║ █╗ ██║███████║███████║███████║███████║██████╔╝███████╗    ██║   ██║██║██╔████╔██║██████╔╝██║
@@ -56,6 +55,7 @@ if has('wildoptions') && has('pumblend')
 else
   set wildmode=longest:full,full
 endif
+set dictionary='/usr/share/dict/words'      " Set the path to the dictionary
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 " set scrolloff=15
@@ -92,7 +92,7 @@ if $TMUX == ''
     set clipboard+=unnamed
 endif
 
-" }}}}
+" }}}
 
 " Command -------------------------------------------------------------------{{{
 command! Q q " Bind :Q to :q
@@ -103,7 +103,8 @@ command! W w
 command! Wq wq
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
-"  }}}
+command! Config tabedit ~/.config/nvim/init.vim
+"}}}
 
 " Keyboard config  ----------------------------------------------------------{{{
 
@@ -231,7 +232,7 @@ imap <F8> <esc>:Vista!!<CR>i
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
-nnoremap K :FzfRg <C-R><C-W><CR>
+nnoremap <leader>k :FzfRg <C-R><C-W><CR>
 
 " deoplete tab-complete
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
@@ -258,6 +259,10 @@ nmap cp :let @" = expand("%")<cr>
 
 
 " imap <c-j> <plug>(MUcompleteFwd)
+iabbrev <buffer> shrug; ¯\_(ツ)_/¯
+
+nmap <leader>bn :bnext<CR>
+nmap <leader>bp :bprevious<CR>
 
 " }}}
 
@@ -328,7 +333,7 @@ augroup configgroup
 augroup END
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-" }}}
+"}}}
 
 " Plugins -------------------------------------------------------------------{{{
 
@@ -336,34 +341,23 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Code Completion and snippets --------------------{{{
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-
-Plug 'zchee/deoplete-jedi'
-Plug 'zchee/deoplete-clang'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-Plug 'wellle/tmux-complete.vim'
+" Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
   Plug 'ujihisa/neco-look'
 endif
 
-" }}}
+"}}}
 
 " git plugins -------------------------------------{{{
 
 Plug 'airblade/vim-gitgutter'
 Plug 'jreybert/vimagit'
 
-" }}}
+"}}}
 
 " tpope plugins -----------------------------------{{{
 
@@ -376,17 +370,21 @@ Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-bundler'
 
-" }}}
+"}}}
 
 " misc --------------------------------------------{{{
 
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Shougo/vimshell.vim'
+Plug 'ujihisa/repl.vim'
+Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
-" Plug 'mattn/emmet-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
 Plug 'kopischke/vim-stay'
@@ -397,23 +395,22 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-" Plug 'xavierchow/vim-sequence-diagram', { 'for': 'sequence' }
-" Plug 'vim-scripts/ReplaceWithRegister'
-" Plug 'junkblocker/patchreview-vim'
-Plug 'codegram/vim-codereview'
 Plug 'Shougo/denite.nvim'
 Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-" Plug 'metakirby5/codi.vim'
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-" Plug 'plasticboy/vim-markdown'
 Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 Plug 'soywod/kronos.vim'
-" }}}
+Plug 'junegunn/goyo.vim'
+Plug 'Shopify/shadowenv.vim'
+Plug 'wsdjeg/vim-fetch'
+Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
+Plug 'xolox/vim-notes'
+"}}}
 
 " Syntax plugins ----------------------------------{{{
 
@@ -424,25 +421,20 @@ Plug 'chrisbra/csv.vim'
 Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Plug 'suan/vim-instant-markdown'
 Plug 'tpope/vim-liquid'
-" Plug 'PProvost/vim-markdown-jekyll'
 Plug 'gabrielelana/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
-Plug 'RRethy/vim-illuminate'
-Plug 'HerringtonDarkholme/yats.vim'
-" Plug 'maksimr/vim-jsbeautify'
-" Plug 'leafgarland/typescript-vim'
-" Plug 'mxw/vim-jsx'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'leafgarland/typescript-vim'
 
-" }}}
+"}}}
 
 " Refactor ----------------------------------------{{{
 Plug 'ecomba/vim-ruby-refactoring'
-" }}}
+"}}}
 
 " Theme related plugins ---------------------------{{{
 
@@ -451,13 +443,17 @@ Plug 'vim-airline/vim-airline'
 Plug 'chriskempson/base16-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'liuchengxu/space-vim-dark'
 
-" }}}
+"}}}
+
+" Tools -------------------------------------------{{{
+Plug 'mhinz/vim-rfc'
+"}}}
 
 call plug#end()
-" }}}
+
+"}}}
 
 " omnifuncs -----------------------------------------------------------------{{{
 
@@ -471,11 +467,11 @@ call plug#end()
 
 set omnifunc=syntaxcomplete#Complete
 
-" }}}
+"}}}
 
 " Fold, gets it's own section  ----------------------------------------------{{{
 
-function! MyFoldText() " {{{
+function! MyFoldText() "
     let line = getline(v:foldstart)
 
     let nucolwidth = &fdc + &number * &numberwidth
@@ -490,8 +486,6 @@ function! MyFoldText() " {{{
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction
-
-" }}}
 
 set foldtext=MyFoldText()
 
@@ -512,7 +506,7 @@ autocmd FileType zsh setlocal foldlevel=0
 let ruby_fold = 1
 set foldlevelstart=1
 
-" }}}
+"}}}
 
 " Colorscheme ---------------------------------------------------------------{{{
 
@@ -525,8 +519,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
-" set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-" set guifont=Hack\ Nerd\ Font:h11
 au VimLeave * set guicursor=a:block-blinkon0
 
 " if filereadable(expand("~/.vimrc_background"))
@@ -546,7 +538,7 @@ highlight MatchParen cterm=bold ctermbg=blue ctermfg=black     " Matching paren 
 highlight CursorLineNr guifg=#0099ff                           " Make current line number blue
 highlight Comment cterm=italic                                 " enable italicised comments in vim
 " highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
-highlight CursorLine term=bold cterm=bold ctermbg=18 guibg=#26232a
+highlight CursorLine term=bold cterm=bold ctermbg=18 guibg=#292b2e
 autocmd FileType ruby highlight OverLength guibg=#a06e3b ctermbg=3
 autocmd FileType ruby match OverLength /\%>121v.\+/
 highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
@@ -559,12 +551,70 @@ let g:ale_sign_warning = "◉"
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 highlight ALEWarning NONE
 
-" }}}
+" if exists('*matchaddpos')
+"   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
+"   autocmd FocusLost,WinLeave * call s:blur_window()
+" endif
+
+" let g:WincentColorColumnBlacklist = ['diff', 'undotree', 'nerdtree', 'qf']
+
+" function! s:should_colorcolumn() abort
+"   return index(g:WincentColorColumnBlacklist, &filetype) == -1
+" endfunction
+
+" function! s:blur_window() abort
+"   if s:should_colorcolumn()
+"     if !exists('w:wincent_matches')
+"       " Instead of unconditionally resetting, append to existing array.
+"       " This allows us to gracefully handle duplicate autocmds.
+"       let w:wincent_matches=[]
+"     endif
+"     let l:height=&lines
+"     let l:slop=l:height / 2
+"     let l:start=max([1, line('w0') - l:slop])
+"     let l:end=min([line('$'), line('w$') + l:slop])
+"     while l:start <= l:end
+"       let l:next=l:start + 8
+"       let l:id=matchaddpos(
+"             \   'StatusLine',
+"             \   range(l:start, min([l:end, l:next])),
+"             \   1000
+"             \ )
+"       call add(w:wincent_matches, l:id)
+"       let l:start=l:next
+"     endwhile
+"   endif
+" endfunction
+
+" function! s:focus_window() abort
+"   if s:should_colorcolumn()
+"     if exists('w:wincent_matches')
+"       for l:match in w:wincent_matches
+"         try
+"           call matchdelete(l:match)
+"         catch /.*/
+"           " In testing, not getting any error here, but being ultra-cautious.
+"         endtry
+"       endfor
+"       let w:wincent_matches=[]
+"     endif
+"   endif
+" endfunction
+
+
+"}}}
 
 " Plugins configs -----------------------------------------------------------{{{
 
+" vim-notes --{{{
+let g:notes_tab_indents = 0
+let g:notes_unicode_enabled = 0
+let g:notes_directories = ['~/Documents/Notes']
+let g:notes_word_boundaries = 1
+let g:notes_conceal_code = 0
+" }}}
+
 " WIKI -------{{{
-"
  let g:vimwiki_list = [{'path': '~/wiki/',
                        \ 'syntax': 'markdown', 'ext': '.md'}]
 "" let wiki_1 = {}
@@ -574,13 +624,9 @@ highlight ALEWarning NONE
 
 " let g:vimwiki_list = [wiki_1]
 " let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-" }}}
+"}}}
 
 let g:polyglot_disabled = ['typescript']
-
-" let g:LanguageClient_serverCommands = {
-" \ 'ruby': ['solargraph', 'stdio'],
-" \ }
 
 let g:fzf_command_prefix = 'Fzf'
 
@@ -600,17 +646,15 @@ let test#strategy = {
   \ 'suite':   'basic',
   \}
 
-let g:ale_fixers = {'python': ['pylint', 'flake8']}
-
-let g:ale_fixers = {'ruby': 'rubocop'}
+let g:ale_fixers = {
+  \'python': ['pylint', 'flake8'],
+  \'ts': ['prettier'],
+  \'tsx': ['prettier'],
+  \'ruby': 'rubocop'
+  \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ale_completion_enabled = 1
-" let g:ale_ruby_solargraph_executable = 'solargraph'
-set completeopt=menu,menuone,preview,noselect,noinsert
 
-
-" let g:plug_url_format = 'https://git:@github.com:%s.git'
 
 let g:UltiSnipsExpandTrigger='<c-s>'
 let g:UltiSnipsListSnippets='<leader>ss'
@@ -653,6 +697,25 @@ if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
   call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
 endif
 
+" coc.nvim -----{{{
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" }}}
+
 "}}}
 
 " Vista.vim ---------------------------------------{{{
@@ -661,11 +724,11 @@ function! NearestMethodOrFunction() abort
 endfunction
 
 set statusline+=%{NearestMethodOrFunction()}
-" }}}
+"}}}
 
 " Magit -------------------------------------------{{{
 let g:magit_discard_untracked_do_delete = 1
-" }}}
+"}}}
 
 " NERDtree ----------------------------------------{{{
 
@@ -681,7 +744,7 @@ let g:netrw_winsize = 10
 " augroup END
 
 let ruby_spellcheck_strings = 1
-" }}}
+"}}}
 
 " Custom Functions ----------------------------------------------------------{{{
 
@@ -803,29 +866,42 @@ command! Sorc source ~/.config/nvim/init.vim
 command! Vterm vsp | term
 command! Sterm sp | term
 
-function! Smart_TabComplete()
-  let line = getline('.')                         " current line
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-  let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-                                                  " line to one character right
-                                                  " of the cursor
-  let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-  if (strlen(substr)==0)                          " nothing to match on empty string
-    return "\<tab>"
-  endif
-  let has_period = match(substr, '\.') != -1      " position of period, if any
-  let has_slash = match(substr, '\/') != -1       " position of slash, if any
-  if (!has_period && !has_slash)
-    return "\<C-X>\<C-P>"                         " existing text matching
-  elseif ( has_slash )
-    return "\<C-X>\<C-F>"                         " file matching
-  else
-    return "\<C-X>\<C-O>"                         " plugin matching
-  endif
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <tab> <c-r>=Smart_TabComplete()<CR>
+
+" function! Smart_TabComplete()
+"   let line = getline('.')                         " current line
+
+"   let substr = strpart(line, -1, col('.')+1)      " from the start of the current
+"                                                   " line to one character right
+"                                                   " of the cursor
+"   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
+"   if (strlen(substr)==0)                          " nothing to match on empty string
+"     return "\<tab>"
+"   endif
+"   let has_period = match(substr, '\.') != -1      " position of period, if any
+"   let has_slash = match(substr, '\/') != -1       " position of slash, if any
+"   if (!has_period && !has_slash)
+"     return "\<C-X>\<C-P>"                         " existing text matching
+"   elseif ( has_slash )
+"     return "\<C-X>\<C-F>"                         " file matching
+"   else
+"     return "\<C-X>\<C-O>"                         " plugin matching
+"   endif
+" endfunction
+" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
-" }}}
+"}}}
 
 " FZF -----------------------------------------------------------------------{{{
 " ripgrep
@@ -867,4 +943,5 @@ function! Fzf_dev()
         \ 'options': '-m ' . l:fzf_files_options,
         \ 'down':    '40%' })
 endfunction
-"}}}
+
+set foldmethod=syntax
