@@ -355,6 +355,8 @@ searchAllGit() {
 
 # Bindkeys --------------------------------------------{{{
 bindkey -s jj '\e'
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
 # }}}
 
 
