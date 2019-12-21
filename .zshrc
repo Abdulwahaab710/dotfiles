@@ -24,6 +24,13 @@ fi
 # Customize to your needs...
 export LANG="en_US.UTF-8"
 
+# POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+# POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
+# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(rspec_stats chruby vi_mode status background_jobs)
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
+
+
 # Customize to your needs...
 
 # Add homebrew to the completion path
@@ -182,6 +189,11 @@ export EDITOR=/usr/local/bin/nvim
 export VISUAL=/usr/local/bin/nvim
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--extended'
+if command -v fd  > /dev/null; then
+  export FZF_DEFAULT_COMMAND='fd --type file'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+fi
 
 export PATH=$PATH:$HOME/swap
 export PATH="/usr/local/opt/python@2/bin:$PATH"
@@ -219,7 +231,7 @@ update() {
 # start
 
 function s {
-    branch="$(git branch | fzf-tmux -d 15)"
+    branch="$(git branch | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
       BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
@@ -227,7 +239,7 @@ function s {
     fi
 }
 function sr {
-    branch="$(git branch -a | fzf-tmux -d 15)"
+    branch="$(git branch -a | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
       BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
@@ -236,7 +248,7 @@ function sr {
 }
 
 function ts {
-    session="$(tmux ls | fzf-tmux -d 15)"
+    session="$(tmux ls | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $session ]
     then
       SESSION_NAME="$(echo -e "${session}" | sed -e 's/^[[:space:]]*//' | sed -e 's/: .*//')"
@@ -257,7 +269,8 @@ function push_upstram_origin {
 }
 
 function sp {
-    PROJECT_NAME="$((cd $HOME/src/github.com; ls -dl1 * */*) | fzf-tmux -d 15)"
+    DIRECTORIES=$(cd $HOME/src/github.com; ls -dl1 * */*);
+    PROJECT_NAME=$(echo $DIRECTORIES | fzf -d 15 --query="$1" --select-1 --exit-0)
     if [ ! -z $PROJECT_NAME ]
     then
       cd "$HOME/src/github.com/$PROJECT_NAME"
