@@ -205,7 +205,7 @@ tnoremap jj <C-\><C-n>
 " ================
 nnoremap \ :FzfRg<CR>
 nnoremap <silent> <C-p> :call Fzf_dev()<CR>
-nnoremap <silent> <C-P> :FZF<CR>
+nnoremap <silent> <leader>p :FZF<CR>
 
 " ===========
 " resizing
@@ -239,7 +239,7 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 nnoremap <Space> za
 
-autocmd FileType magit nmap gp :!git push<CR>
+" autocmd FileType magit nmap gp :!git push<CR>
 autocmd FileType go nmap <leader>gr :GoRun %<CR>
 
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
@@ -329,8 +329,8 @@ augroup configgroup
     autocmd FileType vimwiki setlocal spell
     autocmd FileType vimwiki setlocal wrap
 
-    autocmd FileType magit setlocal spell
-augroup END
+    " autocmd FileType magit setlocal spell
+  augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
 "}}}
@@ -344,7 +344,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
-" Plug 'wellle/tmux-complete.vim'
+"" Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
   Plug 'ujihisa/neco-look'
@@ -355,7 +355,7 @@ endif
 " git plugins -------------------------------------{{{
 
 Plug 'airblade/vim-gitgutter'
-Plug 'jreybert/vimagit'
+" Plug 'jreybert/vimagit'
 
 "}}}
 
@@ -363,7 +363,7 @@ Plug 'jreybert/vimagit'
 
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-rails'
+" Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
@@ -404,12 +404,13 @@ Plug 'godlygeek/tabular'
 Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
-Plug 'soywod/kronos.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'Shopify/shadowenv.vim'
+" Plug 'Shopify/shadowenv.vim'
 Plug 'wsdjeg/vim-fetch'
 Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
 Plug 'xolox/vim-notes'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'dstein64/vim-startuptime'
 "}}}
 
 " Syntax plugins ----------------------------------{{{
@@ -449,6 +450,7 @@ Plug 'liuchengxu/space-vim-dark'
 
 " Tools -------------------------------------------{{{
 Plug 'mhinz/vim-rfc'
+Plug 'puremourning/vimspector', { 'do': './--enable-go' }
 "}}}
 
 call plug#end()
@@ -457,13 +459,13 @@ call plug#end()
 
 " omnifuncs -----------------------------------------------------------------{{{
 
-" augroup omnifuncs
-"   autocmd!
-"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-" augroup end
+augroup omnifuncs
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+augroup end
 
 set omnifunc=syntaxcomplete#Complete
 
@@ -551,6 +553,12 @@ let g:ale_sign_warning = "◉"
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 highlight ALEWarning NONE
 
+syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
+      \ transparent keepend
+      \ contains=rubySorbetSigStart,rubySorbetSigEnd
+syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
+syntax match rubySorbetSigEnd +}$+ conceal contained
+
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
 "   autocmd FocusLost,WinLeave * call s:blur_window()
@@ -605,6 +613,8 @@ highlight ALEWarning NONE
 "}}}
 
 " Plugins configs -----------------------------------------------------------{{{
+
+let g:vimspector_enable_mappings = 'HUMAN'
 
 " vim-notes --{{{
 let g:notes_tab_indents = 0
@@ -714,6 +724,23 @@ function! s:show_documentation()
   endif
 endfunction
 
+let g:coc_global_extensions = [
+            \'coc-yank',
+            \'coc-tag',
+            \'coc-json',
+            \'coc-css',
+            \'coc-html',
+            \'coc-tsserver',
+            \'coc-yaml',
+            \'coc-solargraph',
+            \'coc-snippets',
+            \'coc-ultisnips',
+            \'coc-python',
+            \'coc-dictionary',
+            \'coc-syntax',
+            \'coc-gocode',
+            \]
+
 " }}}
 
 "}}}
@@ -727,7 +754,7 @@ set statusline+=%{NearestMethodOrFunction()}
 "}}}
 
 " Magit -------------------------------------------{{{
-let g:magit_discard_untracked_do_delete = 1
+" let g:magit_discard_untracked_do_delete = 1
 "}}}
 
 " NERDtree ----------------------------------------{{{
@@ -940,8 +967,34 @@ function! Fzf_dev()
   call fzf#run({
         \ 'source': <sid>files(),
         \ 'sink':   function('s:edit_file'),
-        \ 'options': '-m ' . l:fzf_files_options,
+        \ 'options': '-m --reverse ' . l:fzf_files_options,
+        \ 'window': 'call CreateCenteredFloatingWindow()',
         \ 'down':    '40%' })
 endfunction
+
+function! CreateCenteredFloatingWindow()
+    let width = min([&columns - 4, max([80, &columns - 20])])
+    let height = min([&lines - 4, max([20, &lines - 10])])
+    let top = ((&lines - height) / 2) - 1
+    let left = (&columns - width) / 2
+    let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+
+    let top = "╭" . repeat("─", width - 2) . "╮"
+    let mid = "│" . repeat(" ", width - 2) . "│"
+    let bot = "╰" . repeat("─", width - 2) . "╯"
+    let lines = [top] + repeat([mid], height - 2) + [bot]
+    let s:buf = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+    call nvim_open_win(s:buf, v:true, opts)
+    set winhl=Normal:Floating
+    let opts.row += 1
+    let opts.height -= 2
+    let opts.col += 2
+    let opts.width -= 4
+    call nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+    au BufWipeout <buffer> exe 'bw '.s:buf
+endfunction
+
+let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
 set foldmethod=syntax
