@@ -104,7 +104,7 @@ command! Wq wq
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
-"}}}
+" }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
 
@@ -112,7 +112,7 @@ let g:mapleader=';'  " Leader Key
 
 noremap <leader>ml :!mac lock<CR>
 
-" nmap <unique> <leader>gd <Plug>GenerateDiagram
+nmap <unique> <leader>gd <Plug>GenerateDiagram
 
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
@@ -228,6 +228,8 @@ nnoremap <C-g>P :Gpush<CR>
 nmap <F8> :Vista!!<CR>
 imap <F8> <esc>:Vista!!<CR>i
 
+vnoremap <F8> :CarbonNowSh<CR>
+
 " ===============
 " Silver Searcher
 " ===============
@@ -328,15 +330,17 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd FileType vimwiki setlocal spell
     autocmd FileType vimwiki setlocal wrap
-
-    " autocmd FileType magit setlocal spell
+    autocmd FileType notes setlocal spell
+    autocmd FileType notes setlocal wrap
+    autocmd FileType notes setlocal filetype=notes.txtfmt
+    " autocmd FileType notes Goyo 180x100
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-"}}}
+
+" }}}
 
 " Plugins -------------------------------------------------------------------{{{
-
 call plug#begin('~/.config/nvim/plugged')
 
 " Code Completion and snippets --------------------{{{
@@ -350,20 +354,20 @@ if executable('look')
   Plug 'ujihisa/neco-look'
 endif
 
-"}}}
+Plug 'xavierchow/vim-sequence-diagram'
+" }}}
 
 " git plugins -------------------------------------{{{
 
 Plug 'airblade/vim-gitgutter'
 " Plug 'jreybert/vimagit'
-
-"}}}
+" }}}
 
 " tpope plugins -----------------------------------{{{
 
 Plug 'tpope/vim-surround' "easily surround things...just read docs for info
 Plug 'tpope/vim-commentary'
-" Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
@@ -371,8 +375,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-bundler'
-
-"}}}
+" }}}
 
 " misc --------------------------------------------{{{
 
@@ -394,7 +397,6 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
 Plug 'Shougo/denite.nvim'
 Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
@@ -404,14 +406,16 @@ Plug 'godlygeek/tabular'
 Plug 'shime/vim-livedown'
 Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
-Plug 'junegunn/goyo.vim'
 " Plug 'Shopify/shadowenv.vim'
 Plug 'wsdjeg/vim-fetch'
 Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
-Plug 'xolox/vim-notes'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-"}}}
+Plug 'kristijanhusak/vim-carbon-now-sh'
+Plug 'junegunn/vim-emoji'
+Plug 'rizzatti/dash.vim'
+Plug 'vifm/vifm.vim'
+" }}}
 
 " Syntax plugins ----------------------------------{{{
 
@@ -430,12 +434,11 @@ Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'leafgarland/typescript-vim'
-
-"}}}
+" }}}
 
 " Refactor ----------------------------------------{{{
 Plug 'ecomba/vim-ruby-refactoring'
-"}}}
+" }}}
 
 " Theme related plugins ---------------------------{{{
 
@@ -445,17 +448,27 @@ Plug 'chriskempson/base16-vim'
 Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
 Plug 'liuchengxu/space-vim-dark'
-
-"}}}
+Plug 'arzg/vim-colors-xcode'
+Plug 'ap/vim-css-color'
+" }}}
 
 " Tools -------------------------------------------{{{
 Plug 'mhinz/vim-rfc'
-Plug 'puremourning/vimspector', { 'do': './--enable-go' }
-"}}}
+" Plug 'puremourning/vimspector', { 'do': './--enable-go' }
+" }}}
 
+" Note Taking Plugins -----------------------------{{{
+Plug 'bpstahlman/txtfmt'
+Plug 'xolox/vim-notes'
+Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
+Plug 'vim-scripts/utl.vim'
+Plug 'jceb/vim-orgmode'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
-
-"}}}
+" }}}
+" }}}
 
 " omnifuncs -----------------------------------------------------------------{{{
 
@@ -468,8 +481,7 @@ augroup omnifuncs
 augroup end
 
 set omnifunc=syntaxcomplete#Complete
-
-"}}}
+" }}}
 
 " Fold, gets it's own section  ----------------------------------------------{{{
 
@@ -507,8 +519,7 @@ autocmd FileType zsh setlocal foldlevel=0
 " au FileType html nnoremap <buffer> <leader>F zfat
 let ruby_fold = 1
 set foldlevelstart=1
-
-"}}}
+" }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
 
@@ -558,6 +569,7 @@ syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
       \ contains=rubySorbetSigStart,rubySorbetSigEnd
 syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
 syntax match rubySorbetSigEnd +}$+ conceal contained
+" }}}
 
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
@@ -609,9 +621,6 @@ syntax match rubySorbetSigEnd +}$+ conceal contained
 "   endif
 " endfunction
 
-
-"}}}
-
 " Plugins configs -----------------------------------------------------------{{{
 
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -622,6 +631,74 @@ let g:notes_unicode_enabled = 0
 let g:notes_directories = ['~/Documents/Notes']
 let g:notes_word_boundaries = 1
 let g:notes_conceal_code = 0
+
+if !exists('g:notes_directories')
+  let g:notes_directories = ['']
+  function! FzfNote()
+    execute 'FzfFiles' fnameescape(g:notes_directories[0])
+  endfunction
+  command! FzfNote call FzfNote()
+endif
+" }}}
+
+" Limelight --{{{
+" Color name (:help cterm-colors) or ANSI code
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+" Color name (:help gui-colors) or RGB color
+let g:limelight_conceal_guifg = 'DarkGray'
+let g:limelight_conceal_guifg = '#777777'
+
+" Default: 0.5
+" let g:limelight_default_coefficient = 0.7
+
+" Number of preceding/following paragraphs to include (default: 0)
+" let g:limelight_paragraph_span = 1
+
+" Beginning/end of paragraph
+"   When there's no empty line between the paragraphs
+"   and each paragraph starts with indentation
+" let g:limelight_bop = '^\s'
+" let g:limelight_eop = '\ze\n^\s'
+
+" Highlighting priority (default: 10)
+"   Set it to -1 not to overrule hlsearch
+" let g:limelight_priority = -1
+" }}}
+
+
+" Goyo -------{{{
+
+function! s:goyo_enter()
+  Limelight
+  TableModeEnable
+  if has('gui_running')
+    set fullscreen
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+  endif
+
+  set nolist
+endfunction
+
+function! s:goyo_leave()
+  Limelight!
+  TableModeDisable
+  if has('gui_running')
+    set nofullscreen
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+  endif
+
+  set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵   " show $ in the end of line
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
 " }}}
 
 " WIKI -------{{{
@@ -634,7 +711,8 @@ let g:notes_conceal_code = 0
 
 " let g:vimwiki_list = [wiki_1]
 " let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-"}}}
+" }}}
+
 
 let g:polyglot_disabled = ['typescript']
 
@@ -706,6 +784,7 @@ endif
 if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
   call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
 endif
+" }}}
 
 " coc.nvim -----{{{
 nmap <silent> gd <Plug>(coc-definition)
@@ -743,19 +822,13 @@ let g:coc_global_extensions = [
 
 " }}}
 
-"}}}
-
 " Vista.vim ---------------------------------------{{{
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
 set statusline+=%{NearestMethodOrFunction()}
-"}}}
-
-" Magit -------------------------------------------{{{
-" let g:magit_discard_untracked_do_delete = 1
-"}}}
+" }}}
 
 " NERDtree ----------------------------------------{{{
 
@@ -771,7 +844,7 @@ let g:netrw_winsize = 10
 " augroup END
 
 let ruby_spellcheck_strings = 1
-"}}}
+" }}}
 
 " Custom Functions ----------------------------------------------------------{{{
 
@@ -928,7 +1001,7 @@ endfunction
 " endfunction
 " inoremap <tab> <c-r>=Smart_TabComplete()<CR>
 " https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
-"}}}
+" }}}
 
 " FZF -----------------------------------------------------------------------{{{
 " ripgrep
@@ -997,4 +1070,19 @@ endfunction
 
 let g:fzf_layout = { 'window': 'call CreateCenteredFloatingWindow()' }
 
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
+
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+
 set foldmethod=syntax
+" }}}
