@@ -113,35 +113,22 @@ bindkey -M vicmd "q" push-line
 # it's like, space AND completion.  Gnarlbot.
 bindkey -M viins ' ' magic-space
 
-# zsh-autosuggestions
-# source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Zinit -----------------------------------------------{{{{
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
 
-# Zplug {{{
-  export ZPLUG_HOME=/usr/local/opt/zplug
-  if [[ ! -d $ZPLUG_HOME ]]; then
-    git clone https://github.com/zplug/zplug $ZPLUG_HOME
-    source $ZPLUG_HOME/init.zsh
-  else
-    source $ZPLUG_HOME/init.zsh
-  fi
-  zplug "supercrabtree/k"
-  zplug "zdharma/fast-syntax-highlighting",  defer:3
-  zplug "zsh-users/zsh-autosuggestions",     defer:3
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-  if ! zplug check --verbose; then
-      printf "Install? [y/N]: "
-      if read -q; then
-          echo; zplug install
-      else
-          echo
-      fi
-  fi
-
-  zplug load
-
-# }}}
-
+zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma/fast-syntax-highlighting
+# }}}}
 # aliases ---------------------------------------------{{{{
 
 alias fix='rm ~/.zcondump*;exec zsh;'
@@ -224,13 +211,7 @@ update() {
   $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
 
-# start() {
-#   clear
-#   neofetch
-# }
-# start
-
-function s {
+s() {
     branch="$(git branch | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
@@ -238,7 +219,7 @@ function s {
       git checkout $BRANCH_NAME
     fi
 }
-function sr {
+sr() {
     branch="$(git branch -a | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
@@ -247,7 +228,7 @@ function sr {
     fi
 }
 
-function ts {
+ts() {
     session="$(tmux ls | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $session ]
     then
@@ -256,11 +237,11 @@ function ts {
     fi
 }
 
-function git-nvim {
+git-nvim() {
     git status -s -u | fzf -m --ansi --preview-window "right:33%" --preview "echo {} | cut -d' ' -f 3 | xargs head -$LINES" | cut -d' ' -f 3 | xargs nvim
 }
 
-function push_upstram_origin {
+push_upstram_origin() {
     BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
     if [ ! -z $BRANCH_NAME ]
     then
@@ -268,8 +249,8 @@ function push_upstram_origin {
     fi
 }
 
-function sp {
-    DIRECTORIES=$(cd $HOME/src/github.com; ls -dl1 * */*);
+sp() {
+    DIRECTORIES=$((cd ~/src/github.com ;ls -dl1 */**) | rg '[^/;]+/[^/;]+$' -o);
     PROJECT_NAME=$(echo $DIRECTORIES | fzf -d 15 --query="$1" --select-1 --exit-0)
     if [ ! -z $PROJECT_NAME ]
     then
@@ -277,7 +258,7 @@ function sp {
     fi
 }
 
-function swap_file_names {
+swap_file_names() {
     first_file=$1
     second_file=$2
     tmp_name="tmp:$first_file+$second_file"
@@ -296,7 +277,7 @@ function dmenu_apps {
 
 
 unalias g 2>/dev/null
-function g {
+g() {
   if [[ $# > 0 ]]; then
     git $@
   else
@@ -304,20 +285,20 @@ function g {
   fi
 }
 
-function rm_orig {
+rm_orig() {
   find . -name *.orig | xargs rm
 }
 
 compdef g=git
 
-function RANDOM_THEME {
+RANDOM_THEME() {
   THEMES=($(alias | awk -F'=' '/base16_[A-Za-z0-9]*/ {print $1}'))
   THEMES_ARRAY_SIZE=${#THEMES[@]}
   THEME_INDEX=$(( ( RANDOM % THEMES_ARRAY_SIZE )  + 1 ))
   shopt $THEMES[$THEME_INDEX]
 }
 
-function brakeman_scan {
+brakeman_scan() {
   chruby 2.5.1
   brakeman -o report.html
   open report.html
@@ -325,7 +306,7 @@ function brakeman_scan {
   rm -rf report.html
 }
 
-function docker_clean_all {
+docker_clean_all() {
   alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
   alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
   docker kill $(docker ps -q) 2>/dev/null
@@ -369,3 +350,9 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
