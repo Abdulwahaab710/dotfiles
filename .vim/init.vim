@@ -59,7 +59,7 @@ set dictionary='/usr/share/dict/words'      " Set the path to the dictionary
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 " set scrolloff=15
-" set timeoutlen=500
+set timeoutlen=500
 
 " =========================================
 " Undo persistent
@@ -101,7 +101,6 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
-command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
@@ -111,12 +110,17 @@ command! Config tabedit ~/.config/nvim/init.vim
 
 let g:mapleader=';'  " Leader Key
 
+noremap <leader>ml :!mac lock<CR>
+
+" nmap <unique> <leader>gd <Plug>GenerateDiagram
+
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 
 map <leader>vt :Vterm<CR>
 map <leader>st :Sterm<CR>
 
+nnoremap <leader><leader> :Magit<CR>
 noremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>x :x<CR>
@@ -152,7 +156,7 @@ vnoremap <leader>rem  :RExtractMethod<CR>
 nmap <leader>cn :cn<CR>
 nmap <leader>cN :cp<CR>
 
-nmap <leader>g <Plug>GenerateDiagram
+" nmap <leader>g <Plug>GenerateDiagram
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
 nmap <leader>gb :Gbrowse<CR>
@@ -172,7 +176,6 @@ imap <up>    <nop>
 imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
-nnoremap Q  <nop>
 
 " nnoremap <C-j> <C-w><C-j>
 " nnoremap <C-k> <C-w><C-k>
@@ -263,9 +266,6 @@ iabbrev <buffer> shrug; ¯\_(ツ)_/¯
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
 
-nmap <leader>tt :FloatermToggle<CR>
-nmap <leader>lg :FloatermNew lazygit<CR>
-
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
@@ -281,6 +281,7 @@ augroup configgroup
     autocmd FileType php setlocal listchars=tab:+\ ,eol:$
     autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
+
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
@@ -347,7 +348,8 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 "" Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
@@ -386,11 +388,11 @@ Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
-" Plug 'xolox/vim-session'
+Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
-" Plug 'kopischke/vim-stay'
+Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
@@ -398,22 +400,23 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'Shougo/denite.nvim'
-" Plug 'wellle/targets.vim'
+Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-" Plug 'shime/vim-livedown'
-" Plug 'skwp/greplace.vim'
+Plug 'shime/vim-livedown'
+Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 " Plug 'Shopify/shadowenv.vim'
-" Plug 'wsdjeg/vim-fetch'
-" Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
+Plug 'wsdjeg/vim-fetch'
+Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-" Plug 'kristijanhusak/vim-carbon-now-sh'
+Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-emoji'
-Plug 'voldikss/vim-floaterm'
+Plug 'rizzatti/dash.vim'
+Plug 'vifm/vifm.vim'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -422,7 +425,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'rust-lang/rust.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-" Plug 'yaunj/vim-yara'
+Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'tpope/vim-liquid'
@@ -448,8 +451,8 @@ Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'arzg/vim-colors-xcode'
-" Plug 'ap/vim-css-color'
-Plug 'jeffkreeftmeijer/vim-dim'
+Plug 'ap/vim-css-color'
+Plug 'morhetz/gruvbox'
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -461,7 +464,7 @@ Plug 'mhinz/vim-rfc'
 Plug 'bpstahlman/txtfmt'
 Plug 'xolox/vim-notes'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-Plug 'vim-scripts/utl.vim'
+" Plug 'vim-scripts/utl.vim'
 Plug 'jceb/vim-orgmode'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -528,7 +531,6 @@ if (has("termguicolors"))
 endif
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
@@ -558,19 +560,11 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-let g:ale_sign_error = " ✘ "
-let g:ale_sign_warning = " ⚠ "
-let g:ale_sign_info = "  "
-let g:ale_sign_highlight_linenrs = 1
-
-highlight link ALEWarningSign Todo
-highlight link ALEErrorSign WarningMsg
-highlight link ALEVirtualTextWarning Todo
-highlight link ALEVirtualTextInfo Todo
-highlight link ALEVirtualTextError WarningMsg
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
-" highlight ALEWarning NONE
+highlight ALEWarning NONE
 
 syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
       \ transparent keepend
@@ -578,10 +572,6 @@ syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
 syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
 syntax match rubySorbetSigEnd +}$+ conceal contained
 " }}}
-
-set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
-" highlight EndOfText ctermfg=xxx
-
 
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
@@ -714,8 +704,8 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 " }}}
 
 " WIKI -------{{{
- let g:vimwiki_list = [{'path': '~/wiki/',
-                       \ 'syntax': 'markdown', 'ext': '.md'}]
+ " let g:vimwiki_list = [{'path': '~/wiki/',
+ "                       \ 'syntax': 'markdown', 'ext': '.md'}]
 "" let wiki_1 = {}
 " let wiki_1.path = '~/vimwiki/'
 " let wiki_1.syntax = 'markdown'
@@ -750,25 +740,10 @@ let g:ale_fixers = {
   \'python': ['pylint', 'flake8'],
   \'ts': ['prettier'],
   \'tsx': ['prettier'],
-  \'ruby': ['rubocop'],
-  \'javascript': ['eslint'],
-  \'typescript': ['prettier'],
-  \'vue': ['eslint'],
-  \'scss': ['prettier'],
-  \'html': ['prettier']
-  \}
-let g:ale_linters = {
-  \'python': ['pylint', 'flake8'],
-  \'ruby': ['rubocop', 'rails_best_practices'],
-  \'javascript': ['eslint'],
-  \'typescript': ['tsserver', 'tslint'],
-  \'typescript.tsx': ['tsserver', 'tslint'],
+  \'ruby': 'rubocop'
   \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ale_sign_column_always = 1
-let g:ale_virtualtext_cursor = 1
-let g:ale_virtualtext_prefix = ' ▶ '
 
 
 let g:UltiSnipsExpandTrigger='<c-s>'
@@ -853,13 +828,6 @@ let g:coc_global_extensions = [
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
-
-let g:vista#renderer#icons = {
-\   "function": "\uf794",
-\   "variable": "\uf71b",
-\  }
-
-let g:vista#renderer#enable_icon = 1
 
 set statusline+=%{NearestMethodOrFunction()}
 " }}}
@@ -1119,4 +1087,19 @@ inoreabbrev <expr> __
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
 set foldmethod=syntax
+" }}}
+
+" rails_projections ---------------------------------------------------------{{{
+let g:rails_projections = {
+      \ "app/services/*.rb": {
+      \   "command": "services",
+      \   "template":
+      \     ["class {camelcase|capitalize}", "end"],
+      \   "test": [
+      \     "test/services/{}_test.rb",
+      \     "spec/services/{}_spec.rb"
+      \   ],
+      \   "rubyMacro": ["process", "version"]
+      \ }}
+
 " }}}
