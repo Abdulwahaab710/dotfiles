@@ -101,6 +101,7 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
+command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
@@ -110,17 +111,12 @@ command! Config tabedit ~/.config/nvim/init.vim
 
 let g:mapleader=';'  " Leader Key
 
-noremap <leader>ml :!mac lock<CR>
-
-nmap <unique> <leader>gd <Plug>GenerateDiagram
-
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 
 map <leader>vt :Vterm<CR>
 map <leader>st :Sterm<CR>
 
-nnoremap <leader><leader> :Magit<CR>
 noremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>x :x<CR>
@@ -176,6 +172,7 @@ imap <up>    <nop>
 imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
+nnoremap Q  <nop>
 
 " nnoremap <C-j> <C-w><C-j>
 " nnoremap <C-k> <C-w><C-k>
@@ -266,6 +263,9 @@ iabbrev <buffer> shrug; ¯\_(ツ)_/¯
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
 
+nmap <leader>tt :FloatermToggle<CR>
+nmap <leader>lg :FloatermNew lazygit<CR>
+
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
@@ -354,7 +354,7 @@ if executable('look')
   Plug 'ujihisa/neco-look'
 endif
 
-Plug 'xavierchow/vim-sequence-diagram'
+" Plug 'xavierchow/vim-sequence-diagram'
 " }}}
 
 " git plugins -------------------------------------{{{
@@ -386,11 +386,11 @@ Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
-Plug 'xolox/vim-session'
+" Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
-Plug 'kopischke/vim-stay'
+" Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
@@ -398,23 +398,22 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'Shougo/denite.nvim'
-Plug 'wellle/targets.vim'
+" Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-Plug 'shime/vim-livedown'
-Plug 'skwp/greplace.vim'
+" Plug 'shime/vim-livedown'
+" Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 " Plug 'Shopify/shadowenv.vim'
-Plug 'wsdjeg/vim-fetch'
-Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
+" Plug 'wsdjeg/vim-fetch'
+" Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-Plug 'kristijanhusak/vim-carbon-now-sh'
+" Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-emoji'
-Plug 'rizzatti/dash.vim'
-Plug 'vifm/vifm.vim'
+Plug 'voldikss/vim-floaterm'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -423,7 +422,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'rust-lang/rust.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'yaunj/vim-yara'
+" Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'tpope/vim-liquid'
@@ -449,7 +448,8 @@ Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'arzg/vim-colors-xcode'
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
+Plug 'jeffkreeftmeijer/vim-dim'
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -558,11 +558,19 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-let g:ale_sign_error = "◉"
-let g:ale_sign_warning = "◉"
+let g:ale_sign_error = " ✘ "
+let g:ale_sign_warning = " ⚠ "
+let g:ale_sign_info = "  "
+let g:ale_sign_highlight_linenrs = 1
+
+highlight link ALEWarningSign Todo
+highlight link ALEErrorSign WarningMsg
+highlight link ALEVirtualTextWarning Todo
+highlight link ALEVirtualTextInfo Todo
+highlight link ALEVirtualTextError WarningMsg
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
-highlight ALEWarning NONE
+" highlight ALEWarning NONE
 
 syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
       \ transparent keepend
@@ -570,6 +578,10 @@ syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
 syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
 syntax match rubySorbetSigEnd +}$+ conceal contained
 " }}}
+
+set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
+" highlight EndOfText ctermfg=xxx
+
 
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
@@ -738,10 +750,25 @@ let g:ale_fixers = {
   \'python': ['pylint', 'flake8'],
   \'ts': ['prettier'],
   \'tsx': ['prettier'],
-  \'ruby': 'rubocop'
+  \'ruby': ['rubocop'],
+  \'javascript': ['eslint'],
+  \'typescript': ['prettier'],
+  \'vue': ['eslint'],
+  \'scss': ['prettier'],
+  \'html': ['prettier']
+  \}
+let g:ale_linters = {
+  \'python': ['pylint', 'flake8'],
+  \'ruby': ['rubocop', 'rails_best_practices'],
+  \'javascript': ['eslint'],
+  \'typescript': ['tsserver', 'tslint'],
+  \'typescript.tsx': ['tsserver', 'tslint'],
   \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
+let g:ale_sign_column_always = 1
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = ' ▶ '
 
 
 let g:UltiSnipsExpandTrigger='<c-s>'
@@ -826,6 +853,13 @@ let g:coc_global_extensions = [
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
+
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+
+let g:vista#renderer#enable_icon = 1
 
 set statusline+=%{NearestMethodOrFunction()}
 " }}}
