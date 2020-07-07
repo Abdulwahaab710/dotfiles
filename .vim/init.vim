@@ -59,7 +59,7 @@ set dictionary='/usr/share/dict/words'      " Set the path to the dictionary
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 " set scrolloff=15
-set timeoutlen=500
+" set timeoutlen=500
 
 " =========================================
 " Undo persistent
@@ -110,17 +110,12 @@ command! Config tabedit ~/.config/nvim/init.vim
 
 let g:mapleader=';'  " Leader Key
 
-noremap <leader>ml :!mac lock<CR>
-
-" nmap <unique> <leader>gd <Plug>GenerateDiagram
-
 noremap <leader>t :TestNearest<CR>
 noremap <leader>T :TestFile<CR>
 
 map <leader>vt :Vterm<CR>
 map <leader>st :Sterm<CR>
 
-nnoremap <leader><leader> :Magit<CR>
 noremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>x :x<CR>
@@ -156,7 +151,6 @@ vnoremap <leader>rem  :RExtractMethod<CR>
 nmap <leader>cn :cn<CR>
 nmap <leader>cN :cp<CR>
 
-" nmap <leader>g <Plug>GenerateDiagram
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
 nmap <leader>gb :Gbrowse<CR>
@@ -265,6 +259,9 @@ iabbrev <buffer> shrug; ¯\_(ツ)_/¯
 
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
+
+nmap <leader>tt :FloatermToggle<CR>	
+nmap <leader>lg :FloatermNew lazygit<CR>
 
 " }}}
 
@@ -388,7 +385,7 @@ Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'liuchengxu/vista.vim'
-Plug 'xolox/vim-session'
+" Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
@@ -405,18 +402,17 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-Plug 'shime/vim-livedown'
-Plug 'skwp/greplace.vim'
+" Plug 'shime/vim-livedown'
+" Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 " Plug 'Shopify/shadowenv.vim'
-Plug 'wsdjeg/vim-fetch'
-Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
+" Plug 'wsdjeg/vim-fetch'
+" Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-Plug 'kristijanhusak/vim-carbon-now-sh'
+" Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-emoji'
-Plug 'rizzatti/dash.vim'
-Plug 'vifm/vifm.vim'
+Plug 'voldikss/vim-floaterm'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
@@ -425,7 +421,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'rust-lang/rust.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'yaunj/vim-yara'
+" Plug 'yaunj/vim-yara'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'tpope/vim-liquid'
@@ -453,6 +449,7 @@ Plug 'liuchengxu/space-vim-dark'
 Plug 'arzg/vim-colors-xcode'
 Plug 'ap/vim-css-color'
 Plug 'morhetz/gruvbox'
+Plug 'jeffkreeftmeijer/vim-dim'	
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -560,8 +557,16 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-let g:ale_sign_error = "◉"
-let g:ale_sign_warning = "◉"
+let g:ale_sign_error = " ✘ "	let g:ale_sign_error = "◉"
+let g:ale_sign_warning = " ⚠ "	let g:ale_sign_warning = "◉"
+let g:ale_sign_info = "  "	
+let g:ale_sign_highlight_linenrs = 1	
+
+highlight link ALEWarningSign Todo	
+highlight link ALEErrorSign WarningMsg	
+highlight link ALEVirtualTextWarning Todo	
+highlight link ALEVirtualTextInfo Todo	
+highlight link ALEVirtualTextError WarningMsg
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 highlight ALEWarning NONE
@@ -572,6 +577,9 @@ syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
 syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
 syntax match rubySorbetSigEnd +}$+ conceal contained
 " }}}
+
+set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer	
+" highlight EndOfText ctermfg=xxx
 
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
