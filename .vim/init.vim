@@ -567,7 +567,7 @@ highlight link ALEVirtualTextInfo Todo
 highlight link ALEVirtualTextError WarningMsg
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
-highlight ALEWarning NONE
+" highlight ALEWarning NONE
 
 syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
       \ transparent keepend
