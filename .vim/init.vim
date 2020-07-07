@@ -260,7 +260,7 @@ iabbrev <buffer> shrug; ¯\_(ツ)_/¯
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
 
-nmap <leader>tt :FloatermToggle<CR>	
+nmap <leader>tt :FloatermToggle<CR>
 nmap <leader>lg :FloatermNew lazygit<CR>
 
 " }}}
@@ -278,7 +278,6 @@ augroup configgroup
     autocmd FileType php setlocal listchars=tab:+\ ,eol:$
     autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
-
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
@@ -346,7 +345,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 "" Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
@@ -557,15 +555,15 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-let g:ale_sign_error = " ✘ "	let g:ale_sign_error = "◉"
-let g:ale_sign_warning = " ⚠ "	let g:ale_sign_warning = "◉"
-let g:ale_sign_info = "  "	
-let g:ale_sign_highlight_linenrs = 1	
+let g:ale_sign_error = " ✘ "
+let g:ale_sign_warning = " ⚠ "
+let g:ale_sign_info = "  "
+let g:ale_sign_highlight_linenrs = 1
 
-highlight link ALEWarningSign Todo	
-highlight link ALEErrorSign WarningMsg	
-highlight link ALEVirtualTextWarning Todo	
-highlight link ALEVirtualTextInfo Todo	
+highlight link ALEWarningSign Todo
+highlight link ALEErrorSign WarningMsg
+highlight link ALEVirtualTextWarning Todo
+highlight link ALEVirtualTextInfo Todo
 highlight link ALEVirtualTextError WarningMsg
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
@@ -578,7 +576,7 @@ syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
 syntax match rubySorbetSigEnd +}$+ conceal contained
 " }}}
 
-set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer	
+set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 " highlight EndOfText ctermfg=xxx
 
 " if exists('*matchaddpos')
@@ -748,10 +746,25 @@ let g:ale_fixers = {
   \'python': ['pylint', 'flake8'],
   \'ts': ['prettier'],
   \'tsx': ['prettier'],
-  \'ruby': 'rubocop'
+  \'ruby': ['rubocop'],
+  \'javascript': ['eslint'],	
+  \'typescript': ['prettier'],	
+  \'vue': ['eslint'],	
+  \'scss': ['prettier'],	
+  \'html': ['prettier']	
+  \}	
+let g:ale_linters = {	
+  \'python': ['pylint', 'flake8'],	
+  \'ruby': ['rubocop', 'rails_best_practices'],	
+  \'javascript': ['eslint'],	
+  \'typescript': ['tsserver', 'tslint'],	
+  \'typescript.tsx': ['tsserver', 'tslint'],
   \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
+let g:ale_sign_column_always = 1	
+let g:ale_virtualtext_cursor = 1	
+let g:ale_virtualtext_prefix = ' ▶ '
 
 
 let g:UltiSnipsExpandTrigger='<c-s>'
@@ -836,6 +849,13 @@ let g:coc_global_extensions = [
 function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
+
+let g:vista#renderer#icons = {	
+\   "function": "\uf794",	
+\   "variable": "\uf71b",	
+\  }	
+
+let g:vista#renderer#enable_icon = 1	
 
 set statusline+=%{NearestMethodOrFunction()}
 " }}}
