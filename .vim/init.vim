@@ -101,7 +101,6 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
-command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
@@ -152,7 +151,6 @@ vnoremap <leader>rem  :RExtractMethod<CR>
 nmap <leader>cn :cn<CR>
 nmap <leader>cN :cp<CR>
 
-nmap <leader>g <Plug>GenerateDiagram
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
 nmap <leader>gb :Gbrowse<CR>
@@ -172,7 +170,6 @@ imap <up>    <nop>
 imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
-nnoremap Q  <nop>
 
 " nnoremap <C-j> <C-w><C-j>
 " nnoremap <C-k> <C-w><C-k>
@@ -347,7 +344,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' "optional
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "" Plug 'wellle/tmux-complete.vim'
 
 if executable('look')
@@ -390,7 +387,7 @@ Plug 'liuchengxu/vista.vim'
 Plug 'xolox/vim-misc'
 Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
-" Plug 'kopischke/vim-stay'
+Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
@@ -398,7 +395,7 @@ Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
 Plug 'brooth/far.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'Shougo/denite.nvim'
-" Plug 'wellle/targets.vim'
+Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
@@ -448,8 +445,9 @@ Plug 'Yggdroot/indentLine'
 Plug 'ryanoasis/vim-devicons'
 Plug 'liuchengxu/space-vim-dark'
 Plug 'arzg/vim-colors-xcode'
-" Plug 'ap/vim-css-color'
-Plug 'jeffkreeftmeijer/vim-dim'
+Plug 'ap/vim-css-color'
+Plug 'morhetz/gruvbox'
+Plug 'jeffkreeftmeijer/vim-dim'	
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -461,7 +459,7 @@ Plug 'mhinz/vim-rfc'
 Plug 'bpstahlman/txtfmt'
 Plug 'xolox/vim-notes'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-Plug 'vim-scripts/utl.vim'
+" Plug 'vim-scripts/utl.vim'
 Plug 'jceb/vim-orgmode'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -528,7 +526,6 @@ if (has("termguicolors"))
 endif
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
@@ -581,7 +578,6 @@ syntax match rubySorbetSigEnd +}$+ conceal contained
 
 set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 " highlight EndOfText ctermfg=xxx
-
 
 " if exists('*matchaddpos')
 "   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
@@ -714,8 +710,8 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 " }}}
 
 " WIKI -------{{{
- let g:vimwiki_list = [{'path': '~/wiki/',
-                       \ 'syntax': 'markdown', 'ext': '.md'}]
+ " let g:vimwiki_list = [{'path': '~/wiki/',
+ "                       \ 'syntax': 'markdown', 'ext': '.md'}]
 "" let wiki_1 = {}
 " let wiki_1.path = '~/vimwiki/'
 " let wiki_1.syntax = 'markdown'
@@ -751,23 +747,23 @@ let g:ale_fixers = {
   \'ts': ['prettier'],
   \'tsx': ['prettier'],
   \'ruby': ['rubocop'],
-  \'javascript': ['eslint'],
-  \'typescript': ['prettier'],
-  \'vue': ['eslint'],
-  \'scss': ['prettier'],
-  \'html': ['prettier']
-  \}
-let g:ale_linters = {
-  \'python': ['pylint', 'flake8'],
-  \'ruby': ['rubocop', 'rails_best_practices'],
-  \'javascript': ['eslint'],
-  \'typescript': ['tsserver', 'tslint'],
+  \'javascript': ['eslint'],	
+  \'typescript': ['prettier'],	
+  \'vue': ['eslint'],	
+  \'scss': ['prettier'],	
+  \'html': ['prettier']	
+  \}	
+let g:ale_linters = {	
+  \'python': ['pylint', 'flake8'],	
+  \'ruby': ['rubocop', 'rails_best_practices'],	
+  \'javascript': ['eslint'],	
+  \'typescript': ['tsserver', 'tslint'],	
   \'typescript.tsx': ['tsserver', 'tslint'],
   \}
 let g:ale_fix_on_save = 1
 let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ale_sign_column_always = 1
-let g:ale_virtualtext_cursor = 1
+let g:ale_sign_column_always = 1	
+let g:ale_virtualtext_cursor = 1	
 let g:ale_virtualtext_prefix = ' ▶ '
 
 
@@ -854,12 +850,12 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
-let g:vista#renderer#icons = {
-\   "function": "\uf794",
-\   "variable": "\uf71b",
-\  }
+let g:vista#renderer#icons = {	
+\   "function": "\uf794",	
+\   "variable": "\uf71b",	
+\  }	
 
-let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#enable_icon = 1	
 
 set statusline+=%{NearestMethodOrFunction()}
 " }}}
@@ -1119,4 +1115,19 @@ inoreabbrev <expr> __
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
 set foldmethod=syntax
+" }}}
+
+" rails_projections ---------------------------------------------------------{{{
+let g:rails_projections = {
+      \ "app/services/*.rb": {
+      \   "command": "services",
+      \   "template":
+      \     ["class {camelcase|capitalize}", "end"],
+      \   "test": [
+      \     "test/services/{}_test.rb",
+      \     "spec/services/{}_spec.rb"
+      \   ],
+      \   "rubyMacro": ["process", "version"]
+      \ }}
+
 " }}}
