@@ -145,7 +145,6 @@ alias mkube='minikube'
 alias rspec='bundle exec rspec'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
 alias ghp='open https://github.com/pulls'
-alias tn='tmux new -s'
 
 alias ll='exa -bghHliSFa'
 alias py='python'
@@ -282,6 +281,14 @@ g() {
     git $@
   else
     git status
+  fi
+}
+
+tn() {
+  if [[ $# > 0 ]]; then
+    tmux new -s $@
+  else
+    tmux new -s ${PWD##*/}
   fi
 }
 
