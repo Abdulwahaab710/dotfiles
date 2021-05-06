@@ -41,7 +41,53 @@ yabai -m config left_padding                 35
 yabai -m config right_padding                35
 yabai -m config window_gap                   2
 
-yabai -m rule --add app="^System Preferences$" manage=off
+# Space labels
+yabai -m space 1 --label "Primary"
+yabai -m space 2 --label "Comms"
+yabai -m space 3 --label "Tools"
+yabai -m space 4 --label "Media"
+yabai -m space 5 --label "Social"
+yabai -m space 6 --label "Float"
+yabai -m space 7 --label "Secondary"
+
+# Space config
+yabai -m config --space 6 layout float
+
+# Unmanaged
+yabai -m rule --add app="^System Preferences$"  manage=off border=off
+
+# Primary
+yabai -m rule --add app="Brave Browser"                       space=1
+yabai -m rule --add app="kitty"                               space=1
+yabai -m rule --add app="Preview"                             space=1
+yabai -m rule --add app="Simulator"                           space=1
+yabai -m rule --add app="Burp Suite Professional"             space=1
+yabai -m rule --add app="Burp Suite Community Edition"        space=1
+
+# Communication
+yabai -m rule --add app="Slack"                 space=2
+yabai -m rule --add app="Messages"              space=2
+
+# Tools
+yabai -m rule --add app="Finder"                space=3
+yabai -m rule --add app="Sequel Ace"            space=3
+yabai -m rule --add app="Activity Monitor"      space=3
+yabai -m rule --add app="App Store"             space=3
+yabai -m rule --add app="Terminal"              space=3
+
+# Media
+yabai -m rule --add app="Music"                 space=4
+yabai -m rule --add app="QuickTime Player"      space=4
+yabai -m rule --add app="VLC"                   manage=off space=4
+yabai -m rule --add app="Spotify"               space=4
+
+# Social
+yabai -m rule --add app="Discord"               space=5
+yabai -m rule --add app="WhatsApp"              space=5
+yabai -m rule --add app="Signal"                space=5
+
+# Floating
+yabai -m rule --add app="^System Preferences$"  space=6
 
 echo "yabai configuration loaded.."
 
