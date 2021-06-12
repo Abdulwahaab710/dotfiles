@@ -1,4 +1,4 @@
-"  █████╗ ██████╗ ██████╗ ██╗   ██╗██╗     ██╗    ██╗ █████╗ ██╗  ██╗ █████╗  █████╗ ██████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
+█████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 " ██╔══██╗██╔══██╗██╔══██╗██║   ██║██║     ██║    ██║██╔══██╗██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
 " ███████║██████╔╝██║  ██║██║   ██║██║     ██║ █╗ ██║███████║███████║███████║███████║██████╔╝███████╗    ██║   ██║██║██╔████╔██║██████╔╝██║
 " ██╔══██║██╔══██╗██║  ██║██║   ██║██║     ██║███╗██║██╔══██║██╔══██║██╔══██║██╔══██║██╔══██╗╚════██║    ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
@@ -9,7 +9,7 @@
 
 filetype plugin on
 filetype plugin indent on                   " load filetype-specific indent files
-syntax enable                               " enable syntax processing
+" syntax enable                               " enable syntax processing
 
 set ai                                      " Auto indent
 set backspace=2
@@ -157,8 +157,8 @@ imap <left>  <nop>
 imap <right> <nop>
 nnoremap Q  <nop>
 
-nmap <F2> :NERDTreeToggle<CR>
-imap <F2> <esc>:NERDTreeToggle<CR>
+" nmap <F2> :NERDTreeToggle<CR>
+" imap <F2> <esc>:NERDTreeToggle<CR>
 
 " Open the definition in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -166,15 +166,20 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 nmap ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Mapping jj to <esc>
-imap jj <esc>
-tnoremap jj <C-\><C-n>
+" imap jj <esc>
+" tnoremap jj <C-\><C-n>
 
 " ================
 " Better grepping
 " ================
 nnoremap \ :FzfRg<CR>
-nnoremap <silent> <C-p> :call Fzf_dev()<CR>
+" nnoremap <silent> <C-p> :call Fzf_dev()<CR>
 nnoremap <silent> <leader>p :FZF<CR>
+
+nnoremap <silent> <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+" nnoremap \ <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " ===========
 " resizing
@@ -294,15 +299,12 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd FileType vimwiki setlocal spell
     autocmd FileType vimwiki setlocal wrap
-    autocmd FileType notes setlocal spell
-    autocmd FileType notes setlocal wrap
-    autocmd FileType notes setlocal filetype=notes.txtfmt
     autocmd BufNewFile,BufRead *.todo.txt setlocal filetype=todo
     autocmd BufNewFile,BufRead *.todo.txt setlocal spell
     autocmd BufNewFile,BufRead *.todo.txt setlocal wrap
-    autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !~/.config/nvim/bin/generate-report-investigation '%'
+    autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
     autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
-    autocmd BufEnter ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks<CR>
+    autocmd BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks<CR>
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
@@ -310,26 +312,15 @@ augroup configgroup
 " }}}
 
 " Plugins -------------------------------------------------------------------{{{
-let g:polyglot_disabled = ['typescript']
 
 call plug#begin('~/.config/nvim/plugged')
 
 " Code Completion and snippets --------------------{{{
-
-Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips' " TODO: Migrate to norcalli/snippets.nvim
 Plug 'honza/vim-snippets'
-Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
-" Plug 'wellle/tmux-complete.vim'
-
-Plug 'Shougo/neoinclude.vim'
-Plug 'jsfaint/coc-neoinclude'
-
-if executable('look')
-  Plug 'ujihisa/neco-look'
-endif
-
-" Plug 'xavierchow/vim-sequence-diagram'
-
+" Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
 " }}}
 
 " git plugins -------------------------------------{{{
@@ -337,16 +328,14 @@ Plug 'airblade/vim-gitgutter'
 " }}}
 
 " tpope plugins -----------------------------------{{{
-Plug 'tpope/vim-surround' "easily surround things...just read docs for info
+Plug 'tpope/vim-surround' " easily surround things...just read docs for info
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-rails'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-bundler'
 " }}}
 
 " misc --------------------------------------------{{{
@@ -360,56 +349,45 @@ Plug 'junegunn/fzf.vim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'liuchengxu/vista.vim'
-" Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
-Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
 " Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-Plug 'brooth/far.vim'
-Plug 'justinmk/vim-sneak'
-Plug 'Shougo/denite.nvim'
+" Plug 'justinmk/vim-sneak'
 " Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
 " Plug 'shime/vim-livedown'
-" Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
 " Plug 'Shopify/shadowenv.vim'
 " Plug 'wsdjeg/vim-fetch'
-" Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-" Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-emoji'
 Plug 'voldikss/vim-floaterm'
-Plug 'liuchengxu/vim-clap'
-Plug 'dbeniamine/todo.txt-vim'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
 
-Plug 'vim-ruby/vim-ruby'
+" Plug 'vim-ruby/vim-ruby'
 Plug 'rust-lang/rust.vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-" Plug 'yaunj/vim-yara'
-Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'tpope/vim-liquid'
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'tpope/vim-liquid'
 Plug 'gabrielelana/vim-markdown'
 Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
 Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
+" Plug 'leafgarland/typescript-vim'
 " }}}
 
 " Refactor ----------------------------------------{{{
@@ -417,7 +395,6 @@ Plug 'ecomba/vim-ruby-refactoring'
 " }}}
 
 " Theme related plugins ---------------------------{{{
-
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
@@ -432,6 +409,8 @@ Plug 'jeffkreeftmeijer/vim-dim'
 Plug 'sainnhe/sonokai'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'folke/todo-comments.nvim'
+Plug 'glepnir/zephyr-nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -439,11 +418,10 @@ Plug 'mhinz/vim-rfc'
 " }}}
 
 " Note Taking Plugins -----------------------------{{{
-Plug 'bpstahlman/txtfmt'
-Plug 'xolox/vim-notes'
+" Plug 'bpstahlman/txtfmt'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-Plug 'vim-scripts/utl.vim'
-Plug 'jceb/vim-orgmode'
+" Plug 'vim-scripts/utl.vim'
+" Plug 'jceb/vim-orgmode'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'dhruvasagar/vim-table-mode'
@@ -552,19 +530,19 @@ highlight link ALEVirtualTextWarning Todo
 highlight link ALEVirtualTextInfo Todo
 highlight link ALEVirtualTextError WarningMsg
 
-syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
-syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
+" syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
+" syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
 setlocal conceallevel=2
 hi Conceal guibg=NONE
 " hi clear Conceal
 
 highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 
-syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
-      \ transparent keepend
-      \ contains=rubySorbetSigStart,rubySorbetSigEnd
-syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
-syntax match rubySorbetSigEnd +}$+ conceal contained
+" syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
+"       \ transparent keepend
+"       \ contains=rubySorbetSigStart,rubySorbetSigEnd
+" syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
+" syntax match rubySorbetSigEnd +}$+ conceal contained
 " }}}
 
 set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
@@ -572,6 +550,7 @@ set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 " Plugins configs -----------------------------------------------------------{{{
 
 lua << EOF
+  -- require('zephyr')
   require("todo-comments").setup {
     signs = true, -- show icons in the signs column
     -- keywords recognized as todo comments
@@ -625,10 +604,89 @@ lua << EOF
     },
   }
 
+  require('telescope').setup{
+    defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case'
+      },
+      prompt_position = "bottom",
+      prompt_prefix = "> ",
+      selection_caret = "> ",
+      entry_prefix = "  ",
+      initial_mode = "insert",
+      selection_strategy = "reset",
+      sorting_strategy = "descending",
+      layout_strategy = "horizontal",
+      layout_defaults = {
+        horizontal = {
+          mirror = false,
+        },
+        vertical = {
+          mirror = false,
+        },
+      },
+      file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+      file_ignore_patterns = {},
+      generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+      shorten_path = true,
+      winblend = 0,
+      width = 0.75,
+      preview_cutoff = 120,
+      results_height = 1,
+      results_width = 0.8,
+      border = {},
+      borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+      color_devicons = true,
+      use_less = true,
+      set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+      file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+      grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+      qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+
+      -- Developer configurations: Not meant for general override
+      buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
+    },
+    extensions = {
+      fzy_native = {
+          override_generic_sorter = false,
+          override_file_sorter = true,
+      }
+    }
+  }
+
+  require('telescope').load_extension('fzy_native')
+
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+    -- ignore_install = { "javascript" }, -- List of parsers to ignore installing
+    highlight = {
+      enable = true,              -- false will disable the whole extension
+      -- disable = { "c", "rust" },  -- list of language that will be disabled
+    },
+  }
 EOF
 
-let g:vimspector_enable_mappings = 'HUMAN'
+" Search NOTES -------------------------- {{{
+" lua << EOF
+" function _G.search_notes()
+"   require("telescope.builtin").live_grep({
+"     prompt_title = \"< Notes >", cwd = \"~/vimwiki/",
+"     })
+" end
+" EOF
 
+function! SearchWiki()
+  lua require("telescope.builtin").live_grep({ prompt_title = "< Notes >", cwd = "~/vimwiki/",  })
+endfunction
+command! SearchWiki call SearchWiki()
+
+" }}}
 " Plugin: Galaxyline -------------------------- {{{
 
 function! ConfigStatusLine()
@@ -745,7 +803,7 @@ let g:ale_linters = {
   \'typescript.tsx': ['tsserver', 'tslint'],
   \}
 let g:ale_fix_on_save = 1
-let g:ale_ruby_rubocop_executable = 'rubocop'
+let g:ale_ruby_rubocop_executable = 'bundle exec rubocop'
 let g:ale_sign_column_always = 1
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = ' ▶ '
@@ -858,39 +916,39 @@ let g:dashboard_custom_section={
 " }}}
 
 " coc.nvim -----{{{
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" " Use K to show documentation in preview window
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocAction('doHover')
+"   endif
+" endfunction
 
-let g:coc_global_extensions = [
-            \'coc-yank',
-            \'coc-tag',
-            \'coc-json',
-            \'coc-css',
-            \'coc-html',
-            \'coc-tsserver',
-            \'coc-yaml',
-            \'coc-solargraph',
-            \'coc-snippets',
-            \'coc-ultisnips',
-            \'coc-python',
-            \'coc-dictionary',
-            \'coc-syntax',
-            \'coc-gocode',
-            \'coc-emoji'
-            \]
+" let g:coc_global_extensions = [
+"             \'coc-yank',
+"             \'coc-tag',
+"             \'coc-json',
+"             \'coc-css',
+"             \'coc-html',
+"             \'coc-tsserver',
+"             \'coc-yaml',
+"             \'coc-solargraph',
+"             \'coc-snippets',
+"             \'coc-ultisnips',
+"             \'coc-python',
+"             \'coc-dictionary',
+"             \'coc-syntax',
+"             \'coc-gocode',
+"             \'coc-emoji'
+"             \]
 
 " }}}
 
@@ -1047,11 +1105,11 @@ command! Sterm sp | term
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -1163,5 +1221,5 @@ inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
-set foldmethod=syntax
+" set foldmethod=syntax
 " }}}
