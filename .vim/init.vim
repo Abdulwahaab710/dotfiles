@@ -1,15 +1,6 @@
-"  █████╗ ██████╗ ██████╗ ██╗   ██╗██╗     ██╗    ██╗ █████╗ ██╗  ██╗ █████╗  █████╗ ██████╗ ███████╗    ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
-" ██╔══██╗██╔══██╗██╔══██╗██║   ██║██║     ██║    ██║██╔══██╗██║  ██║██╔══██╗██╔══██╗██╔══██╗██╔════╝    ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
-" ███████║██████╔╝██║  ██║██║   ██║██║     ██║ █╗ ██║███████║███████║███████║███████║██████╔╝███████╗    ██║   ██║██║██╔████╔██║██████╔╝██║
-" ██╔══██║██╔══██╗██║  ██║██║   ██║██║     ██║███╗██║██╔══██║██╔══██║██╔══██║██╔══██║██╔══██╗╚════██║    ╚██╗ ██╔╝██║██║╚██╔╝██║██╔══██╗██║
-" ██║  ██║██████╔╝██████╔╝╚██████╔╝███████╗╚███╔███╔╝██║  ██║██║  ██║██║  ██║██║  ██║██████╔╝███████║     ╚████╔╝ ██║██║ ╚═╝ ██║██║  ██║╚██████╗
-" ╚═╝  ╚═╝╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝      ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
-
 " System Settings  ----------------------------------------------------------{{{
-
 filetype plugin on
 filetype plugin indent on                   " load filetype-specific indent files
-syntax enable                               " enable syntax processing
 
 set ai                                      " Auto indent
 set backspace=2
@@ -39,8 +30,6 @@ set showmatch                               " highlight matching [{()}]
 set softtabstop=2                           " number of spaces in tab when editing
 set splitbelow                              " open horizontal splits to the botton
 set splitright                              " open vertical splits to the right
-set statusline+=%#warningmsg#
-set statusline+=%*
 set tabstop=2 shiftwidth=2                  " number of visual spaces per TAB
 set ttimeoutlen=10
 set ttyfast
@@ -58,8 +47,8 @@ endif
 set dictionary='/usr/share/dict/words'      " Set the path to the dictionary
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
-" set scrolloff=15
-" set timeoutlen=500
+
+let g:python3_host_prog = '/Users/abdulwahaabahmed/.pyenv/versions/neovim3/bin/python'
 
 " =========================================
 " Undo persistent
@@ -101,9 +90,11 @@ command! QA qall
 command! E e
 command! W w
 command! Wq wq
+command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
+command! Todo tabedit ~/todo.txt
 " }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
@@ -124,39 +115,12 @@ nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
 nnoremap <leader>n :nohl<CR>
 
-nmap <leader>em :Emodel<CR>
-nmap <leader>sm :Smodel<CR>
-nmap <leader>tm :Tmodel<CR>
-nmap <leader>vm :Vmodel<CR>
-nmap <leader>ec :Econtroller<CR>
-nmap <leader>sc :Scontroller<CR>
-nmap <leader>tc :Tcontroller<CR>
-nmap <leader>vc :Vcontroller<CR>
-nmap <leader>ev :Eview<CR>
-nmap <leader>sv :Sview<CR>
-nmap <leader>tv :Tview<CR>
-nmap <leader>vv :Vview<CR>
-
-nnoremap <leader>rap  :RAddParameter<CR>
-nnoremap <leader>rcpc :RConvertPostConditional<CR>
-nnoremap <leader>rel  :RExtractLet<CR>
-vnoremap <leader>rec  :RExtractConstant<CR>
-vnoremap <leader>relv :RExtractLocalVariable<CR>
-nnoremap <leader>rit  :RInlineTemp<CR>
-vnoremap <leader>rrlv :RRenameLocalVariable<CR>
-vnoremap <leader>rriv :RRenameInstanceVariable<CR>
-vnoremap <leader>rem  :RExtractMethod<CR>
-
-" QuickFix
-nmap <leader>cn :cn<CR>
-nmap <leader>cN :cp<CR>
-
 nnoremap <silent> <leader> :WhichKey ';'<CR>
 
-nmap <leader>gb :Gbrowse<CR>
-vmap <leader>gb :Gbrowse<CR>
+nmap <leader>gb :GBrowse<CR>
+vmap <leader>gb :GBrowse<CR>
 
-nmap <leader>gB :Gblame<CR>
+nmap <leader>gB :GBlame<CR>
 
 nmap k gk
 nmap j gj
@@ -170,20 +134,7 @@ imap <up>    <nop>
 imap <down>  <nop>
 imap <left>  <nop>
 imap <right> <nop>
-
-" nnoremap <C-j> <C-w><C-j>
-" nnoremap <C-k> <C-w><C-k>
-" nnoremap <C-l> <C-w><C-l>
-" nnoremap <C-h> <C-w><C-h>
-" imap <C-j> <C-w><C-j>
-" imap <C-k> <C-w><C-k>
-" imap <C-l> <C-w><C-l>
-" imap <C-h> <C-w><C-h>
-
-nmap <F2> :NERDTreeToggle<CR>
-imap <F2> <esc>:NERDTreeToggle<CR>
-
-" <C-\> - Open the definition in a new tab
+nnoremap Q  <nop>
 
 " Open the definition in a new tab
 map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -191,15 +142,20 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 nmap ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " Mapping jj to <esc>
-imap jj <esc>
-tnoremap jj <C-\><C-n>
+" imap jj <esc>
+" tnoremap jj <C-\><C-n>
 
 " ================
 " Better grepping
 " ================
 nnoremap \ :FzfRg<CR>
-nnoremap <silent> <C-p> :call Fzf_dev()<CR>
+" nnoremap <silent> <C-p> :call Fzf_dev()<CR>
 nnoremap <silent> <leader>p :FZF<CR>
+
+nnoremap <silent> <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+" nnoremap \ <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 " ===========
 " resizing
@@ -222,26 +178,16 @@ nnoremap <C-g>P :Gpush<CR>
 nmap <F8> :Vista!!<CR>
 imap <F8> <esc>:Vista!!<CR>i
 
-vnoremap <F8> :CarbonNowSh<CR>
-
 " ===============
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
 nnoremap <leader>k :FzfRg <C-R><C-W><CR>
 
-" deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
 nnoremap <Space> za
 
 " autocmd FileType magit nmap gp :!git push<CR>
 autocmd FileType go nmap <leader>gr :GoRun %<CR>
-
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-nmap <leader>f <Plug>Sneak_s
-nmap <leader>F <Plug>Sneak_S
 
 nmap s cl
 nmap S cc
@@ -253,30 +199,39 @@ cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit! " save f
 " Copy current file path to the unamed register
 nmap cp :let @" = expand("%")<cr>
 
-
-" imap <c-j> <plug>(MUcompleteFwd)
 iabbrev <buffer> shrug; ¯\_(ツ)_/¯
 
 nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
+nmap <leader>bf :FzfBuffers<CR>
 
 nmap <leader>tt :FloatermToggle<CR>
-nmap <leader>lg :FloatermNew lazygit<CR>
+" -- lsp provider to find the cursor word definition and reference
+nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
 
+" -- code action
+nnoremap <silent><leader>ca <cmd>lua require('lspsaga.codeaction').code_action()<CR>
+vnoremap <silent><leader>ca :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
+
+" -- Show hover doc
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+
+" -- scroll down hover doc or scroll in definition preview
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" -- scroll up hover doc
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+" -- show signature help
+nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
-    " autocmd FileType java setlocal noexpandtab
-    " autocmd FileType java setlocal list
-    " autocmd FileType java setlocal listchars=tab:+\ ,eol:-
-    " autocmd FileType java setlocal formatprg=par\ -w80\ -T4
-    autocmd FileType php setlocal expandtab
-    autocmd FileType php setlocal list
-    autocmd FileType php setlocal listchars=tab:+\ ,eol:$
-    autocmd FileType php setlocal formatprg=par\ -w80\ -T4
+    " autocmd FileType php setlocal expandtab
+    " autocmd FileType php setlocal list
+    " autocmd FileType php setlocal listchars=tab:+\ ,eol:$
+    " autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
@@ -327,10 +282,12 @@ augroup configgroup
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd FileType vimwiki setlocal spell
     autocmd FileType vimwiki setlocal wrap
-    autocmd FileType notes setlocal spell
-    autocmd FileType notes setlocal wrap
-    autocmd FileType notes setlocal filetype=notes.txtfmt
-    " autocmd FileType notes Goyo 180x100
+    autocmd BufNewFile,BufRead *.todo.txt setlocal filetype=todo
+    autocmd BufNewFile,BufRead *.todo.txt setlocal spell
+    autocmd BufNewFile,BufRead *.todo.txt setlocal wrap
+    autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
+    autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
+    autocmd BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks<CR>
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
@@ -338,132 +295,101 @@ augroup configgroup
 " }}}
 
 " Plugins -------------------------------------------------------------------{{{
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Code Completion and snippets --------------------{{{
-
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets' "optional
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"" Plug 'wellle/tmux-complete.vim'
-
-if executable('look')
-  Plug 'ujihisa/neco-look'
-endif
-
-" Plug 'xavierchow/vim-sequence-diagram'
+Plug 'SirVer/ultisnips' " TODO: Migrate to norcalli/snippets.nvim
+Plug 'honza/vim-snippets'
+Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim' , {'branch': 'main'}
+Plug 'hrsh7th/nvim-compe'
 " }}}
 
 " git plugins -------------------------------------{{{
-
-Plug 'airblade/vim-gitgutter'
-" Plug 'jreybert/vimagit'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
 " }}}
 
 " tpope plugins -----------------------------------{{{
-
-Plug 'tpope/vim-surround' "easily surround things...just read docs for info
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-surround' " easily surround things...just read docs for info
 Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-bundler'
 " }}}
 
 " misc --------------------------------------------{{{
-
+" Plug 'antoinemadec/FixCursorHold.nvim'
+" Plug 'vim-ctrlspace/vim-ctrlspace'
+Plug 'windwp/nvim-autopairs'
+Plug 'b3nj5m1n/kommentary', { 'branch': 'main' }
+Plug 'hardcoreplayers/dashboard-nvim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/vimshell.vim'
 Plug 'ujihisa/repl.vim'
 Plug 'bogado/file-line'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'liuchengxu/vista.vim'
-" Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
-Plug 'scrooloose/nerdtree'
 Plug 'w0rp/ale'
-Plug 'kopischke/vim-stay'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'jiangmiao/auto-pairs' "MANY features, but mostly closes ([{' etc
-Plug 'brooth/far.vim'
-Plug 'justinmk/vim-sneak'
-Plug 'Shougo/denite.nvim'
-Plug 'wellle/targets.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'icatalina/vim-case-change'
 Plug 'godlygeek/tabular'
-" Plug 'shime/vim-livedown'
-" Plug 'skwp/greplace.vim'
 Plug 'rhysd/vim-grammarous'
-" Plug 'Shopify/shadowenv.vim'
-" Plug 'wsdjeg/vim-fetch'
-" Plug 'maksimr/vim-jsbeautify', {'do': 'git submodule update --init --recursive'}
-Plug 'AndrewRadev/splitjoin.vim'
 Plug 'dstein64/vim-startuptime'
-" Plug 'kristijanhusak/vim-carbon-now-sh'
 Plug 'junegunn/vim-emoji'
 Plug 'voldikss/vim-floaterm'
 " }}}
 
 " Syntax plugins ----------------------------------{{{
-
-Plug 'vim-ruby/vim-ruby'
-Plug 'rust-lang/rust.vim'
-Plug 'ekalinin/Dockerfile.vim'
+" Plug 'rust-lang/rust.vim'
+" Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-" Plug 'yaunj/vim-yara'
-Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'tpope/vim-liquid'
 Plug 'gabrielelana/vim-markdown'
-Plug 'kana/vim-textobj-user'
+" Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
-Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'skwp/vim-rspec' " Beautiful, colorized RSpec tests
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'leafgarland/typescript-vim'
-" }}}
-
-" Refactor ----------------------------------------{{{
-Plug 'ecomba/vim-ruby-refactoring'
+" Plug 'nelstrom/vim-textobj-rubyblock'
 " }}}
 
 " Theme related plugins ---------------------------{{{
-
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-airline/vim-airline'
-Plug 'chriskempson/base16-vim'
-Plug 'Yggdroot/indentLine'
-Plug 'ryanoasis/vim-devicons'
+Plug 'glepnir/galaxyline.nvim', {'branch': 'main'}
+Plug 'RRethy/nvim-base16'
+Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
+Plug 'ryanoasis/vim-devicons' " TODO: Migrate to lua
+Plug 'kyazdani42/nvim-web-devicons' " lua
 Plug 'liuchengxu/space-vim-dark'
-Plug 'arzg/vim-colors-xcode'
-Plug 'ap/vim-css-color'
-Plug 'morhetz/gruvbox'
-Plug 'jeffkreeftmeijer/vim-dim'	
+Plug 'jeffkreeftmeijer/vim-dim', {'branch': 'main'}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'folke/todo-comments.nvim', {'branch': 'main'}
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
 " }}}
 
 " Tools -------------------------------------------{{{
 Plug 'mhinz/vim-rfc'
-" Plug 'puremourning/vimspector', { 'do': './--enable-go' }
 " }}}
 
 " Note Taking Plugins -----------------------------{{{
-Plug 'bpstahlman/txtfmt'
-Plug 'xolox/vim-notes'
 Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-" Plug 'vim-scripts/utl.vim'
-Plug 'jceb/vim-orgmode'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'tools-life/taskwiki', { 'do': 'pip3 install --upgrade -r requirements.txt' }
+Plug 'ekickx/clipboard-image.nvim', { 'branch': 'main' }
 call plug#end()
 " }}}
 " }}}
@@ -524,8 +450,9 @@ set foldlevelstart=1
 if (has("termguicolors"))
   set termguicolors
 endif
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
@@ -549,8 +476,8 @@ highlight CursorLineNr guifg=#0099ff                           " Make current li
 highlight Comment cterm=italic                                 " enable italicised comments in vim
 " highlight CursorLine term=bold cterm=bold guibg=Grey40         " Light grey colour for cursorline
 highlight CursorLine term=bold cterm=bold ctermbg=18 guibg=#292b2e
-autocmd FileType ruby highlight OverLength guibg=#a06e3b ctermbg=3
-autocmd FileType ruby match OverLength /\%>121v.\+/
+" autocmd FileType ruby highlight OverLength guibg=#a06e3b ctermbg=3
+" autocmd FileType ruby match OverLength /\%>121v.\+/
 highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
@@ -566,72 +493,291 @@ highlight link ALEVirtualTextWarning Todo
 highlight link ALEVirtualTextInfo Todo
 highlight link ALEVirtualTextError WarningMsg
 
-highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
-" highlight ALEWarning NONE
+" syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
+" syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
+setlocal conceallevel=2
+hi Conceal guibg=NONE
+" hi clear Conceal
 
-syntax region rubySorbetSigBlock matchgroup=rubySorbetSig start=+sig {+ end=+}+
-      \ transparent keepend
-      \ contains=rubySorbetSigStart,rubySorbetSigEnd
-syntax match rubySorbetSigStart +sig {+ conceal cchar=: contained
-syntax match rubySorbetSigEnd +}$+ conceal contained
+highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 " }}}
 
 set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
-" highlight EndOfText ctermfg=xxx
-
-" if exists('*matchaddpos')
-"   autocmd BufEnter,FocusGained,VimEnter,WinEnter * call s:focus_window()
-"   autocmd FocusLost,WinLeave * call s:blur_window()
-" endif
-
-" let g:WincentColorColumnBlacklist = ['diff', 'undotree', 'nerdtree', 'qf']
-
-" function! s:should_colorcolumn() abort
-"   return index(g:WincentColorColumnBlacklist, &filetype) == -1
-" endfunction
-
-" function! s:blur_window() abort
-"   if s:should_colorcolumn()
-"     if !exists('w:wincent_matches')
-"       " Instead of unconditionally resetting, append to existing array.
-"       " This allows us to gracefully handle duplicate autocmds.
-"       let w:wincent_matches=[]
-"     endif
-"     let l:height=&lines
-"     let l:slop=l:height / 2
-"     let l:start=max([1, line('w0') - l:slop])
-"     let l:end=min([line('$'), line('w$') + l:slop])
-"     while l:start <= l:end
-"       let l:next=l:start + 8
-"       let l:id=matchaddpos(
-"             \   'StatusLine',
-"             \   range(l:start, min([l:end, l:next])),
-"             \   1000
-"             \ )
-"       call add(w:wincent_matches, l:id)
-"       let l:start=l:next
-"     endwhile
-"   endif
-" endfunction
-
-" function! s:focus_window() abort
-"   if s:should_colorcolumn()
-"     if exists('w:wincent_matches')
-"       for l:match in w:wincent_matches
-"         try
-"           call matchdelete(l:match)
-"         catch /.*/
-"           " In testing, not getting any error here, but being ultra-cautious.
-"         endtry
-"       endfor
-"       let w:wincent_matches=[]
-"     endif
-"   endif
-" endfunction
 
 " Plugins configs -----------------------------------------------------------{{{
 
-let g:vimspector_enable_mappings = 'HUMAN'
+lua << EOF
+  -- require('zephyr')
+  require("todo-comments").setup {
+    signs = true, -- show icons in the signs column
+    -- keywords recognized as todo comments
+    keywords = {
+      FIX = {
+        icon = " ", -- icon used for the sign, and in search results
+        color = "error", -- can be a hex color, or a named color (see below)
+        alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+        -- signs = false, -- configure signs for some keywords individually
+      },
+      TODO = { icon = " ", color = "info" },
+      HACK = { icon = " ", color = "warning" },
+      WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+      PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+      DONE = { icon = "", color = "hint" }
+    },
+    -- highlighting of the line containing the todo comment
+    -- * before: highlights before the keyword (typically comment characters)
+    -- * keyword: highlights of the keyword
+    -- * after: highlights after the keyword (todo text)
+    highlight = {
+      before = "", -- "fg" or "bg" or empty
+      keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
+      after = "fg", -- "fg" or "bg" or empty
+      pattern = [[.*<(KEYWORDS)\s*:]], -- pattern used for highlightng (vim regex)
+      comments_only = true, -- uses treesitter to match keywords in comments only
+    },
+    -- list of named colors where we try to extract the guifg from the
+    -- list of hilight groups or use the hex color if hl not found as a fallback
+    colors = {
+      error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
+      warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
+      info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
+      hint = { "LspDiagnosticsDefaultHint", "#10B981" },
+      default = { "Identifier", "#7C3AED" },
+    },
+    search = {
+      command = "rg",
+      args = {
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+      },
+      -- regex that will be used to match keywords.
+      -- don't replace the (KEYWORDS) placeholder
+      pattern = [[\b(KEYWORDS):]], -- ripgrep regex
+      -- pattern = [[\b(KEYWORDS)\b]], -- match without the extra colon. You'll likely get false positives
+    },
+  }
+
+  require('telescope').setup{
+    defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case'
+      },
+      prompt_position = "bottom",
+      prompt_prefix = "> ",
+      selection_caret = "> ",
+      entry_prefix = "  ",
+      initial_mode = "insert",
+      selection_strategy = "reset",
+      sorting_strategy = "descending",
+      layout_strategy = "horizontal",
+      layout_defaults = {
+        horizontal = {
+          mirror = false,
+        },
+        vertical = {
+          mirror = false,
+        },
+      },
+      file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+      file_ignore_patterns = {},
+      generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+      shorten_path = true,
+      winblend = 0,
+      width = 0.75,
+      preview_cutoff = 120,
+      results_height = 1,
+      results_width = 0.8,
+      border = {},
+      borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+      color_devicons = true,
+      use_less = true,
+      set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+      file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+      grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+      qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+
+      -- Developer configurations: Not meant for general override
+      buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
+    },
+    extensions = {
+      fzy_native = {
+          override_generic_sorter = false,
+          override_file_sorter = true,
+      }
+    }
+  }
+
+  require('telescope').load_extension('fzy_native')
+
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+    -- ignore_install = { "javascript" }, -- List of parsers to ignore installing
+    highlight = {
+      enable = true,              -- false will disable the whole extension
+      -- disable = { "c", "rust" },  -- list of language that will be disabled
+    },
+  }
+
+  local nvim_lsp = require('lspconfig')
+
+  -- nvim_lsp.solargraph.setup{
+  --   settings = {
+  --     solargraph = {
+  --       diagnostics = true,
+  --       completion = true
+  --     }
+  --   }
+  -- }
+
+  require'compe'.setup {
+    enabled = true;
+    autocomplete = true;
+    debug = false;
+    min_length = 1;
+    preselect = 'enable';
+    throttle_time = 80;
+    source_timeout = 200;
+    incomplete_delay = 400;
+    max_abbr_width = 100;
+    max_kind_width = 100;
+    max_menu_width = 100;
+    documentation = true;
+
+    source = {
+      path = true;
+      buffer = true;
+      calc = true;
+      nvim_lsp = true;
+      nvim_lua = true;
+      vsnip = true;
+      ultisnips = true;
+    };
+  }
+
+  local servers = {
+    -- 'pyright',
+    -- 'gopls',
+    -- 'rust_analyzer',
+    'tsserver',
+    'solargraph'
+    }
+  for _, lsp in ipairs(servers) do
+    nvim_lsp[lsp].setup {
+      on_attach = on_attach,
+    }
+  end
+
+  require'nvim-treesitter.configs'.setup {
+    highlight = {
+        enable = true
+    },
+  }
+
+  local npairs = require('nvim-autopairs')
+  local endwise = require('nvim-autopairs.ts-rule').endwise
+
+  npairs.setup()
+  npairs.add_rules({
+    endwise('def .*$', 'end', 'ruby', 'method_name')
+  })
+
+  require'clipboard-image'.setup {
+    default = {
+      img_dir = 'img',
+      img_dir_txt = 'img',
+      img_name = function () return os.date('%Y-%m-%d-%H-%M-%S') end,
+      affix = '%s'
+    },
+    markdown = {
+      affix = '![](%s)'
+    },
+    vimwiki = {
+      affix = '{{file:%s}}'
+    }
+  }
+
+  require('gitsigns').setup {
+    signs = {
+      add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+      change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+      delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+      topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+      changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    },
+    numhl = false,
+    linehl = false,
+    -- keymaps = {
+    --   -- Default keymap options
+    --   noremap = true,
+    --   buffer = true,
+
+    --   ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'"},
+    --   ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'"},
+
+    --   ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+    --   ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+    --   ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    --   ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+    --   ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+    --   ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+
+    --   -- Text objects
+    --   ['o ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
+    --   ['x ih'] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>'
+    -- },
+    -- watch_index = {
+    --   interval = 1000
+    -- },
+    -- current_line_blame = false,
+    -- current_line_blame_delay = 1000,
+    -- current_line_blame_position = 'eol',
+    -- sign_priority = 6,
+    -- update_debounce = 100,
+    -- status_formatter = nil, -- Use default
+    -- use_decoration_api = true,
+    -- use_internal_diff = true,  -- If luajit is present
+  }
+EOF
+
+" Search NOTES -------------------------- {{{
+" lua << EOF
+" function _G.search_notes()
+"   require("telescope.builtin").live_grep({
+"     prompt_title = \"< Notes >", cwd = \"~/vimwiki/",
+"     })
+" end
+" EOF
+
+function! SearchWiki()
+  lua require("telescope.builtin").live_grep({ prompt_title = "< Notes >", cwd = "~/vimwiki/",  })
+endfunction
+command! SearchWiki call SearchWiki()
+
+" }}}
+" Plugin: Galaxyline -------------------------- {{{
+
+function! ConfigStatusLine()
+  lua require('plugins.status-line')
+endfunction
+
+augroup status_line_init
+  autocmd!
+  autocmd VimEnter * call ConfigStatusLine()
+augroup END
+
+" }}}
+
+lua require('plugins.lspsaga')
 
 " vim-notes --{{{
 let g:notes_tab_indents = 0
@@ -658,21 +804,6 @@ let g:limelight_conceal_ctermfg = 240
 let g:limelight_conceal_guifg = 'DarkGray'
 let g:limelight_conceal_guifg = '#777777'
 
-" Default: 0.5
-" let g:limelight_default_coefficient = 0.7
-
-" Number of preceding/following paragraphs to include (default: 0)
-" let g:limelight_paragraph_span = 1
-
-" Beginning/end of paragraph
-"   When there's no empty line between the paragraphs
-"   and each paragraph starts with indentation
-" let g:limelight_bop = '^\s'
-" let g:limelight_eop = '\ze\n^\s'
-
-" Highlighting priority (default: 10)
-"   Set it to -1 not to overrule hlsearch
-" let g:limelight_priority = -1
 " }}}
 
 
@@ -710,31 +841,22 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 " }}}
 
 " WIKI -------{{{
- " let g:vimwiki_list = [{'path': '~/wiki/',
- "                       \ 'syntax': 'markdown', 'ext': '.md'}]
-"" let wiki_1 = {}
-" let wiki_1.path = '~/vimwiki/'
-" let wiki_1.syntax = 'markdown'
-" let wiki_1.ext = '.md'
-
-" let g:vimwiki_list = [wiki_1]
-" let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+let g:vimwiki_listsyms = '✗○◐●✓'
+let g:vimwiki_global_ext = 0
 " }}}
 
 
-let g:polyglot_disabled = ['typescript']
-
 let g:fzf_command_prefix = 'Fzf'
 
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline_symbols.space = "\ua0"
-let g:airline_powerline_fonts = 1
-let g:airline_theme='violet'
+" if !exists('g:airline_symbols')
+"   let g:airline_symbols = {}
+" endif
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#left_alt_sep = '|'
+" let g:airline#extensions#tabline#left_sep = ' '
+" let g:airline_symbols.space = "\ua0"
+" let g:airline_powerline_fonts = 1
+" let g:airline_theme='violet'
 
 let test#strategy = {
   \ 'nearest': 'neovim',
@@ -747,41 +869,30 @@ let g:ale_fixers = {
   \'ts': ['prettier'],
   \'tsx': ['prettier'],
   \'ruby': ['rubocop'],
-  \'javascript': ['eslint'],	
-  \'typescript': ['prettier'],	
-  \'vue': ['eslint'],	
-  \'scss': ['prettier'],	
-  \'html': ['prettier']	
-  \}	
-let g:ale_linters = {	
-  \'python': ['pylint', 'flake8'],	
-  \'ruby': ['rubocop', 'rails_best_practices'],	
-  \'javascript': ['eslint'],	
-  \'typescript': ['tsserver', 'tslint'],	
+  \'javascript': ['eslint'],
+  \'typescript': ['prettier'],
+  \'scss': ['prettier'],
+  \'html': ['prettier']
+  \}
+let g:ale_linters = {
+  \'python': ['pylint', 'flake8'],
+  \'ruby': ['rubocop', 'rails_best_practices'],
+  \'javascript': ['eslint'],
+  \'typescript': ['tsserver', 'tslint'],
   \'typescript.tsx': ['tsserver', 'tslint'],
   \}
 let g:ale_fix_on_save = 1
-let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ale_sign_column_always = 1	
-let g:ale_virtualtext_cursor = 1	
+let g:ale_ruby_rubocop_executable = 'bundle exec rubocop'
+let g:ale_sign_column_always = 1
+let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = ' ▶ '
 
 
-let g:UltiSnipsExpandTrigger='<c-s>'
-let g:UltiSnipsListSnippets='<leader>ss'
-let g:UltiSnipsJumpForwardTrigger='<c-b>'
-let g:UltiSnipsJumpBackwardTrigger='<c-S>'
-let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
-
-let g:session_autosave = 'no'
-
-let g:deoplete#enable_at_startup = 1
-" let g:deoplete#disable_auto_complete = 1
-let g:deoplete#keyword_patterns = {}
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" let g:UltiSnipsExpandTrigger='<c-s>'
+" let g:UltiSnipsListSnippets='<leader>ss'
+" let g:UltiSnipsJumpForwardTrigger='<c-b>'
+" let g:UltiSnipsJumpBackwardTrigger='<c-S>'
+" let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 function! GalaxyUrl(opts, ...) abort
   if a:0 || type(a:opts) != type({})
@@ -807,41 +918,60 @@ endif
 if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
   call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
 endif
-" }}}
 
-" coc.nvim -----{{{
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" let g:dashboard_custom_shortcut={
+"   \ 'last_session'       : 'SPC s l',
+"   \ 'find_history'       : 'SPC f h',
+"   \ 'find_file'          : 'SPC f f',
+"   \ 'new_file'           : 'SPC c n',
+"   \ 'change_colorscheme' : 'SPC t c',
+"   \ 'find_word'          : 'SPC f a',
+"   \ 'book_marks'         : 'SPC f b',
+"   \ }
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" let g:dashboard_default_header = 'transformer'
+" let g:dashboard_preview_command="cat"
+" let g:dashboard_preview_file="~/.config/nvim/sunjon.cat"
+" let g:dashboard_preview_pipeline="lolcat"
+let g:dashboard_preview_file_width=70
+let g:dashboard_preview_file_height=10
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+let g:indentLine_fileTypeExclude = ['dashboard']
 
-let g:coc_global_extensions = [
-            \'coc-yank',
-            \'coc-tag',
-            \'coc-json',
-            \'coc-css',
-            \'coc-html',
-            \'coc-tsserver',
-            \'coc-yaml',
-            \'coc-solargraph',
-            \'coc-snippets',
-            \'coc-ultisnips',
-            \'coc-python',
-            \'coc-dictionary',
-            \'coc-syntax',
-            \'coc-gocode',
-            \]
+let g:dashboard_custom_section={
+\ 'last_session': {
+  \ 'description': ['  Recently laset session                  SPC s l'],
+  \ 'command': 'SessionLoad',
+  \ },
+\ 'find_history': {
+  \ 'description': ['  Recently opened files                   SPC f h'],
+  \ 'command': 'DashboardFindHistory',
+  \ },
+\ 'find_file': {
+  \ 'description': ['  Find  File                              SPC f f'],
+  \ 'command': 'Telescope find_files find_command=rg,--hidden,--files',
+  \ },
+\ 'new_file': {
+  \ 'description': ['  File Browser                            SPC f b'],
+  \ 'command': 'Telescope file_browser',
+  \ },
+\ 'find_word': {
+  \ 'description': ['  Find  word                              SPC f w'],
+  \ 'command': 'DashboardFindWord',
+  \ },
+\ 'notes': {
+  \ 'description': ['  Notes                                   SPC n i'],
+  \ 'command': 'VimwikiIndex',
+  \ },
+\ 'diary': {
+  \ 'description': ['  Diary                                   SPC d i'],
+  \ 'command': 'VimwikiDiaryIndex',
+  \ },
+\ 'today_diary': {
+  \ 'description': ['  Today Diary                             SPC d t'],
+  \ 'command': 'VimwikiMakeDiaryNote',
+  \ },
+\ }
 
 " }}}
 
@@ -850,14 +980,17 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
-let g:vista#renderer#icons = {	
-\   "function": "\uf794",	
-\   "variable": "\uf71b",	
-\  }	
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
 
-let g:vista#renderer#enable_icon = 1	
+let g:vista#renderer#enable_icon = 1
 
 set statusline+=%{NearestMethodOrFunction()}
+set statusline+=%#warningmsg#
+set statusline+=%{get(b:,'gitsigns_status','')}
+set statusline+=%*
 " }}}
 
 " NERDtree ----------------------------------------{{{
@@ -872,8 +1005,6 @@ let g:netrw_winsize = 10
 "   autocmd!
 "   autocmd VimEnter * :Vexplore
 " augroup END
-
-let ruby_spellcheck_strings = 1
 " }}}
 
 " Custom Functions ----------------------------------------------------------{{{
@@ -888,26 +1019,6 @@ function! HandleURL()
   endif
 endfunction
 map <leader>u :call HandleURL()<cr>
-
-function! s:DebugStatement()
-    echom "1)Success"
-    echom "2)Failure"
-    echom "3)Warning"
-    let choice = input(">>")
-
-    let debugMsg = ''
-    if choice == 1
-        let debugMsg = 'puts "\e[42m#{}\e[0m"'
-    elseif choice == 2
-        let debugMsg = 'puts "\e[41m#{}\e[0m"'
-    elseif  choice == 3
-        let debugMsg = 'puts "\e[43m#{}\e[0m"'
-    endif
-    if debugMsg != ''
-        call append(line('.'), debugMsg)
-    endif
-endfunction
-com! DebugStatement call s:DebugStatement()
 
 " DiffWithSaved with allow you to see a diff between the currently edited file,
 " and it's unmodified version
@@ -985,52 +1096,9 @@ function! <SID>StripTrailingWhitespaces()
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
- function! s:ChangeClassName(from_name, to_name, args)
-   " rg --files-with-matches 'from' . | xargs sed -i '' 's/from/to/g'
-   let rg = "!rg --files-with-matches . " . from_name
-   let xargs = "xargs sed -i '' 's/" . from_name . "/" . to_name . "/g'"
-   execute rg . " | " . xargs
- endfunction
-
 command! Sorc source ~/.config/nvim/init.vim
 command! Vterm vsp | term
 command! Sterm sp | term
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" function! Smart_TabComplete()
-"   let line = getline('.')                         " current line
-
-"   let substr = strpart(line, -1, col('.')+1)      " from the start of the current
-"                                                   " line to one character right
-"                                                   " of the cursor
-"   let substr = matchstr(substr, "[^ \t]*$")       " word till cursor
-"   if (strlen(substr)==0)                          " nothing to match on empty string
-"     return "\<tab>"
-"   endif
-"   let has_period = match(substr, '\.') != -1      " position of period, if any
-"   let has_slash = match(substr, '\/') != -1       " position of slash, if any
-"   if (!has_period && !has_slash)
-"     return "\<C-X>\<C-P>"                         " existing text matching
-"   elseif ( has_slash )
-"     return "\<C-X>\<C-F>"                         " file matching
-"   else
-"     return "\<C-X>\<C-O>"                         " plugin matching
-"   endif
-" endfunction
-" inoremap <tab> <c-r>=Smart_TabComplete()<CR>
-" https://vim.fandom.com/wiki/Smart_mapping_for_tab_completion
 " }}}
 
 " FZF -----------------------------------------------------------------------{{{
@@ -1114,20 +1182,5 @@ inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
-set foldmethod=syntax
-" }}}
-
-" rails_projections ---------------------------------------------------------{{{
-let g:rails_projections = {
-      \ "app/services/*.rb": {
-      \   "command": "services",
-      \   "template":
-      \     ["class {camelcase|capitalize}", "end"],
-      \   "test": [
-      \     "test/services/{}_test.rb",
-      \     "spec/services/{}_spec.rb"
-      \   ],
-      \   "rubyMacro": ["process", "version"]
-      \ }}
-
+" set foldmethod=syntax
 " }}}
