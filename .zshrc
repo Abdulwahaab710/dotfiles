@@ -1,6 +1,4 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block, everything else may go below.
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -11,51 +9,24 @@ else
   export TERM="xterm-256color"
 fi
 
-# Executes commands at the start of an interactive session.
-#
-# Authors:
-#   Sorin Ionescu <sorin.ionescu@gmail.com>
-#
-
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-# Customize to your needs...
 export LANG="en_US.UTF-8"
-
-# POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-# POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-# POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-# POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(rspec_stats chruby vi_mode status background_jobs)
-# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-
-
-# Customize to your needs...
-
-# Add homebrew to the completion path
 fpath=("/usr/local/bin/" $fpath)
 
-# why would you type 'cd dir' if you could just type 'dir'?
 setopt AUTO_CD
-
-# Now we can pipe to multiple outputs!
 setopt MULTIOS
 
 # This makes cd=pushd
 setopt AUTO_PUSHD
-
-# This will use named dirs when possible
 setopt AUTO_NAME_DIRS
 
 # If we have a glob this will expand it
 setopt GLOB_COMPLETE
 setopt PUSHD_MINUS
 
-# No more annoying pushd messages...
-# setopt PUSHD_SILENT
-
-# blank pushd goes to home
 setopt PUSHD_TO_HOME
 
 # this will ignore multiple directories for the stack.  Useful?  I dunno.
@@ -69,8 +40,8 @@ setopt ZLE
 
 setopt NO_HUP
 
-# only fools wouldn't do this ;-)
 export EDITOR="/usr/local/bin/nvim"
+export VISUAL=/usr/local/bin/nvim
 export GIT_EDITOR="/usr/local/bin/nvim"
 
 setopt IGNORE_EOF
@@ -113,26 +84,34 @@ bindkey -M vicmd "q" push-line
 # it's like, space AND completion.  Gnarlbot.
 bindkey -M viins ' ' magic-space
 
-# Zinit -----------------------------------------------{{{{
-if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
-    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
+# Zplug {{{
+  export ZPLUG_HOME=/usr/local/opt/zplug
+  if [[ ! -d $ZPLUG_HOME ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+    source $ZPLUG_HOME/init.zsh
+  else
+    source $ZPLUG_HOME/init.zsh
+  fi
+  zplug "supercrabtree/k"
+  zplug "zdharma/fast-syntax-highlighting",  defer:3
+  zplug "zsh-users/zsh-autosuggestions",     defer:3
 
-source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+  if ! zplug check --verbose; then
+      printf "Install? [y/N]: "
+      if read -q; then
+          echo; zplug install
+      else
+          echo
+      fi
+  fi
 
-zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma/fast-syntax-highlighting
-# }}}}
+  zplug load
+
+# }}}
+
 # aliases ---------------------------------------------{{{{
 
 alias fix='rm ~/.zcondump*;exec zsh;'
-
 alias k=kubectl
 alias d=docker
 alias rtest='bundle exec rspec'
@@ -145,6 +124,7 @@ alias mkube='minikube'
 alias rspec='bundle exec rspec'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
 alias ghp='open https://github.com/pulls'
+alias tn='tmux new -s'
 
 alias ll='exa -bghHliSFa'
 alias py='python'
@@ -171,9 +151,6 @@ alias dcl='dev clone'
 
 # Cheat => enabling syntax highligthing
 export CHEATCOLORS=true
-export EDITOR=/usr/local/bin/nvim
-export VISUAL=/usr/local/bin/nvim
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS='--extended'
 if command -v fd  > /dev/null; then
@@ -210,7 +187,7 @@ update() {
   $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
 
-s() {
+function s {
     branch="$(git branch | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
@@ -218,7 +195,7 @@ s() {
       git checkout $BRANCH_NAME
     fi
 }
-sr() {
+function sr {
     branch="$(git branch -a | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
@@ -227,7 +204,7 @@ sr() {
     fi
 }
 
-ts() {
+function ts {
     session="$(tmux ls | fzf -d 15 --query="$1" --select-1 --exit-0)"
     if [ ! -z $session ]
     then
@@ -236,11 +213,11 @@ ts() {
     fi
 }
 
-git-nvim() {
+function git-nvim {
     git status -s -u | fzf -m --ansi --preview-window "right:33%" --preview "echo {} | cut -d' ' -f 3 | xargs head -$LINES" | cut -d' ' -f 3 | xargs nvim
 }
 
-push_upstram_origin() {
+function push_upstram_origin {
     BRANCH_NAME="$(git rev-parse --abbrev-ref HEAD)"
     if [ ! -z $BRANCH_NAME ]
     then
@@ -248,8 +225,8 @@ push_upstram_origin() {
     fi
 }
 
-sp() {
-    DIRECTORIES=$((cd ~/src/github.com ;ls -dl1 */**) | rg '[^/;]+/[^/;]+$' -o);
+function sp {
+    DIRECTORIES=$(cd $HOME/src/github.com; ls -dl1 * */*);
     PROJECT_NAME=$(echo $DIRECTORIES | fzf -d 15 --query="$1" --select-1 --exit-0)
     if [ ! -z $PROJECT_NAME ]
     then
@@ -257,7 +234,7 @@ sp() {
     fi
 }
 
-swap_file_names() {
+function swap_file_names {
     first_file=$1
     second_file=$2
     tmp_name="tmp:$first_file+$second_file"
@@ -266,17 +243,8 @@ swap_file_names() {
     mv $tmp_name $second_file
 }
 
-function dmenu_apps {
-  APP_NAME=$(ls -1A /Applications | sed 's/\.app//g' | dmenu)
-  if [ ! -z $APP_NAME ]
-  then
-    open -F -a $APP_NAME
-  fi
-}
-
-
 unalias g 2>/dev/null
-g() {
+function g {
   if [[ $# > 0 ]]; then
     git $@
   else
@@ -284,36 +252,20 @@ g() {
   fi
 }
 
-tn() {
-  if [[ $# > 0 ]]; then
-    tmux new -s $@
-  else
-    tmux new -s ${PWD##*/}
-  fi
-}
-
-rm_orig() {
+function rm_orig {
   find . -name *.orig | xargs rm
 }
 
 compdef g=git
 
-RANDOM_THEME() {
+function RANDOM_THEME {
   THEMES=($(alias | awk -F'=' '/base16_[A-Za-z0-9]*/ {print $1}'))
   THEMES_ARRAY_SIZE=${#THEMES[@]}
   THEME_INDEX=$(( ( RANDOM % THEMES_ARRAY_SIZE )  + 1 ))
   shopt $THEMES[$THEME_INDEX]
 }
 
-brakeman_scan() {
-  chruby 2.5.1
-  brakeman -o report.html
-  open report.html
-  sleep 2
-  rm -rf report.html
-}
-
-docker_clean_all() {
+function docker_clean_all {
   alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
   alias docker_clean_ps='docker rm $(docker ps --filter=status=exited --filter=status=created -q)'
   docker kill $(docker ps -q) 2>/dev/null
@@ -347,19 +299,36 @@ autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 # }}}
 
-
-
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$HOME/.cargo/bin
+
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export PATH=$PATH:$HOME/cycript
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
+source $GOPATH/src/github.com/tomnomnom/gf/gf-completion.zsh
 
+vimwiki () {
+  if [[ $# == 0 ]]
+  then
+    nvim +'VimwikiIndex'
+  elif [[ $1 == 'git' ]]
+  then
+    git -C ~/vimwiki/ ${@:2}
+  else
+    echo 'Usage: vimwiki [git] [args ...]'
+  fi
+}
