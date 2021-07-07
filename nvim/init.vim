@@ -391,6 +391,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'tools-life/taskwiki', { 'do': 'pip3 install --upgrade -r requirements.txt' }
 Plug 'ekickx/clipboard-image.nvim', { 'branch': 'main' }
+Plug 'abdulwahaab710/vimwiki-sync'
 call plug#end()
 " }}}
 " }}}
