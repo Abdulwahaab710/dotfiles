@@ -378,6 +378,7 @@ Plug 'folke/todo-comments.nvim', {'branch': 'main'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'Pocco81/TrueZen.nvim', { 'branch': 'main' }
 " }}}
 
 " Tools -------------------------------------------{{{
