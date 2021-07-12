@@ -378,6 +378,7 @@ Plug 'folke/todo-comments.nvim', {'branch': 'main'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'Pocco81/TrueZen.nvim', { 'branch': 'main' }
 " }}}
 
 " Tools -------------------------------------------{{{
@@ -391,6 +392,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'tools-life/taskwiki', { 'do': 'pip3 install --upgrade -r requirements.txt' }
 Plug 'ekickx/clipboard-image.nvim', { 'branch': 'main' }
+Plug 'abdulwahaab710/vimwiki-sync'
 call plug#end()
 " }}}
 " }}}

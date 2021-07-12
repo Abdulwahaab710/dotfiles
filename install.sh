@@ -8,7 +8,8 @@ fi
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-ln -fs "$HOME/dotfiles/.vim/init.vim" "$HOME/.config/nvim/init.vim"
+ln -s $HOME/dotfiles/nvim/init.vim $HOME/.config/nvim/init.vim
+ln -s $HOME/dotfiles/nvim/lua $HOME/.config/nvim/lua
 
 install_prezto() {
   zsh
@@ -22,4 +23,4 @@ install_prezto() {
 ln -fs "$HOME/dotfiles/.zshrc" "$HOME/.zshrc"
 ln -fs "$HOME/dotfiles/.zprezto" "$HOME/.zprezto"
 
-nvim -c 'so %|PlugInstall' "$HOME/.config/nvim/init.vim"
+nvim -c 'so %|PlugInstall' $HOME/.config/nvim/init.vim
