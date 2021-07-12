@@ -287,7 +287,7 @@ augroup configgroup
     autocmd BufNewFile,BufRead *.todo.txt setlocal wrap
     autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
     autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
-    autocmd BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks<CR>
+    autocmd BufNewFile,BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
@@ -338,7 +338,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'liuchengxu/vista.vim'
 Plug 'xolox/vim-misc'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
 Plug 'janko-m/vim-test'
 Plug 'terryma/vim-multiple-cursors'
@@ -640,7 +640,7 @@ let g:ale_fixers = {
   \}
 let g:ale_linters = {
   \'python': ['pylint', 'flake8'],
-  \'ruby': ['rubocop', 'rails_best_practices'],
+  \'ruby': ['rubocop', 'rails_best_practices', 'srb'],
   \'javascript': ['eslint'],
   \'typescript': ['tsserver', 'tslint'],
   \'typescript.tsx': ['tsserver', 'tslint'],
