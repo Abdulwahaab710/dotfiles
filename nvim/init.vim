@@ -356,7 +356,7 @@ Plug 'voldikss/vim-floaterm'
 " Plug 'rust-lang/rust.vim'
 " Plug 'ekalinin/Dockerfile.vim'
 Plug 'chrisbra/csv.vim'
-Plug 'gabrielelana/vim-markdown'
+" Plug 'gabrielelana/vim-markdown'
 " Plug 'kana/vim-textobj-user'
 Plug 'benjifisher/matchit.zip'
 " Plug 'nelstrom/vim-textobj-rubyblock'
@@ -607,6 +607,8 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 " WIKI -------{{{
 let g:vimwiki_listsyms = '✗○◐●✓'
 let g:vimwiki_global_ext = 0
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
 " }}}
 
 
@@ -948,3 +950,4 @@ inoreabbrev <expr> __
 
 " set foldmethod=syntax
 " }}}
+source ~/.config/nvim/markdown.vim
