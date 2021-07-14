@@ -28,7 +28,7 @@ require'compe'.setup {
 local servers = {
   -- 'pyright',
   -- 'gopls',
-  -- 'rust_analyzer',
+  'rust_analyzer',
   'tsserver',
   'solargraph'
 }
