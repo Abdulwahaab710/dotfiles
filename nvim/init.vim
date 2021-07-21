@@ -32,6 +32,7 @@ set splitbelow                              " open horizontal splits to the bott
 set splitright                              " open vertical splits to the right
 set tabstop=2 shiftwidth=2                  " number of visual spaces per TAB
 set ttimeoutlen=10
+set timeoutlen=10
 set ttyfast
 if !has('nvim')
   set ttymouse=xterm2
@@ -113,9 +114,7 @@ nnoremap <leader>x :x<CR>
 nnoremap <leader>ot :tabe
 nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
-nnoremap <leader>n :nohl<CR>
-
-nnoremap <silent> <leader> :WhichKey ';'<CR>
+" nnoremap <leader>n :nohl<CR>
 
 nmap <leader>gb :GBrowse<CR>
 vmap <leader>gb :GBrowse<CR>
@@ -294,109 +293,6 @@ augroup configgroup
 
 " }}}
 
-" Plugins -------------------------------------------------------------------{{{
-
-call plug#begin('~/.config/nvim/plugged')
-
-" Code Completion and snippets --------------------{{{
-Plug 'SirVer/ultisnips' " TODO: Migrate to norcalli/snippets.nvim
-Plug 'honza/vim-snippets'
-Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim' , {'branch': 'main'}
-Plug 'hrsh7th/nvim-compe'
-" }}}
-
-" git plugins -------------------------------------{{{
-Plug 'nvim-lua/plenary.nvim'
-Plug 'lewis6991/gitsigns.nvim', { 'branch': 'main' }
-" }}}
-
-" tpope plugins -----------------------------------{{{
-Plug 'tpope/vim-surround' " easily surround things...just read docs for info
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-dadbod'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-" }}}
-
-" misc --------------------------------------------{{{
-" Plug 'antoinemadec/FixCursorHold.nvim'
-" Plug 'vim-ctrlspace/vim-ctrlspace'
-Plug 'windwp/nvim-autopairs'
-Plug 'b3nj5m1n/kommentary', { 'branch': 'main' }
-Plug 'hardcoreplayers/dashboard-nvim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'Shougo/vimshell.vim'
-Plug 'ujihisa/repl.vim'
-Plug 'bogado/file-line'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'liuchengxu/vista.vim'
-Plug 'xolox/vim-misc'
-Plug 'dense-analysis/ale'
-Plug 'mbbill/undotree'
-Plug 'janko-m/vim-test'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
-Plug 'icatalina/vim-case-change'
-Plug 'godlygeek/tabular'
-Plug 'rhysd/vim-grammarous'
-Plug 'dstein64/vim-startuptime'
-Plug 'junegunn/vim-emoji'
-Plug 'voldikss/vim-floaterm'
-" }}}
-
-" Syntax plugins ----------------------------------{{{
-" Plug 'rust-lang/rust.vim'
-" Plug 'ekalinin/Dockerfile.vim'
-Plug 'chrisbra/csv.vim'
-" Plug 'gabrielelana/vim-markdown'
-" Plug 'kana/vim-textobj-user'
-Plug 'benjifisher/matchit.zip'
-" Plug 'nelstrom/vim-textobj-rubyblock'
-" }}}
-
-" Theme related plugins ---------------------------{{{
-" Plug 'vim-airline/vim-airline-themes'
-" Plug 'vim-airline/vim-airline'
-Plug 'romgrk/barbar.nvim'
-Plug 'glepnir/galaxyline.nvim', {'branch': 'main'}
-Plug 'RRethy/nvim-base16'
-Plug 'lukas-reineke/indent-blankline.nvim', { 'branch': 'lua' }
-Plug 'ryanoasis/vim-devicons' " TODO: Migrate to lua
-Plug 'kyazdani42/nvim-web-devicons' " lua
-Plug 'folke/tokyonight.nvim'
-Plug 'jeffkreeftmeijer/vim-dim', {'branch': 'main'}
-Plug 'nvim-lua/plenary.nvim'
-Plug 'folke/todo-comments.nvim', {'branch': 'main'}
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/playground'
-Plug 'nvim-treesitter/nvim-treesitter-refactor'
-Plug 'Pocco81/TrueZen.nvim', { 'branch': 'main' }
-" }}}
-
-" Tools -------------------------------------------{{{
-Plug 'mhinz/vim-rfc'
-" }}}
-
-" Note Taking Plugins -----------------------------{{{
-Plug 'vimwiki/vimwiki', { 'tree': 'dev' }
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'tools-life/taskwiki', { 'do': 'pip3 install --upgrade -r requirements.txt' }
-Plug 'ekickx/clipboard-image.nvim', { 'branch': 'main' }
-Plug 'abdulwahaab710/vimwiki-sync'
-call plug#end()
-" }}}
-" }}}
-
 " omnifuncs -----------------------------------------------------------------{{{
 
 augroup omnifuncs
@@ -504,6 +400,7 @@ set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 
 " Plugins configs -----------------------------------------------------------{{{
 lua require('plugin_configs')
+lua require('plugins')
 " Search NOTES -------------------------- {{{
 " lua << EOF
 " function _G.search_notes()
