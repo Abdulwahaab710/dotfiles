@@ -41,6 +41,7 @@ return require('packer').startup(function()
   use { 'tpope/vim-eunuch' }
   use { 'tpope/vim-fugitive' }
   use { 'tpope/vim-rhubarb' }
+  use { 'tpope/vim-projectionist' }
   -- " }}}
 
   -- " misc --------------------------------------------{{{

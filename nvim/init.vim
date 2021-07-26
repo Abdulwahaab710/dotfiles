@@ -837,3 +837,4 @@ inoreabbrev <expr> __
 " set foldmethod=syntax
 " }}}
 source ~/.config/nvim/markdown.vim
+source ~/.config/nvim/projectionist.vim
