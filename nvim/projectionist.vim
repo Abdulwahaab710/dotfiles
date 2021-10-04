@@ -24,6 +24,10 @@ if filereadable('config/routes.rb')
      \      'type': 'model',
      \      'alternate': 'app/controllers/{plural}_controller.rb',
      \    },
+     \    'app/jobs/*.rb': {
+     \      'type': 'job',
+     \      'alternate': 'test/jobs/{}_test.rb',
+     \    },
      \    'app/javascript/stylesheets/*.scss': {
      \      'type': 'stylesheets',
      \    },
