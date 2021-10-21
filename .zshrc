@@ -35,26 +35,6 @@ setopt NUMERIC_GLOB_SORT
 setopt EXTENDED_GLOB
 setopt RC_EXPAND_PARAM
 
-# Who doesn't want home and end to work?
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
-
-# Incremental search is elite!
-bindkey -M vicmd "/" history-incremental-search-backward
-bindkey -M vicmd "?" history-incremental-search-forward
-
-# Search based on what you typed in already
-bindkey -M vicmd "//" history-beginning-search-backward
-bindkey -M vicmd "??" history-beginning-search-forward
-
-bindkey "\eOP" run-help
-
-# oh wow!  This is killer...  try it!
-bindkey -M vicmd "q" push-line
-
-# it's like, space AND completion.  Gnarlbot.
-bindkey -M viins ' ' magic-space
-
 # Zinit -----------------------------------------------{{{{
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
@@ -81,16 +61,12 @@ alias gpu=push_upstram_origin
 alias mk=make
 alias kali='docker run -it --rm kalilinux/kali-linux-docker'
 alias ubuntu='docker run -it --rm dockerfile/ubuntu'
-alias mkube='minikube'
-alias rspec='bundle exec rspec'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
-alias ghp='open https://github.com/pulls'
 alias ll='exa -bghHliSFa'
 alias py='python'
 alias tmux='tmux -2'
-alias startKwm='brew services start kwm'
-alias stopKwm='brew services stop kwm'
 alias gitset='git push --set-upstream'
+
 if [ -n $TMUX  ]; then
     alias vim="TERM=screen-256color vim"
 fi
@@ -111,7 +87,6 @@ if command -v fd  > /dev/null; then
 fi
 
 export PATH=$PATH:$HOME/swap
-export PATH="/usr/local/opt/python@2/bin:$PATH"
 export PATH="$HOME/.config/zsh/fp:$PATH"
 export CHEATCOLORS=true
 export EDITOR=nvim
@@ -125,9 +100,8 @@ export GPG_TTY=$(tty)
 export GOPATH=$HOME/src/github.com
 export PATH=$GOPATH/bin:$PATH
 export KUBECONFIG=$HOME/.kube/config
-
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
 
 # functions -------------------------------------------{{{{
 update() {
@@ -197,15 +171,6 @@ swap_file_names() {
     mv $tmp_name $second_file
 }
 
-function dmenu_apps {
-  APP_NAME=$(ls -1A /Applications | sed 's/\.app//g' | dmenu)
-  if [ ! -z $APP_NAME ]
-  then
-    open -F -a $APP_NAME
-  fi
-}
-
-
 unalias g 2>/dev/null
 g() {
   if [[ $# > 0 ]]; then
@@ -228,21 +193,6 @@ rm_orig() {
 }
 
 compdef g=git
-
-RANDOM_THEME() {
-  THEMES=($(alias | awk -F'=' '/base16_[A-Za-z0-9]*/ {print $1}'))
-  THEMES_ARRAY_SIZE=${#THEMES[@]}
-  THEME_INDEX=$(( ( RANDOM % THEMES_ARRAY_SIZE )  + 1 ))
-  shopt $THEMES[$THEME_INDEX]
-}
-
-brakeman_scan() {
-  chruby 2.5.1
-  brakeman -o report.html
-  open report.html
-  sleep 2
-  rm -rf report.html
-}
 
 docker_clean_all() {
   alias docker_clean_images='docker rmi $(docker images -a --filter=dangling=true -q)'
@@ -298,16 +248,26 @@ vimwiki () {
 bindkey -s jj '\e'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
+# Who doesn't want home and end to work?
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
+
+# Incremental search is elite!
+bindkey -M vicmd "/" history-incremental-search-backward
+bindkey -M vicmd "?" history-incremental-search-forward
+
+# Search based on what you typed in already
+bindkey -M vicmd "//" history-beginning-search-backward
+bindkey -M vicmd "??" history-beginning-search-forward
+
+bindkey "\eOP" run-help
+
+# oh wow!  This is killer...  try it!
+bindkey -M vicmd "q" push-line
+
+# it's like, space AND completion.  Gnarlbot.
+bindkey -M viins ' ' magic-space
 # }}}
-
-export ANDROID_HOME=$HOME/Library/Android/sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
