@@ -277,3 +277,4 @@ fi
 chruby 2.7.1
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
+if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

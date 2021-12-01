@@ -221,6 +221,34 @@ nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_sag
 nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 " -- show signature help
 nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+
+ " click enter on [[my_link]] or [[[my_link]]] to enter it
+" nnoremap <buffer> <CR> <cmd>lua require'neuron'.enter_link()<CR>
+
+" " create a new note
+" nnoremap <buffer> gzn <cmd>lua require'neuron/cmd'.new_edit(require'neuron/config'.neuron_dir)<CR>
+
+" " find your notes, click enter to create the note if there are not notes that match
+" nnoremap <buffer> gzz <cmd>lua require'neuron/telescope'.find_zettels()<CR>
+" " insert the id of the note that is found
+" nnoremap <buffer> gzZ <cmd>lua require'neuron/telescope'.find_zettels {insert = true}<CR>
+
+" " find the backlinks of the current note all the note that link this note
+" nnoremap <buffer> gzb <cmd>lua require'neuron/telescope'.find_backlinks()<CR>
+" " same as above but insert the found id
+" nnoremap <buffer> gzB <cmd>lua require'neuron/telescope'.find_backlinks {insert = true}<CR>
+
+" " find all tags and insert
+" nnoremap <buffer> gzt <cmd>lua require'neuron/telescope'.find_tags()<CR>
+
+" " start the neuron server and render markdown, auto reload on save
+" nnoremap <buffer> gzs <cmd>lua require'neuron'.rib {address = "127.0.0.1:8200", verbose = true}<CR>
+
+" " go to next [[my_link]] or [[[my_link]]]
+" nnoremap <buffer> gz] <cmd>lua require'neuron'.goto_next_extmark()<CR>
+" " go to previous
+" nnoremap <buffer> gz[ <cmd>lua require'neuron'.goto_prev_extmark()<CR>]]
+
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
@@ -290,6 +318,7 @@ augroup configgroup
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
+au BufWritePost <buffer> lua require('lint').try_lint()
 
 " }}}
 
@@ -334,30 +363,21 @@ set foldlevelstart=1
 " }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
+" Load the colorscheme
+colorscheme tokyonight
 
 if (has("termguicolors"))
   set termguicolors
 endif
-" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
 set background=dark
 set t_Co=256
 let g:impact_transbg=1
 au VimLeave * set guicursor=a:block-blinkon0
 
-" if filereadable(expand("~/.vimrc_background"))
-"   let base16colorspace=256
-"   source ~/.vimrc_background
-" endif
-
-" colorscheme space-vim-dark
 let g:tokyonight_style = "night"
 let g:tokyonight_italic_functions = 1
 let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
-
-" Load the colorscheme
-colorscheme tokyonight
 
 hi Comment gui=italic cterm=italic
 hi htmlArg gui=italic cterm=italic
@@ -376,16 +396,16 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-let g:ale_sign_error = " ✘ "
-let g:ale_sign_warning = " ⚠ "
-let g:ale_sign_info = "  "
-let g:ale_sign_highlight_linenrs = 1
+" let g:ale_sign_error = " ✘ "
+" let g:ale_sign_warning = " ⚠ "
+" let g:ale_sign_info = "  "
+" let g:ale_sign_highlight_linenrs = 1
 
-highlight link ALEWarningSign Todo
-highlight link ALEErrorSign WarningMsg
-highlight link ALEVirtualTextWarning Todo
-highlight link ALEVirtualTextInfo Todo
-highlight link ALEVirtualTextError WarningMsg
+" highlight link ALEWarningSign Todo
+" highlight link ALEErrorSign WarningMsg
+" highlight link ALEVirtualTextWarning Todo
+" highlight link ALEVirtualTextInfo Todo
+" highlight link ALEVirtualTextError WarningMsg
 
 " syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
 " syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
