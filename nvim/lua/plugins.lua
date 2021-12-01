@@ -17,20 +17,27 @@ end
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
-  use { 'neovim/nvim-lspconfig' }
-  use { 'glepnir/lspsaga.nvim',  branch = 'main' }
-  use { 'hrsh7th/nvim-compe' }
-
   -- " Code Completion and snippets --------------------{{{
-  use { 'SirVer/ultisnips' } -- " TODO: Migrate to norcalli/snippets.nvim
-  use { 'honza/vim-snippets' }
+  use { 'rafamadriz/friendly-snippets' }
   use { 'neovim/nvim-lspconfig' }
   use { 'glepnir/lspsaga.nvim',  branch = 'main' }
-  use { 'hrsh7th/nvim-compe' }
+  -- use { 'hrsh7th/nvim-compe' }
+  use { 'hrsh7th/cmp-nvim-lsp' }
+  use { 'hrsh7th/cmp-buffer' }
+  use { 'hrsh7th/cmp-path' }
+  use { 'hrsh7th/cmp-cmdline' }
+  use { 'hrsh7th/nvim-cmp' }
+
+  -- For vsnip users.
+  use { 'hrsh7th/cmp-vsnip' }
+  use { 'hrsh7th/vim-vsnip' }
+
+  -- Linting
+  use { 'mfussenegger/nvim-lint' }
+  use { 'williamboman/nvim-lsp-installer' }
   -- " }}}
 
   -- " git plugins -------------------------------------{{{
-  use { 'nvim-lua/plenary.nvim' }
   use { 'lewis6991/gitsigns.nvim', branch = 'main' }
   -- " }}}
 
@@ -57,12 +64,11 @@ return require('packer').startup(function()
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use { 'junegunn/fzf.vim' }
   use { 'nvim-lua/popup.nvim' }
-  use { 'nvim-lua/plenary.nvim' }
   use { 'nvim-telescope/telescope.nvim' }
   use { 'nvim-telescope/telescope-fzy-native.nvim' }
   use { 'liuchengxu/vista.vim' }
   use { 'xolox/vim-misc' }
-  use { 'dense-analysis/ale' }
+  -- use { 'dense-analysis/ale' }
   use { 'mbbill/undotree' }
   use { 'janko-m/vim-test' }
   use { 'terryma/vim-multiple-cursors' }
@@ -114,6 +120,7 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/playground' }
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
+  use { 'ray-x/aurora' }
   -- " }}}
 
   -- " Tools -------------------------------------------{{{
@@ -128,4 +135,33 @@ return require('packer').startup(function()
   use { 'tools-life/taskwiki', run = 'pip3 install --upgrade -r requirements.txt' }
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
   use { 'abdulwahaab710/vimwiki-sync' }
+  use { "ellisonleao/glow.nvim" }
+  use {
+      'pyrho/nerveux.nvim',
+      requires = {
+          'nvim-lua/plenary.nvim',
+          'nvim-lua/popup.nvim',
+          'nvim-telescope/telescope.nvim',
+      },
+      config = function() require"nerveux".setup() end,
+  }
+  --[[ use {
+    "oberblastmeister/neuron.nvim",
+    branch = 'unstable',
+    config = function()
+      require'neuron'.setup {
+        virtual_titles = true,
+        mappings = true,
+        run = nil, -- function to run when in neuron dir
+        neuron_dir = "~/zettelkasten", -- the directory of all of your notes, expanded by default (currently supports only one directory for notes, find a way to detect neuron.dhall to use any directory)
+        leader = "gz", -- the leader key to for all mappings, remember with 'go zettel'
+      }
+    end
+  } ]]
+  use {
+    'lukas-reineke/headlines.nvim',
+    config = function()
+      require("headlines").setup()
+    end,
+  }
 end)

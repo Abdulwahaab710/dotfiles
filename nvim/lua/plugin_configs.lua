@@ -8,3 +8,12 @@ require 'plugins/telescope'
 require 'plugins/todo-comments'
 require 'plugins/treesitter'
 require 'plugins/true-zen'
+require 'plugins/nerveux'
+
+require('linters.ruby')
+require('linters.rubocop')
+
+_G.dotfiles = {
+  diagnostics = require('diagnostics'),
+  lint = require('lint'),
+}
