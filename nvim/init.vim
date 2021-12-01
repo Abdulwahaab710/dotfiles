@@ -358,6 +358,9 @@ set foldlevelstart=1
 " }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
+" set guifont=PragmataPro\ Mono\ Liga:h14
+
+let g:neovide_cursor_animation_length=0
 
 if (has("termguicolors"))
   set termguicolors

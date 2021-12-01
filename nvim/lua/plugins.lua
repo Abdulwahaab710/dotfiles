@@ -26,8 +26,15 @@ return require('packer').startup(function()
   -- " }}}
 
   -- " git plugins -------------------------------------{{{
-  use { 'nvim-lua/plenary.nvim' }
-  use { 'lewis6991/gitsigns.nvim', branch = 'main' }
+  use {
+  'lewis6991/gitsigns.nvim',
+  requires = {
+    'nvim-lua/plenary.nvim'
+  },
+  config = function()
+    require('gitsigns').setup()
+  end
+}
   -- " }}}
 
   -- " tpope plugins -----------------------------------{{{
@@ -53,7 +60,7 @@ return require('packer').startup(function()
   use { 'hardcoreplayers/dashboard-nvim' }
   use { 'Shougo/vimproc.vim', run = 'make' }
   use { 'Shougo/vimshell.vim' }
-  use { 'ujihisa/repl.vim' }
+  use { 'CRAG666/code_runner.nvim', requires = 'nvim-lua/plenary.nvim' }
   use { 'bogado/file-line' }
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use { 'junegunn/fzf.vim' }
@@ -110,9 +117,17 @@ return require('packer').startup(function()
   use { 'jeffkreeftmeijer/vim-dim', branch = 'main' }
   use { 'folke/todo-comments.nvim', branch = 'main' }
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use { 'romgrk/nvim-treesitter-context' }
   use { 'nvim-treesitter/playground' }
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
+  use {'oberblastmeister/neuron.nvim',
+      requires = {{'nvim-lua/popup.nvim'},
+                  {'nvim-lua/plenary.nvim'},
+                  {'nvim-telescope/telescope.nvim'}
+      }
+  }
+
   -- " }}}
 
   -- " Tools -------------------------------------------{{{
@@ -128,4 +143,5 @@ return require('packer').startup(function()
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
   use { 'abdulwahaab710/vimwiki-sync' }
   use { 'mattn/calendar-vim' }
+  use {"ellisonleao/glow.nvim"}
 end)
