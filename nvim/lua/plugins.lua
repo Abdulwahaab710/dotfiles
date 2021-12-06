@@ -33,8 +33,8 @@ return require('packer').startup(function()
   use { 'hrsh7th/vim-vsnip' }
 
   -- Linting
-  use { 'mfussenegger/nvim-lint' }
   use { 'williamboman/nvim-lsp-installer' }
+  use { 'dense-analysis/ale' }
   -- " }}}
 
   -- " git plugins -------------------------------------{{{
