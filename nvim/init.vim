@@ -318,7 +318,6 @@ augroup configgroup
   augroup end
 
 " autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-au BufWritePost <buffer> lua require('lint').try_lint()
 
 " }}}
 
@@ -448,6 +447,45 @@ augroup status_line_init
 augroup END
 
 " }}}
+
+let g:ale_fixers = {
+  \'python': ['pylint', 'flake8'],
+  \'ts': ['prettier'],
+  \'tsx': ['prettier'],
+  \'ruby': ['rubocop'],
+  \'javascript': ['eslint'],
+  \'typescript': ['prettier'],
+  \'vue': ['eslint'],
+  \'scss': ['prettier'],
+  \'html': ['prettier']
+  \}
+let g:ale_linters = {
+  \'python': ['pylint', 'flake8'],
+  \'ruby': ['rubocop', 'rails_best_practices'],
+  \'javascript': ['eslint'],
+  \'typescript': ['tsserver', 'tslint'],
+  \'typescript.tsx': ['tsserver', 'tslint'],
+  \}
+let g:ale_fix_on_save = 1
+let g:ale_ruby_rubocop_executable = 'rubocop'
+let g:ale_sign_column_always = 1
+let g:ale_virtualtext_cursor = 1
+let g:ale_virtualtext_prefix = ' ▶ '
+
+
+let g:ale_sign_error = " ✘ "
+let g:ale_sign_warning = " ⚠ "
+let g:ale_sign_info = "  "
+let g:ale_sign_highlight_linenrs = 1
+
+highlight link ALEWarningSign Todo
+highlight link ALEErrorSign WarningMsg
+highlight link ALEVirtualTextWarning Todo
+highlight link ALEVirtualTextInfo Todo
+highlight link ALEVirtualTextError WarningMsg
+
+highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
+highlight ALEWarning NONE
 
 " vim-notes --{{{
 let g:notes_tab_indents = 0
