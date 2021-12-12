@@ -1,9 +1,10 @@
+local nerveux = require 'nerveux'
 require 'nerveux'.setup {
     --- path to neuron executable (default: neuron in PATH)
     neuron_cmd = "neuron",
 
     --- no trailing slash, (default: current directory)
-    neuron_dir = "/Users/abdulwahaabahmed/zettelkasten",
+    neuron_dir = "~/zettelkasten",
 
     --- Use the cache, significantly faster (default: false)
     use_cache = true,
@@ -28,36 +29,6 @@ require 'nerveux'.setup {
     --- You can overwrite this table partially
     -- and your settings will get merged with the defaults
     -- You can also disable a single mapping by settings it's value to an empty string.
-    mappings = {
-
-       -- Search all your zettels
-       -- * then `<CR>` to edit
-       -- * or `<Tab>` to insert the selected zettel ID under your cursor
-       search_zettels = "gzz" ,
-
-       -- Search the backlinks to the current zettel
-       backlinks_search = "gzb" ,
-
-       -- Search the only the uplinks to the current zettel
-       uplinks_search = "gzu" ,
-
-       -- Create a new zettel via neuron and :edit it
-       new = "gzn" ,
-
-       -- Search for content inside all the zettels
-       search_content = "gzs" ,
-
-       -- Insert the ID of the previously visited zettel
-       insert_link = "gzl" ,
-
-       -- Insert the ID of the previously visited zettel, but as a folgezettel
-       insert_link_folge = "gzL" ,
-
-       -- Open the zettel ID that's under the cursor
-       follow = "<CR>" ,
-
-       -- Show the help
-       help = "gz?" ,
-    }
 }
 
+nerveux.setup_default_mappings()
