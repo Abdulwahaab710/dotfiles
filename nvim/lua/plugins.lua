@@ -21,20 +21,27 @@ return require('packer').startup(function()
   use { 'rafamadriz/friendly-snippets' }
   use { 'neovim/nvim-lspconfig' }
   use { 'glepnir/lspsaga.nvim',  branch = 'main' }
-  -- use { 'hrsh7th/nvim-compe' }
+  use { 'onsails/lspkind-nvim' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
   use { 'hrsh7th/cmp-path' }
   use { 'hrsh7th/cmp-cmdline' }
   use { 'hrsh7th/nvim-cmp' }
+  use { 'williamboman/nvim-lsp-installer' }
 
   -- For vsnip users.
   use { 'hrsh7th/cmp-vsnip' }
   use { 'hrsh7th/vim-vsnip' }
 
   -- Linting
-  use { 'williamboman/nvim-lsp-installer' }
-  use { 'dense-analysis/ale' }
+  use { 'jose-elias-alvarez/null-ls.nvim' }
+  use {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("trouble").setup {}
+    end
+  }
   -- " }}}
 
   -- " git plugins -------------------------------------{{{
@@ -134,9 +141,9 @@ return require('packer').startup(function()
   use { 'dhruvasagar/vim-table-mode' }
   use { 'tools-life/taskwiki', run = 'pip3 install --upgrade -r requirements.txt' }
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
-  use { 'abdulwahaab710/vimwiki-sync' }
+  -- use { 'abdulwahaab710/vimwiki-sync' }
   use { "ellisonleao/glow.nvim" }
-  use {
+  --[[ use {
       'pyrho/nerveux.nvim',
       requires = {
           'nvim-lua/plenary.nvim',
@@ -144,7 +151,7 @@ return require('packer').startup(function()
           'nvim-telescope/telescope.nvim',
       },
       config = function() require"nerveux".setup() end,
-  }
+  } ]]
   --[[ use {
     "oberblastmeister/neuron.nvim",
     branch = 'unstable',
@@ -158,6 +165,7 @@ return require('packer').startup(function()
       }
     end
   } ]]
+  use { 'renerocksai/telekasten.nvim' }
   use {
     'lukas-reineke/headlines.nvim',
     config = function()
