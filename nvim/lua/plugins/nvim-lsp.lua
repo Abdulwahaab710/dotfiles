@@ -4,31 +4,6 @@ if not has_lspconfig then return end
 
 local has_cmp, cmp = pcall(require, 'cmp')
 local lspkind = require('lspkind')
-
-
---[[ cmp.setup({
-  snippet = {
-    expand = function(args)
-    end,
-  },
-  mapping = {
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-    ['<C-e>'] = cmp.mapping({
-      i = cmp.mapping.abort(),
-      c = cmp.mapping.close(),
-    }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-}) ]]
-
 lspkind.init()
 
 if has_cmp then
@@ -105,6 +80,10 @@ local function on_attach(client, bufnr)
   -- Redraw the tab line as soon as possible, so LSP client statuses show up;
   -- instead of waiting until the first time they publish a progress message.
   vim.cmd('redrawtabline')
+  if client.name ~= 'null-ls' then
+    client.resolved_capabilities.document_formatting = false
+  end
+  vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]])
 end
 local flags = {
   allow_incremental_sync = true,
@@ -125,11 +104,13 @@ end
 
 lspconfig.solargraph.setup {
   cmd = { "bundle", "exec", "solargraph", "stdio" },
+  on_attach = on_attach,
   capabilities = capabilities,
 }
 
 lspconfig.sorbet.setup {
   cmd = {"bundle", "exec", "srb", "tc", "--lsp"},
+  on_attach = on_attach,
   capabilities = capabilities,
 }
 lspconfig['null-ls'].setup({
