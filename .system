@@ -13,6 +13,10 @@ defaults write com.apple.menuextra.battery ShowTime -string "NO"
 defaults write com.apple.dock no-bouncing -bool TRUE
 killall Dock
 
+# Hide all desktop icons
+defaults write com.apple.finder CreateDesktop false
+killall Finder
+
 # Reset changed apps
 for app in cfprefsd Dock finder systemuiserver; do
   killall "${app}" &> /dev/null
