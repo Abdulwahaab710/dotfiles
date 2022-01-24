@@ -39,7 +39,7 @@ setopt RC_EXPAND_PARAM
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
     command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
-    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
         print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
@@ -49,7 +49,8 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 zinit light zsh-users/zsh-autosuggestions
-zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 # }}}}
 
 # aliases ---------------------------------------------{{{{
@@ -274,7 +275,12 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv virtualenv-init -)"
 fi
 
-chruby 2.7.1
+[[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+
+chruby 2.7.5
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+### End of Zinit's installer chunk
+
+[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
