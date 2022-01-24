@@ -62,7 +62,12 @@ return require('packer').startup(function()
   -- " Plug 'antoinemadec/FixCursorHold.nvim'
   -- " Plug 'vim-ctrlspace/vim-ctrlspace'
   use { 'windwp/nvim-autopairs' }
-  use { 'b3nj5m1n/kommentary', branch = 'main' }
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
+  }
   use { 'hardcoreplayers/dashboard-nvim' }
   use { 'Shougo/vimproc.vim', run = 'make' }
   use { 'Shougo/vimshell.vim' }
