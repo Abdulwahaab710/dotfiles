@@ -85,7 +85,7 @@ local function rubocop()
 end
 
 
-nls.config({
+nls.setup({
   debounce = 1000,
   log = {
     level = 'error',
