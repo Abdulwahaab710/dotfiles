@@ -95,6 +95,7 @@ local servers = {
   -- 'pyright',
   -- 'gopls',
   'rust_analyzer',
+  'tsserver'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

@@ -76,7 +76,7 @@ return require('packer').startup(function()
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use { 'junegunn/fzf.vim' }
   use { 'nvim-lua/popup.nvim' }
-  use { 'nvim-telescope/telescope.nvim' }
+  use { "nvim-telescope/telescope.nvim" }
   use { 'nvim-telescope/telescope-fzy-native.nvim' }
   use { 'liuchengxu/vista.vim' }
   use { 'xolox/vim-misc' }
@@ -131,6 +131,8 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
   use { 'ray-x/aurora' }
+  use { "projekt0n/github-nvim-theme" }
+
   -- " }}}
 
   -- " Tools -------------------------------------------{{{
