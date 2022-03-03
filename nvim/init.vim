@@ -54,8 +54,8 @@ let g:python3_host_prog = '/Users/abdulwahaabahmed/.pyenv/versions/neovim3/bin/p
 " =========================================
 " Undo persistent
 " =========================================
-set   undofile
-set   undodir=~/.vim/undofiles
+set undofile
+set undodir=~/.vim/undofiles
 
 " =========================================
 " backup
@@ -95,7 +95,6 @@ command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
-command! Todo tabedit ~/todo.txt
 " }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
@@ -159,19 +158,6 @@ nnoremap <C-w>< 20<C-w><
 nnoremap <C-w>+ 20<C-w>+
 nnoremap <C-w>- 20<C-w>
 
-" ===========
-" Git
-" ===========
-nnoremap <C-g>c :Gcommit<CR>
-nnoremap <C-g>p :Gpull<CR>
-nnoremap <C-g>P :Gpush<CR>
-
-" ===========
-" Tagbar
-" ===========
-nmap <F8> :Vista!!<CR>
-imap <F8> <esc>:Vista!!<CR>i
-
 " ===============
 " Silver Searcher
 " ===============
@@ -179,9 +165,6 @@ imap <F8> <esc>:Vista!!<CR>i
 nnoremap <leader>k :FzfRg <C-R><C-W><CR>
 
 nnoremap <Space> za
-
-" autocmd FileType magit nmap gp :!git push<CR>
-autocmd FileType go nmap <leader>gr :GoRun %<CR>
 
 nmap s cl
 nmap S cc
@@ -255,31 +238,23 @@ augroup configgroup
 
     autocmd BufEnter *.tex setlocal spell
     autocmd BufRead *.tex let g:tex_conceal = ""
-    autocmd FileType vimwiki setlocal spell
-    autocmd FileType vimwiki setlocal wrap
-    autocmd BufNewFile,BufRead *.todo.txt setlocal filetype=todo
-    autocmd BufNewFile,BufRead *.todo.txt setlocal spell
-    autocmd BufNewFile,BufRead *.todo.txt setlocal wrap
     autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
     autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
     autocmd BufNewFile,BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks
   augroup end
-
-" autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-
 " }}}
 
 " omnifuncs -----------------------------------------------------------------{{{
 
-augroup omnifuncs
-  autocmd!
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-augroup end
+" augroup omnifuncs
+"   autocmd!
+"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" augroup end
 
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 " }}}
 
 " Fold ----------------------------------------------------------------------{{{
@@ -310,15 +285,21 @@ set foldlevelstart=1
 " }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
-" if (has("termguicolors"))
-"   set termguicolors
-" endif
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
-" set background=dark
-" set t_Co=256
-" let g:impact_transbg=1
-" au VimLeave * set guicursor=a:block-blinkon0
 
+colorscheme tokyonight
+
+if (has("termguicolors"))
+  set termguicolors
+endif
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1 " True gui colors in terminal
+set background=dark
+set t_Co=256
+let g:impact_transbg=1
+au VimLeave * set guicursor=a:block-blinkon0
+
+let g:tokyonight_style = "night"
+let g:tokyonight_italic_functions = 1
+let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 hi Comment gui=italic cterm=italic
 hi htmlArg gui=italic cterm=italic
 
@@ -336,59 +317,21 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-" let g:ale_sign_error = " ✘ "
-" let g:ale_sign_warning = " ⚠ "
-" let g:ale_sign_info = "  "
-" let g:ale_sign_highlight_linenrs = 1
-
-" highlight link ALEWarningSign Todo
-" highlight link ALEErrorSign WarningMsg
-" highlight link ALEVirtualTextWarning Todo
-" highlight link ALEVirtualTextInfo Todo
-" highlight link ALEVirtualTextError WarningMsg
-
-" syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
-" syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
 setlocal conceallevel=2
 hi Conceal guibg=NONE
 " hi clear Conceal
-
-" highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 " }}}
 
 set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 
 " Plugins configs -----------------------------------------------------------{{{
 lua require('lua-config')
-" Search NOTES -------------------------- {{{
-" lua << EOF
-" function _G.search_notes()
-"   require("telescope.builtin").live_grep({
-"     prompt_title = \"< Notes >", cwd = \"~/vimwiki/",
-"     })
-" end
-" EOF
 
 function! SearchWiki()
   lua require("telescope.builtin").live_grep({ prompt_title = "< Notes >", cwd = "~/vimwiki/",  })
 endfunction
 command! SearchWiki call SearchWiki()
 
-" }}}
-" vim-notes --{{{
-let g:notes_tab_indents = 0
-let g:notes_unicode_enabled = 0
-let g:notes_directories = ['~/Documents/Notes']
-let g:notes_word_boundaries = 1
-let g:notes_conceal_code = 0
-
-if !exists('g:notes_directories')
-  let g:notes_directories = ['']
-  function! FzfNote()
-    execute 'FzfFiles' fnameescape(g:notes_directories[0])
-  endfunction
-  command! FzfNote call FzfNote()
-endif
 " }}}
 
 " Limelight --{{{
@@ -399,12 +342,9 @@ let g:limelight_conceal_ctermfg = 240
 " Color name (:help gui-colors) or RGB color
 let g:limelight_conceal_guifg = 'DarkGray'
 let g:limelight_conceal_guifg = '#777777'
-
 " }}}
 
-
 " Goyo -------{{{
-
 function! s:goyo_enter()
   Limelight
   TableModeEnable
@@ -433,16 +373,7 @@ endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 " }}}
-
-" WIKI -------{{{
-let g:vimwiki_listsyms = '✗○◐●✓'
-let g:vimwiki_global_ext = 0
-" let g:vimwiki_list = [{'path': '~/vimwiki/',
-"                       \ 'syntax': 'markdown', 'ext': '.md'}]
-" }}}
-
 
 let g:fzf_command_prefix = 'Fzf'
 

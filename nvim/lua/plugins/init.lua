@@ -28,10 +28,13 @@ return require('packer').startup(function()
   use { 'hrsh7th/cmp-cmdline' }
   use { 'hrsh7th/nvim-cmp' }
   use { 'williamboman/nvim-lsp-installer' }
+  use { 'github/copilot.vim' }
+  use { 'L3MON4D3/LuaSnip' }
+  use { 'saadparwaiz1/cmp_luasnip' }
 
   -- For vsnip users.
-  use { 'hrsh7th/cmp-vsnip' }
-  use { 'hrsh7th/vim-vsnip' }
+  --[[ use { 'hrsh7th/cmp-vsnip' }
+  use { 'hrsh7th/vim-vsnip' } ]]
 
   -- Linting
   use { 'jose-elias-alvarez/null-ls.nvim' }
@@ -43,6 +46,11 @@ return require('packer').startup(function()
     end
   }
   -- " }}}
+
+  -- DAP (Debug Adapter Protocol)
+  use { 'suketa/nvim-dap-ruby' }
+  use { 'mfussenegger/nvim-dap' }
+  use { 'theHamsta/nvim-dap-virtual-text' }
 
   -- " git plugins -------------------------------------{{{
   use { 'lewis6991/gitsigns.nvim', branch = 'main' }

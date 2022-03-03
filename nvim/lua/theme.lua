@@ -1,5 +1,5 @@
 -- Example config in Lua
-require("github-theme").setup({
+--[[ require("github-theme").setup({
   theme_style = "dark_default",
   function_style = "italic",
   sidebars = {"qf", "vista_kind", "terminal", "packer"},
@@ -16,4 +16,4 @@ require("github-theme").setup({
       TSField = {},
     }
   end
-})
+}) ]]
