@@ -14,7 +14,7 @@ if has_cmp then
     sources = {
       { name = 'nvim_lsp' },
       { name = 'nvim_lua' },
-      { name = 'vsnip' },
+      { name = 'luasnip' },
       { name = "path" },
       { name = "buffer", keyword_length = 5 },
     },
@@ -23,7 +23,8 @@ if has_cmp then
     }, ]]
     snippet = {
       expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        require'luasnip'.lsp_expand(args.body)
       end
     },
     formatting = {
@@ -34,7 +35,7 @@ if has_cmp then
           nvim_lsp = "[LSP]",
           nvim_lua = "[api]",
           path = "[path]",
-          vsnip = "[snip]",
+          luasnip = "[snip]",
         },
       },
     },
@@ -90,11 +91,26 @@ local flags = {
   debounce_text_changes = 500,
 }
 
+local configs = require 'lspconfig.configs'
+if not configs.rubocop_lsp then
+ configs.rubocop_lsp = {
+   default_config = {
+     cmd = {'bundle', 'exec', 'rubocop-lsp'};
+     filetypes = {'ruby'};
+     root_dir = function(fname)
+       return lspconfig.util.find_git_ancestor(fname)
+     end;
+     settings = {};
+   };
+ }
+end
 
 local servers = {
   -- 'pyright',
   -- 'gopls',
   'rust_analyzer',
+  'tsserver',
+  'rubocop_lsp'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -113,9 +129,9 @@ lspconfig.sorbet.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
-lspconfig['null-ls'].setup({
+--[[ lspconfig['null-ls'].setup({
   on_attach = on_attach,
   capabilities = capabilities,
   flags = flags,
-})
+}) ]]
 

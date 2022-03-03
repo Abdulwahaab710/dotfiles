@@ -28,10 +28,13 @@ return require('packer').startup(function()
   use { 'hrsh7th/cmp-cmdline' }
   use { 'hrsh7th/nvim-cmp' }
   use { 'williamboman/nvim-lsp-installer' }
+  use { 'github/copilot.vim' }
+  use { 'L3MON4D3/LuaSnip' }
+  use { 'saadparwaiz1/cmp_luasnip' }
 
   -- For vsnip users.
-  use { 'hrsh7th/cmp-vsnip' }
-  use { 'hrsh7th/vim-vsnip' }
+  --[[ use { 'hrsh7th/cmp-vsnip' }
+  use { 'hrsh7th/vim-vsnip' } ]]
 
   -- Linting
   use { 'jose-elias-alvarez/null-ls.nvim' }
@@ -43,6 +46,11 @@ return require('packer').startup(function()
     end
   }
   -- " }}}
+
+  -- DAP (Debug Adapter Protocol)
+  use { 'suketa/nvim-dap-ruby' }
+  use { 'mfussenegger/nvim-dap' }
+  use { 'theHamsta/nvim-dap-virtual-text' }
 
   -- " git plugins -------------------------------------{{{
   use { 'lewis6991/gitsigns.nvim', branch = 'main' }
@@ -76,7 +84,7 @@ return require('packer').startup(function()
   use { 'junegunn/fzf', dir = '~/.fzf', run = './install --all' }
   use { 'junegunn/fzf.vim' }
   use { 'nvim-lua/popup.nvim' }
-  use { 'nvim-telescope/telescope.nvim' }
+  use { "nvim-telescope/telescope.nvim" }
   use { 'nvim-telescope/telescope-fzy-native.nvim' }
   use { 'liuchengxu/vista.vim' }
   use { 'xolox/vim-misc' }
@@ -131,6 +139,8 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
   use { 'ray-x/aurora' }
+  use { "projekt0n/github-nvim-theme" }
+
   -- " }}}
 
   -- " Tools -------------------------------------------{{{

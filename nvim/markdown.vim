@@ -377,5 +377,3 @@ function! EditBlock() range abort
   autocmd BufLeave <buffer> wq
 endfunction
 command! -nargs=0 -range MarkdownEditBlock :<line1>,<line2>call EditBlock()
-
-

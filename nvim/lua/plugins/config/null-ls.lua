@@ -97,8 +97,8 @@ nls.setup({
     nls.builtins.code_actions.gitsigns,
     nls.builtins.formatting.prettier,
     nls.builtins.formatting.mix,
-    nls.builtins.formatting.rubocop,
-    nls.builtins.diagnostics.rubocop,
+    --[[ nls.builtins.formatting.rubocop,
+    nls.builtins.diagnostics.rubocop, ]]
     -- rubocop(),
   },
   update_on_insert = false,

@@ -54,8 +54,8 @@ let g:python3_host_prog = '/Users/abdulwahaabahmed/.pyenv/versions/neovim3/bin/p
 " =========================================
 " Undo persistent
 " =========================================
-set   undofile
-set   undodir=~/.vim/undofiles
+set undofile
+set undodir=~/.vim/undofiles
 
 " =========================================
 " backup
@@ -95,7 +95,6 @@ command! X x
 command! MakeTags
 \ Dispatch !ctags --extra=+f --exclude=.git --exclude=log -R *
 command! Config tabedit ~/.config/nvim/init.vim
-command! Todo tabedit ~/todo.txt
 " }}}
 
 " Keyboard config  ----------------------------------------------------------{{{
@@ -140,15 +139,10 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " Open the definition in a vertical split Option+Shift+]
 nmap ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
-" Mapping jj to <esc>
-" imap jj <esc>
-" tnoremap jj <C-\><C-n>
-
 " ================
 " Better grepping
 " ================
 nnoremap \ :FzfRg<CR>
-" nnoremap <silent> <C-p> :call Fzf_dev()<CR>
 nnoremap <silent> <leader>p :FZF<CR>
 
 nnoremap <silent> <C-p> <cmd>lua require('telescope.builtin').find_files()<cr>
@@ -164,19 +158,6 @@ nnoremap <C-w>< 20<C-w><
 nnoremap <C-w>+ 20<C-w>+
 nnoremap <C-w>- 20<C-w>
 
-" ===========
-" Git
-" ===========
-nnoremap <C-g>c :Gcommit<CR>
-nnoremap <C-g>p :Gpull<CR>
-nnoremap <C-g>P :Gpush<CR>
-
-" ===========
-" Tagbar
-" ===========
-nmap <F8> :Vista!!<CR>
-imap <F8> <esc>:Vista!!<CR>i
-
 " ===============
 " Silver Searcher
 " ===============
@@ -184,9 +165,6 @@ imap <F8> <esc>:Vista!!<CR>i
 nnoremap <leader>k :FzfRg <C-R><C-W><CR>
 
 nnoremap <Space> za
-
-" autocmd FileType magit nmap gp :!git push<CR>
-autocmd FileType go nmap <leader>gr :GoRun %<CR>
 
 nmap s cl
 nmap S cc
@@ -227,32 +205,13 @@ nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<
 augroup configgroup
     autocmd!
     autocmd VimEnter * highlight clear SignColumn
-    " autocmd FileType php setlocal expandtab
-    " autocmd FileType php setlocal list
-    " autocmd FileType php setlocal listchars=tab:+\ ,eol:$
-    " autocmd FileType php setlocal formatprg=par\ -w80\ -T4
     autocmd FileType ruby setlocal tabstop=2
     autocmd FileType ruby setlocal shiftwidth=2
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
-    " autocmd FileType ruby match OverLength /\%>121v.\+/
     autocmd FileType ruby setlocal colorcolumn=120
     autocmd FileType ruby setlocal foldmethod=syntax
-    autocmd FileType ruby
-          \ iabbrev <buffer> rw; attr_accessor|
-          \ iabbrev <buffer> rr; attr_reader|
-          \ iabbrev <buffer> ww; attr_writer|
-          \ iabbrev <buffer> hmd; has_many :<++>, dependent: :destroy|
-          \ iabbrev <buffer> validp; validates :<++>, presence: true
     autocmd FileType ruby,eruby setlocal spell
-    autocmd FileType eruby
-          \ iabbrev <buffer> link_to; <%= link_to 'text', 'path' %>
-          \ iabbrev <buffer> if; <%= if some_condition %>
-          \ <CR>do something here
-          \ <CR><% end %>
-    autocmd FileType javascript,html
-          \ iabbrev <buffer> domloaded; document.addEventListener('DOMContentLoaded', () => {
-          \ <CR><CR> })
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
     autocmd FileType eruby setlocal shiftwidth=2
@@ -279,31 +238,23 @@ augroup configgroup
 
     autocmd BufEnter *.tex setlocal spell
     autocmd BufRead *.tex let g:tex_conceal = ""
-    autocmd FileType vimwiki setlocal spell
-    autocmd FileType vimwiki setlocal wrap
-    autocmd BufNewFile,BufRead *.todo.txt setlocal filetype=todo
-    autocmd BufNewFile,BufRead *.todo.txt setlocal spell
-    autocmd BufNewFile,BufRead *.todo.txt setlocal wrap
     autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
     autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
     autocmd BufNewFile,BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks
   augroup end
-
-" autocmd BufRead,BufNewFile *.c setlocal nmap <F5> :make run
-
 " }}}
 
 " omnifuncs -----------------------------------------------------------------{{{
 
-augroup omnifuncs
-  autocmd!
-  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-augroup end
+" augroup omnifuncs
+"   autocmd!
+"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" augroup end
 
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
 " }}}
 
 " Fold ----------------------------------------------------------------------{{{
@@ -334,7 +285,7 @@ set foldlevelstart=1
 " }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
-" Load the colorscheme
+
 colorscheme tokyonight
 
 if (has("termguicolors"))
@@ -349,7 +300,6 @@ au VimLeave * set guicursor=a:block-blinkon0
 let g:tokyonight_style = "night"
 let g:tokyonight_italic_functions = 1
 let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
-
 hi Comment gui=italic cterm=italic
 hi htmlArg gui=italic cterm=italic
 
@@ -367,112 +317,21 @@ highlight ColorColumn ctermbg=red guibg=#a06e3b ctermbg=3
 highlight Search ctermfg=8 ctermbg=3 guifg=#b3b3b3 guibg=#a06e3b
 highlight illuminatedWord cterm=underline gui=underline
 
-" let g:ale_sign_error = " ✘ "
-" let g:ale_sign_warning = " ⚠ "
-" let g:ale_sign_info = "  "
-" let g:ale_sign_highlight_linenrs = 1
-
-" highlight link ALEWarningSign Todo
-" highlight link ALEErrorSign WarningMsg
-" highlight link ALEVirtualTextWarning Todo
-" highlight link ALEVirtualTextInfo Todo
-" highlight link ALEVirtualTextError WarningMsg
-
-" syntax match todoCheckbox '\v.*\[\ \]'hs=e-2 conceal cchar=
-" syntax match todoCheckbox '\v.*\[X\]'hs=e-2 conceal cchar=
 setlocal conceallevel=2
 hi Conceal guibg=NONE
 " hi clear Conceal
-
-" highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
 " }}}
 
 set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 
 " Plugins configs -----------------------------------------------------------{{{
-lua require('plugin_configs')
-lua require('plugins')
-" Search NOTES -------------------------- {{{
-" lua << EOF
-" function _G.search_notes()
-"   require("telescope.builtin").live_grep({
-"     prompt_title = \"< Notes >", cwd = \"~/vimwiki/",
-"     })
-" end
-" EOF
+lua require('lua-config')
 
 function! SearchWiki()
   lua require("telescope.builtin").live_grep({ prompt_title = "< Notes >", cwd = "~/vimwiki/",  })
 endfunction
 command! SearchWiki call SearchWiki()
 
-" }}}
-" Plugin: Galaxyline -------------------------- {{{
-
-function! ConfigStatusLine()
-  lua require('plugins.status-line')
-endfunction
-
-augroup status_line_init
-  autocmd!
-  autocmd VimEnter * call ConfigStatusLine()
-augroup END
-
-" }}}
-
-" let g:ale_fixers = {
-"   \'python': ['pylint', 'flake8'],
-"   \'ts': ['prettier'],
-"   \'tsx': ['prettier'],
-"   \'ruby': ['rubocop'],
-"   \'javascript': ['eslint'],
-"   \'typescript': ['prettier'],
-"   \'vue': ['eslint'],
-"   \'scss': ['prettier'],
-"   \'html': ['prettier']
-"   \}
-" let g:ale_linters = {
-"   \'python': ['pylint', 'flake8'],
-"   \'ruby': ['rubocop', 'rails_best_practices'],
-"   \'javascript': ['eslint'],
-"   \'typescript': ['tsserver', 'tslint'],
-"   \'typescript.tsx': ['tsserver', 'tslint'],
-"   \}
-" let g:ale_fix_on_save = 1
-" let g:ale_ruby_rubocop_executable = 'rubocop'
-" let g:ale_sign_column_always = 1
-" let g:ale_virtualtext_cursor = 1
-" let g:ale_virtualtext_prefix = ' ▶ '
-
-
-" let g:ale_sign_error = " ✘ "
-" let g:ale_sign_warning = " ⚠ "
-" let g:ale_sign_info = "  "
-" let g:ale_sign_highlight_linenrs = 1
-
-" highlight link ALEWarningSign Todo
-" highlight link ALEErrorSign WarningMsg
-" highlight link ALEVirtualTextWarning Todo
-" highlight link ALEVirtualTextInfo Todo
-" highlight link ALEVirtualTextError WarningMsg
-
-" highlight ALEErrorSign cterm=bold ctermfg=160 ctermbg=NONE gui=bold guifg=#e0211d guibg=NONE " Overriding the color for error sign
-" highlight ALEWarning NONE
-
-" vim-notes --{{{
-let g:notes_tab_indents = 0
-let g:notes_unicode_enabled = 0
-let g:notes_directories = ['~/Documents/Notes']
-let g:notes_word_boundaries = 1
-let g:notes_conceal_code = 0
-
-if !exists('g:notes_directories')
-  let g:notes_directories = ['']
-  function! FzfNote()
-    execute 'FzfFiles' fnameescape(g:notes_directories[0])
-  endfunction
-  command! FzfNote call FzfNote()
-endif
 " }}}
 
 " Limelight --{{{
@@ -483,12 +342,9 @@ let g:limelight_conceal_ctermfg = 240
 " Color name (:help gui-colors) or RGB color
 let g:limelight_conceal_guifg = 'DarkGray'
 let g:limelight_conceal_guifg = '#777777'
-
 " }}}
 
-
 " Goyo -------{{{
-
 function! s:goyo_enter()
   Limelight
   TableModeEnable
@@ -517,40 +373,15 @@ endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 " }}}
-
-" WIKI -------{{{
-let g:vimwiki_listsyms = '✗○◐●✓'
-let g:vimwiki_global_ext = 0
-" let g:vimwiki_list = [{'path': '~/vimwiki/',
-"                       \ 'syntax': 'markdown', 'ext': '.md'}]
-" }}}
-
 
 let g:fzf_command_prefix = 'Fzf'
-
-" if !exists('g:airline_symbols')
-"   let g:airline_symbols = {}
-" endif
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline#extensions#tabline#left_sep = ' '
-" let g:airline_symbols.space = "\ua0"
-" let g:airline_powerline_fonts = 1
-" let g:airline_theme='violet'
 
 let test#strategy = {
   \ 'nearest': 'neovim',
   \ 'file':    'dispatch',
   \ 'suite':   'basic',
   \}
-
-" let g:UltiSnipsExpandTrigger='<c-s>'
-" let g:UltiSnipsListSnippets='<leader>ss'
-" let g:UltiSnipsJumpForwardTrigger='<c-b>'
-" let g:UltiSnipsJumpBackwardTrigger='<c-S>'
-" let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 function! GalaxyUrl(opts, ...) abort
   if a:0 || type(a:opts) != type({})
@@ -577,20 +408,6 @@ if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
   call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
 endif
 
-" let g:dashboard_custom_shortcut={
-"   \ 'last_session'       : 'SPC s l',
-"   \ 'find_history'       : 'SPC f h',
-"   \ 'find_file'          : 'SPC f f',
-"   \ 'new_file'           : 'SPC c n',
-"   \ 'change_colorscheme' : 'SPC t c',
-"   \ 'find_word'          : 'SPC f a',
-"   \ 'book_marks'         : 'SPC f b',
-"   \ }
-
-" let g:dashboard_default_header = 'transformer'
-" let g:dashboard_preview_command="cat"
-" let g:dashboard_preview_file="~/.config/nvim/sunjon.cat"
-" let g:dashboard_preview_pipeline="lolcat"
 let g:dashboard_preview_file_width=70
 let g:dashboard_preview_file_height=10
 
@@ -653,18 +470,6 @@ set statusline+=%*
 
 " NERDtree ----------------------------------------{{{
 
-" NERDTree like setup
-let g:netrw_banner = 1
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 10
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
-" }}}
-
 " Custom Functions ----------------------------------------------------------{{{
 
 function! HandleURL()
@@ -699,11 +504,6 @@ function! s:DiffWithGITCheckedOut()
   diffthis
 endfunction
 com! DiffGIT call s:DiffWithGITCheckedOut()
-
-function! s:OpenPR()
-  !/opt/dev/bin/dev open pr
-endfunction
-com! OpenPR call s:OpenPR()
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
