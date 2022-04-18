@@ -84,7 +84,7 @@ local function on_attach(client, bufnr)
   if client.name ~= 'null-ls' then
     client.resolved_capabilities.document_formatting = false
   end
-  vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting()]])
+  vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()]])
 end
 local flags = {
   allow_incremental_sync = true,
