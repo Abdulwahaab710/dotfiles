@@ -18,7 +18,7 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function()
   -- " Code Completion and snippets --------------------{{{
-  use { 'rafamadriz/friendly-snippets' }
+  use { 'wbthomason/packer.nvim' }
   use { 'neovim/nvim-lspconfig' }
   use { 'tami5/lspsaga.nvim',  branch = 'main' }
   use { 'onsails/lspkind-nvim' }
@@ -29,7 +29,11 @@ return require('packer').startup(function()
   use { 'hrsh7th/nvim-cmp' }
   use { 'williamboman/nvim-lsp-installer' }
   use { 'github/copilot.vim' }
-  use { 'L3MON4D3/LuaSnip' }
+  use {
+    'L3MON4D3/LuaSnip',
+    requires = { 'rafamadriz/friendly-snippets' },
+    -- config = function() require('config.snippets') end,
+  }
   use { 'saadparwaiz1/cmp_luasnip' }
 
   -- For vsnip users.
