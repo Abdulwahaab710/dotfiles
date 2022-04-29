@@ -276,8 +276,9 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+[[ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
 
-chruby 2.7.5
+type chruby >/dev/null 2>&1 || chruby 2.7.5
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
