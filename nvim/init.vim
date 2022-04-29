@@ -113,7 +113,7 @@ nnoremap <leader>x :x<CR>
 nnoremap <leader>ot :tabe
 nnoremap <leader>os :sp
 nnoremap <leader>ov :vsp
-" nnoremap <leader>n :nohl<CR>
+nnoremap <leader>n :nohl<CR>
 
 nmap <leader>gb :GBrowse<CR>
 vmap <leader>gb :GBrowse<CR>
@@ -237,6 +237,7 @@ augroup configgroup
     autocmd BufEnter *.html setlocal spell
 
     autocmd BufEnter *.tex setlocal spell
+    autocmd BufEnter *.md setlocal filetype=markdown
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
     autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
