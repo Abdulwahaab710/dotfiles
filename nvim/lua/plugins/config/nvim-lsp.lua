@@ -10,20 +10,23 @@ if has_cmp then
   cmp.setup {
     mapping = {
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+      ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
+      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-f>"] = cmp.mapping.scroll_docs(4),
     },
     sources = {
       { name = 'nvim_lsp' },
       { name = 'nvim_lua' },
       { name = 'luasnip' },
       { name = "path" },
-      { name = "buffer", keyword_length = 5 },
+      { name = "buffer" },
     },
     --[[ completion = {
       keyword_length = 3,
     }, ]]
     snippet = {
       expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
         require'luasnip'.lsp_expand(args.body)
       end
     },
@@ -31,11 +34,11 @@ if has_cmp then
       format = lspkind.cmp_format {
         with_text = true,
         menu = {
-          buffer = "[buf]",
+          buffer = "[BUF]",
           nvim_lsp = "[LSP]",
-          nvim_lua = "[api]",
-          path = "[path]",
-          luasnip = "[snip]",
+          nvim_lua = "[API]",
+          path = "[PATH]",
+          luasnip = "[SNIP]",
         },
       },
     },
@@ -93,16 +96,16 @@ local flags = {
 
 local configs = require 'lspconfig.configs'
 if not configs.rubocop_lsp then
- configs.rubocop_lsp = {
-   default_config = {
-     cmd = {'bundle', 'exec', 'rubocop-lsp'};
-     filetypes = {'ruby'};
-     root_dir = function(fname)
-       return lspconfig.util.find_git_ancestor(fname)
-     end;
-     settings = {};
-   };
- }
+  configs.rubocop_lsp = {
+    default_config = {
+      cmd = {'bundle', 'exec', 'rubocop-lsp'};
+      filetypes = {'ruby'};
+      root_dir = function(fname)
+        return lspconfig.util.find_git_ancestor(fname)
+      end;
+      settings = {};
+    };
+  }
 end
 
 local servers = {
