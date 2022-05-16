@@ -1,3 +1,4 @@
+require('ayu').colorscheme()
 -- Example config in Lua
 --[[ require("github-theme").setup({
   theme_style = "dark_default",

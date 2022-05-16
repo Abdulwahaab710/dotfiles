@@ -142,8 +142,15 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/playground' }
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
-  use { 'ray-x/aurora' }
-  use { "projekt0n/github-nvim-theme" }
+  use {
+    "Shatur/neovim-ayu",
+    config = function()
+      require('ayu').setup({
+          mirage = false, -- Set to `true` to use `mirage` variant instead of `dark` for dark background.
+          overrides = {}, -- A dictionary of group names, each associated with a dictionary of parameters (`bg`, `fg`, `sp` and `style`) and colors in hex.
+      })
+    end
+  }
 
   -- " }}}
 

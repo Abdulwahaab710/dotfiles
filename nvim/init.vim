@@ -287,7 +287,7 @@ set foldlevelstart=1
 
 " Colorscheme ---------------------------------------------------------------{{{
 
-colorscheme tokyonight
+" colorscheme tokyonight
 
 if (has("termguicolors"))
   set termguicolors
@@ -298,9 +298,9 @@ set t_Co=256
 let g:impact_transbg=1
 au VimLeave * set guicursor=a:block-blinkon0
 
-let g:tokyonight_style = "night"
-let g:tokyonight_italic_functions = 1
-let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
+" let g:tokyonight_style = "night"
+" let g:tokyonight_italic_functions = 1
+" let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 hi Comment gui=italic cterm=italic
 hi htmlArg gui=italic cterm=italic
 
