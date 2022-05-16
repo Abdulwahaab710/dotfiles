@@ -24,6 +24,12 @@ if filereadable('config/routes.rb')
      \      'type': 'model',
      \      'alternate': 'app/controllers/{plural}_controller.rb',
      \    },
+     \    'app/graphql/types/*_type.rb': {
+     \      'type': 'type',
+     \    },
+     \    'app/graphql/mutations/*.rb': {
+     \      'type': 'mutation',
+     \    },
      \    'app/javascript/stylesheets/*.scss': {
      \      'type': 'stylesheets',
      \    },
