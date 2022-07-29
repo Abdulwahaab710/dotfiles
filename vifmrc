@@ -302,6 +302,10 @@ fileviewer *.js highlight -O xterm256 -s dante --syntax js %c
 fileviewer *.jsx highlight -O xterm256 -s dante --syntax jsx %c
 fileviewer *.ts highlight -O xterm256 -s dante --syntax ts %c
 fileviewer *.tsx highlight -O xterm256 -s dante --syntax tsx %c
+fileviewer *.yaml highlight -O xterm256 -s dante --syntax yaml %c
+fileviewer *.yml highlight -O xterm256 -s dante --syntax yaml %c
+fileviewer *.json highlight -O xterm256 -s dante --syntax json %c
+fileviewer *.graphql highlight -O xterm256 -s dante --syntax graphql %c
 "
 " 16-color terminal
 " fileviewer *.c,*.h highlight -O ansi -s dante %c
@@ -465,3 +469,12 @@ highlight BrokenLink	cterm=none	ctermfg=174	ctermbg=237
 highlight Device	cterm=none	ctermfg=228	ctermbg=237
 highlight Fifo		cterm=none	ctermfg=109	ctermbg=237
 highlight Socket	cterm=none	ctermfg=110	ctermbg=237
+
+" Normal dirs
+fileview */ tree %c -L <depth>
+
+" Hidden dirs
+fileview *./ tree %c -L <depth>
+
+" .. Parent dir
+fileview ../ tree %c -L <depth>
