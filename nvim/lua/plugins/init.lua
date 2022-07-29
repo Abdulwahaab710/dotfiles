@@ -19,7 +19,10 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function()
   -- " Code Completion and snippets --------------------{{{
   use { 'wbthomason/packer.nvim' }
-  use { 'neovim/nvim-lspconfig' }
+  use {
+    'neovim/nvim-lspconfig',
+    requires = "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
+  }
   use { 'tami5/lspsaga.nvim',  branch = 'main' }
   use { 'onsails/lspkind-nvim' }
   use { 'hrsh7th/cmp-nvim-lsp' }

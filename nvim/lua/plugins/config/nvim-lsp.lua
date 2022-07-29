@@ -61,6 +61,11 @@ if has_cmp then
 end
 
 
+require("lsp_lines").setup()
+vim.diagnostic.config({
+  virtual_text = false,
+})
+
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 --[[ cmp.setup.cmdline('/', {
   sources = {

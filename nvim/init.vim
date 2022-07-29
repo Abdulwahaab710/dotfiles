@@ -409,45 +409,8 @@ if index(g:fugitive_browse_handlers, function('GalaxyUrl')) < 0
   call insert(g:fugitive_browse_handlers, function('GalaxyUrl'))
 endif
 
-let g:dashboard_preview_file_width=70
-let g:dashboard_preview_file_height=10
-
 let g:indentLine_fileTypeExclude = ['dashboard']
 
-let g:dashboard_custom_section={
-\ 'last_session': {
-  \ 'description': ['  Recently laset session                  SPC s l'],
-  \ 'command': 'SessionLoad',
-  \ },
-\ 'find_history': {
-  \ 'description': ['  Recently opened files                   SPC f h'],
-  \ 'command': 'DashboardFindHistory',
-  \ },
-\ 'find_file': {
-  \ 'description': ['  Find  File                              SPC f f'],
-  \ 'command': 'Telescope find_files find_command=rg,--hidden,--files',
-  \ },
-\ 'new_file': {
-  \ 'description': ['  File Browser                            SPC f b'],
-  \ 'command': 'Telescope file_browser',
-  \ },
-\ 'find_word': {
-  \ 'description': ['  Find  word                              SPC f w'],
-  \ 'command': 'DashboardFindWord',
-  \ },
-\ 'notes': {
-  \ 'description': ['  Notes                                   SPC n i'],
-  \ 'command': 'VimwikiIndex',
-  \ },
-\ 'diary': {
-  \ 'description': ['  Diary                                   SPC d i'],
-  \ 'command': 'VimwikiDiaryIndex',
-  \ },
-\ 'today_diary': {
-  \ 'description': ['  Today Diary                             SPC d t'],
-  \ 'command': 'VimwikiMakeDiaryNote',
-  \ },
-\ }
 
 " }}}
 

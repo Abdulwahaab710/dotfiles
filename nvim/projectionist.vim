@@ -24,6 +24,10 @@ if filereadable('config/routes.rb')
      \      'type': 'model',
      \      'alternate': 'app/controllers/{plural}_controller.rb',
      \    },
+     \    'app/workers/*.rb': {
+     \      'type': 'worker',
+     \      'alternate': 'test/workers/{}_test.rb',
+     \    },
      \    'app/graphql/types/*_type.rb': {
      \      'type': 'type',
      \    },
