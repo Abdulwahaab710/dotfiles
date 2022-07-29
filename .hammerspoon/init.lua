@@ -1,4 +1,4 @@
-stackline = require "stackline.stackline.stackline"
+stackline = require "stackline"
 stackline:init()
 
 -- bind alt+ctrl+t to toggle stackline icons
