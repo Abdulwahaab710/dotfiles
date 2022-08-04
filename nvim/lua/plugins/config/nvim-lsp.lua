@@ -92,6 +92,7 @@ local function on_attach(client, bufnr)
   if client.name ~= 'null-ls' then
     client.resolved_capabilities.document_formatting = false
   end
+  require "lsp_signature".on_attach()
   vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()]])
 end
 local flags = {
@@ -112,13 +113,26 @@ if not configs.rubocop_lsp then
     };
   }
 end
+if not configs.ruby_lsp then
+  configs.ruby_lsp = {
+    default_config = {
+      cmd = {'bundle', 'exec', 'ruby-lsp'};
+      filetypes = {'ruby'};
+      root_dir = function(fname)
+        return lspconfig.util.find_git_ancestor(fname)
+      end;
+      settings = {};
+    };
+  }
+end
 
 local servers = {
   -- 'pyright',
   -- 'gopls',
   'rust_analyzer',
   'tsserver',
-  'rubocop_lsp'
+  'rubocop_lsp',
+  'ruby_lsp'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -137,6 +151,8 @@ lspconfig.sorbet.setup {
   on_attach = on_attach,
   capabilities = capabilities,
 }
+
+lspconfig.ruby_lsp.setup{}
 --[[ lspconfig['null-ls'].setup({
   on_attach = on_attach,
   capabilities = capabilities,

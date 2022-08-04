@@ -10,6 +10,10 @@ if filereadable('config/routes.rb')
      \      'type': 'controller',
      \      'alternate': 'app/models/{singular}.rb',
      \    },
+     \    'app/jobs/*_job.rb': {
+     \      'type': 'job',
+     \      'alternate': 'test/jobs/{}_job_test.rb',
+     \    },
      \    'app/helpers/*_helper.rb': {
      \      'type': 'helper',
      \      'alternate': 'app/controllers/{}_controller.rb',

@@ -152,6 +152,16 @@ if hs.application("skhd") == nil then
 
   -- Reload yabai
   hs.hotkey.bind({"ctrl", "shift", "cmd"}, "r", function() hs.execute("launchctl kickstart -k \"gui/${UID}/homebrew.mxcl.yabai\"") end)
+-- Stack binding
+  hs.hotkey.bind({"shift", "alt"}, "n", function() hs.execute("/opt/homebrew/bin/yabai -m window --focus stack.prev || /opt/homebrew/bin/yabai -m window --focus prev || /opt/homebrew/bin/yabai -m window --focus last") end)
+  hs.hotkey.bind("alt", "n", function() hs.execute("/opt/homebrew/bin/yabai -m window --focus stack.next || /opt/homebrew/bin/yabai -m window --focus next || /opt/homebrew/bin/yabai -m window --focus first") end)
+  hs.hotkey.bind("alt", "tab", function() yabai({"-m", "window", "--focus", "stack.recent"}) end)
+  hs.hotkey.bind({"cmd", "ctrl"}, "left", function() hs.execute("/opt/homebrew/bin/yabai -m window west --stack $(/opt/homebrew/bin/yabai -m query --windows --window | /opt/homebrew/bin/jq -r '.id')") end)
+  hs.hotkey.bind({"cmd", "ctrl"}, "down", function() hs.execute("/opt/homebrew/bin/yabai -m window south --stack $(/opt/homebrew/bin/yabai -m query --windows --window | /opt/homebrew/bin/jq -r '.id')") end)
+  hs.hotkey.bind({"cmd", "ctrl"}, "up", function() hs.execute("/opt/homebrew/bin/yabai -m window north --stack $(/opt/homebrew/bin/yabai -m query --windows --window | /opt/homebrew/bin/jq -r '.id')") end)
+  hs.hotkey.bind({"cmd", "ctrl"}, "right", function() hs.execute("/opt/homebrew/bin/yabai -m window east --stack $(/opt/homebrew/bin/yabai -m query --windows --window | /opt/homebrew/bin/jq -r '.id')") end)
+-- float / unfloat window and center on screen
+  hs.hotkey.bind("alt", "t", function() yabai({"-m", "window", "--toggle", "float"}); yabai({"-m", "window", "--grid", "4:4:1:1:2:2"}) end)
 end
 
 --[[

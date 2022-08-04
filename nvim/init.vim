@@ -12,7 +12,7 @@ set foldlevelstart=10                       " open most folds by default
 set foldnestmax=10                          " 10 nested fold max
 set hlsearch                                " highlight matches
 set incsearch                               " search as characters are entered
-set laststatus=2
+set laststatus=3
 set lazyredraw                              " redraw only when we need to.
 set list
 set listchars=eol:$,tab:␉·,trail:␠,nbsp:⎵   " show $ in the end of line
@@ -182,7 +182,7 @@ nmap <leader>bn :bnext<CR>
 nmap <leader>bp :bprevious<CR>
 nmap <leader>bf :FzfBuffers<CR>
 
-nmap <leader>tt :FloatermToggle<CR>
+" nmap <leader>tt :FloatermToggle<CR>
 " -- lsp provider to find the cursor word definition and reference
 nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
 

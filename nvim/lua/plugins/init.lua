@@ -21,7 +21,16 @@ return require('packer').startup(function()
   use { 'wbthomason/packer.nvim' }
   use {
     'neovim/nvim-lspconfig',
-    requires = "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
+    requires = {
+      "ray-x/lsp_signature.nvim",
+      "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
+    }
+  }
+  use {
+    'ray-x/navigator.lua',
+    requires = {
+      'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+    config = function() require'navigator'.setup() end,
   }
   use { 'tami5/lspsaga.nvim',  branch = 'main' }
   use { 'onsails/lspkind-nvim' }
@@ -44,20 +53,25 @@ return require('packer').startup(function()
   use { 'hrsh7th/vim-vsnip' } ]]
 
   -- Linting
-  use { 'jose-elias-alvarez/null-ls.nvim' }
+  -- use { 'jose-elias-alvarez/null-ls.nvim' }
   use {
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("trouble").setup {}
-    end
+    requires = {
+      "kyazdani42/nvim-web-devicons",
+      "folke/lsp-colors.nvim",
+    },
   }
   -- " }}}
 
   -- DAP (Debug Adapter Protocol)
-  use { 'suketa/nvim-dap-ruby' }
-  use { 'mfussenegger/nvim-dap' }
-  use { 'theHamsta/nvim-dap-virtual-text' }
+  use {
+    'mfussenegger/nvim-dap',
+    requires = {
+      'suketa/nvim-dap-ruby',
+      'theHamsta/nvim-dap-virtual-text',
+      'rcarriga/nvim-dap-ui',
+    }
+  }
 
   -- " git plugins -------------------------------------{{{
   use { 'lewis6991/gitsigns.nvim', branch = 'main' }
@@ -83,7 +97,7 @@ return require('packer').startup(function()
         require('Comment').setup()
     end
   }
-  use { 'hardcoreplayers/dashboard-nvim' }
+  use { 'glepnir/dashboard-nvim' }
   use { 'Shougo/vimproc.vim', run = 'make' }
   use { 'Shougo/vimshell.vim' }
   use { 'ujihisa/repl.vim' }
@@ -97,6 +111,15 @@ return require('packer').startup(function()
   use { 'xolox/vim-misc' }
   use { 'mbbill/undotree' }
   use { 'janko-m/vim-test' }
+  use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-vim-test"
+    }
+  }
   use { 'terryma/vim-multiple-cursors' }
   use { 'christoomey/vim-tmux-navigator' }
   use {
@@ -124,7 +147,6 @@ return require('packer').startup(function()
   use { 'chrisbra/csv.vim' }
   -- " Plug 'gabrielelana/vim-markdown'
   -- " Plug 'kana/vim-textobj-user'
-  use { 'benjifisher/matchit.zip' }
   -- " Plug 'nelstrom/vim-textobj-rubyblock'
   -- " }}}
 
@@ -144,6 +166,7 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use { 'nvim-treesitter/playground' }
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
+  use { 'andymass/vim-matchup' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
   use {
     "Shatur/neovim-ayu",
