@@ -193,7 +193,8 @@ return require('packer').startup(function()
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
   -- use { 'abdulwahaab710/vimwiki-sync' }
   use { "ellisonleao/glow.nvim" }
-  use { 'renerocksai/telekasten.nvim' }
+  -- use { 'renerocksai/telekasten.nvim' }
+  use { 'mickael-menu/zk-nvim' }
   --[[ use {
     'lukas-reineke/headlines.nvim',
     config = function()
