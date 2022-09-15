@@ -1,15 +1,17 @@
 local execute = vim.api.nvim_command
 local fn = vim.fn
 
-local packer_install_dir = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local packer_install_dir = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 
 local plug_url_format = 'https://github.com/%s'
 
 local packer_repo = string.format(plug_url_format, 'wbthomason/packer.nvim')
 local install_cmd = string.format('10split |term git clone --depth=1 %s %s', packer_repo, packer_install_dir)
 
+vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
+
 if fn.empty(fn.glob(packer_install_dir)) > 0 then
-  vim.api.nvim_echo({{'Installing packer.nvim', 'Type'}}, true, {})
+  vim.api.nvim_echo({ { 'Installing packer.nvim', 'Type' } }, true, {})
   execute(install_cmd)
   execute 'packadd packer.nvim'
 end
@@ -29,10 +31,11 @@ return require('packer').startup(function()
   use {
     'ray-x/navigator.lua',
     requires = {
-      'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
-    config = function() require'navigator'.setup() end,
+      'ray-x/guihua.lua', run = 'cd lua/fzy && make'
+    },
+    config = function() require 'navigator'.setup() end,
   }
-  use { 'tami5/lspsaga.nvim',  branch = 'main' }
+  use { 'tami5/lspsaga.nvim', branch = 'main' }
   use { 'onsails/lspkind-nvim' }
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
@@ -94,7 +97,7 @@ return require('packer').startup(function()
   use {
     'numToStr/Comment.nvim',
     config = function()
-        require('Comment').setup()
+      require('Comment').setup()
     end
   }
   use { 'glepnir/dashboard-nvim' }
@@ -168,7 +171,7 @@ return require('packer').startup(function()
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'andymass/vim-matchup' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
-  use {
+  --[[ use {
     "Shatur/neovim-ayu",
     config = function()
       require('ayu').setup({
@@ -176,7 +179,8 @@ return require('packer').startup(function()
           overrides = {}, -- A dictionary of group names, each associated with a dictionary of parameters (`bg`, `fg`, `sp` and `style`) and colors in hex.
       })
     end
-  }
+  } ]]
+  use { 'sam4llis/nvim-tundra' }
 
   -- " }}}
 

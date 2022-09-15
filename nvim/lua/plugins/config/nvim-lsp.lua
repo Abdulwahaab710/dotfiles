@@ -10,8 +10,8 @@ if has_cmp then
   cmp.setup {
     mapping = {
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
-      ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
-      ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
+      ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+      ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
     },
@@ -27,7 +27,7 @@ if has_cmp then
     }, ]]
     snippet = {
       expand = function(args)
-        require'luasnip'.lsp_expand(args.body)
+        require 'luasnip'.lsp_expand(args.body)
       end
     },
     formatting = {
@@ -65,6 +65,7 @@ require("lsp_lines").setup()
 vim.diagnostic.config({
   virtual_text = false,
 })
+vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 
 -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
 --[[ cmp.setup.cmdline('/', {
@@ -95,6 +96,7 @@ local function on_attach(client, bufnr)
   require "lsp_signature".on_attach()
   vim.cmd([[autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()]])
 end
+
 local flags = {
   allow_incremental_sync = true,
   debounce_text_changes = 500,
@@ -104,8 +106,8 @@ local configs = require 'lspconfig.configs'
 if not configs.rubocop_lsp then
   configs.rubocop_lsp = {
     default_config = {
-      cmd = {'bundle', 'exec', 'rubocop-lsp'};
-      filetypes = {'ruby'};
+      cmd = { 'bundle', 'exec', 'rubocop-lsp' };
+      filetypes = { 'ruby' };
       root_dir = function(fname)
         return lspconfig.util.find_git_ancestor(fname)
       end;
@@ -116,8 +118,8 @@ end
 if not configs.ruby_lsp then
   configs.ruby_lsp = {
     default_config = {
-      cmd = {'bundle', 'exec', 'ruby-lsp'};
-      filetypes = {'ruby'};
+      cmd = { 'bundle', 'exec', 'ruby-lsp' };
+      filetypes = { 'ruby' };
       root_dir = function(fname)
         return lspconfig.util.find_git_ancestor(fname)
       end;
@@ -127,7 +129,8 @@ if not configs.ruby_lsp then
 end
 
 local servers = {
-  -- 'pyright',
+  'pyright',
+  'jedi_language_server',
   -- 'gopls',
   'rust_analyzer',
   'tsserver',
@@ -147,13 +150,13 @@ lspconfig.solargraph.setup {
 }
 
 lspconfig.sorbet.setup {
-  cmd = {"bundle", "exec", "srb", "tc", "--lsp"},
+  cmd = { "bundle", "exec", "srb", "tc", "--lsp" },
   on_attach = on_attach,
   capabilities = capabilities,
 }
 
 lspconfig.rust_analyzer.setup({
-  on_attach=on_attach,
+  on_attach = on_attach,
   settings = {
     ["rust-analyzer"] = {
       imports = {
@@ -174,10 +177,9 @@ lspconfig.rust_analyzer.setup({
   }
 })
 
-lspconfig.ruby_lsp.setup{}
+lspconfig.ruby_lsp.setup {}
 --[[ lspconfig['null-ls'].setup({
   on_attach = on_attach,
   capabilities = capabilities,
   flags = flags,
 }) ]]
-
