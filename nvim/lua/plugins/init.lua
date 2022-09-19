@@ -18,7 +18,7 @@ end
 
 vim.cmd [[packadd packer.nvim]]
 
-return require('packer').startup(function()
+return require('packer').startup(function(use)
   -- " Code Completion and snippets --------------------{{{
   use { 'wbthomason/packer.nvim' }
   use {
@@ -47,13 +47,8 @@ return require('packer').startup(function()
   use {
     'L3MON4D3/LuaSnip',
     requires = { 'rafamadriz/friendly-snippets' },
-    -- config = function() require('config.snippets') end,
   }
   use { 'saadparwaiz1/cmp_luasnip' }
-
-  -- For vsnip users.
-  --[[ use { 'hrsh7th/cmp-vsnip' }
-  use { 'hrsh7th/vim-vsnip' } ]]
 
   -- Linting
   -- use { 'jose-elias-alvarez/null-ls.nvim' }
@@ -118,7 +113,6 @@ return require('packer').startup(function()
     "nvim-neotest/neotest",
     requires = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-vim-test"
     }
@@ -128,11 +122,7 @@ return require('packer').startup(function()
   use {
     "folke/which-key.nvim",
     config = function()
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+      require("which-key").setup {}
     end
   }
 
@@ -158,30 +148,26 @@ return require('packer').startup(function()
   -- " Plug 'vim-airline/vim-airline'
   use { 'romgrk/barbar.nvim' }
   use { 'glepnir/galaxyline.nvim', branch = 'main' }
-  use { 'RRethy/nvim-base16' }
+  -- use { 'RRethy/nvim-base16' }
   use { 'lukas-reineke/indent-blankline.nvim' }
   use { 'ryanoasis/vim-devicons' } -- " TODO: Migrate to lua
   use { 'kyazdani42/nvim-web-devicons' } -- " lua
-  use { 'folke/tokyonight.nvim' }
+  -- use { 'folke/tokyonight.nvim' }
   use { 'jeffkreeftmeijer/vim-dim', branch = 'main' }
   use { 'nvim-lua/plenary.nvim' }
   use { 'folke/todo-comments.nvim', branch = 'main' }
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use { 'nvim-treesitter/playground' }
-  use { 'nvim-treesitter/nvim-treesitter-refactor' }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    requires = {
+      'lewis6991/spellsitter.nvim', -- TODO: Remove when updating to neovim v8
+      'nvim-treesitter/playground',
+      'nvim-treesitter/nvim-treesitter-refactor'
+    }
+  }
   use { 'andymass/vim-matchup' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
-  --[[ use {
-    "Shatur/neovim-ayu",
-    config = function()
-      require('ayu').setup({
-          mirage = false, -- Set to `true` to use `mirage` variant instead of `dark` for dark background.
-          overrides = {}, -- A dictionary of group names, each associated with a dictionary of parameters (`bg`, `fg`, `sp` and `style`) and colors in hex.
-      })
-    end
-  } ]]
   use { 'sam4llis/nvim-tundra' }
-
   -- " }}}
 
   -- " Tools -------------------------------------------{{{
@@ -197,7 +183,6 @@ return require('packer').startup(function()
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
   -- use { 'abdulwahaab710/vimwiki-sync' }
   use { "ellisonleao/glow.nvim" }
-  -- use { 'renerocksai/telekasten.nvim' }
   use { 'mickael-menu/zk-nvim' }
   --[[ use {
     'lukas-reineke/headlines.nvim',

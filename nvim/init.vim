@@ -203,7 +203,6 @@ nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<
 
 " autocmd -------------------------------------------------------------------{{{
 augroup configgroup
-    autocmd!
     autocmd VimEnter * highlight clear SignColumn
     autocmd FileType ruby setlocal tabstop=2
     autocmd FileType ruby setlocal shiftwidth=2
