@@ -209,7 +209,6 @@ augroup configgroup
     autocmd FileType ruby setlocal softtabstop=2
     autocmd FileType ruby setlocal commentstring=#\ %s
     autocmd FileType ruby setlocal colorcolumn=120
-    autocmd FileType ruby setlocal foldmethod=syntax
     autocmd FileType ruby,eruby setlocal spell
     autocmd FileType eruby setlocal colorcolumn=120
     autocmd FileType eruby setlocal tabstop=2
@@ -264,7 +263,9 @@ function! CustomFold()
 endfunction
 
 set foldtext=CustomFold()
-
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+autocmd BufReadPost,FileReadPost * normal zM
 
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
@@ -280,8 +281,6 @@ autocmd FileType zsh setlocal foldmethod=marker
 autocmd FileType zsh setlocal foldlevel=0
 
 " au FileType html nnoremap <buffer> <leader>F zfat
-let ruby_fold = 1
-set foldlevelstart=1
 " }}}
 
 " Colorscheme ---------------------------------------------------------------{{{
@@ -603,7 +602,6 @@ inoreabbrev <expr> __
           \ <SID>isAtStartOfLine('__') ?
           \ '<c-o>:silent! TableModeDisable<cr>' : '__'
 
-" set foldmethod=syntax
 " }}}
 source ~/.config/nvim/markdown.vim
 source ~/.config/nvim/projectionist.vim
