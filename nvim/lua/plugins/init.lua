@@ -175,7 +175,6 @@ return require('packer').startup(function(use)
   -- " }}}
 
   -- " Note Taking Plugins -----------------------------{{{
-  use { 'vimwiki/vimwiki', branch = 'dev' }
   use { 'junegunn/goyo.vim' }
   use { 'junegunn/limelight.vim' }
   use { 'dhruvasagar/vim-table-mode' }
@@ -184,6 +183,13 @@ return require('packer').startup(function(use)
   -- use { 'abdulwahaab710/vimwiki-sync' }
   use { "ellisonleao/glow.nvim" }
   use { 'mickael-menu/zk-nvim' }
+  use {
+    'jakewvincent/mkdnflow.nvim',
+    rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
+    config = function()
+        require('mkdnflow').setup({})
+    end
+  }
   --[[ use {
     'lukas-reineke/headlines.nvim',
     config = function()
