@@ -1,67 +1,52 @@
 #!/usr/bin/env sh
 
-source "$HOME/.config/sketchybar/colors.sh" # Loads all defined colors
-source "$HOME/.config/sketchybar/icons.sh" # Loads all defined icons
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
+ITEM_DIR="$HOME/.config/sketchybar/items"
 
-ITEM_DIR="$HOME/.config/sketchybar/items" # Directory where the items are configured
-PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin scripts are stored
+# run helper program
+# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
+# ISLANDHELPER=git.crissnb.islandhelper
+# killall islandhelper
+# $HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar/helper/islandhelper $ISLANDHELPER &
 
-FONT="PragmataPro Mono Liga" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-SPACE_CLICK_SCRIPT="yabai -m space --focus \$SID 2>/dev/null" # The script that is run for clicking on space components
 
-PADDINGS=3 # All paddings use this value (icon, label, background and bar paddings)
+source $HOME/.config/sketchybar/colors.sh
+source $HOME/.config/sketchybar/icons.sh
+# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
+# source "$PLUGIN_DIR/Dynamic-Island-Sketchybar/config.sh"
 
-POPUP_BORDER_WIDTH=2
-POPUP_CORNER_RADIUS=11
+export FONT="IBM Plex Mono"
+export NERD_FONT="JetBrainsMono Nerd Font"
 
-SHADOW=on
+sketchybar --bar height=30        \
+                 blur_radius=100  \
+                 position=top     \
+                 padding_left=10  \
+                 padding_right=10 \
+                 color=0x15000000 \
+                 shadow=on
 
-# Setting up the general bar appearance and default values
-sketchybar --bar     height=39                                           \
-                     corner_radius=0                                     \
-                     border_width=0                                      \
-                     margin=0                                           \
-                     blur_radius=50                                      \
-                     position=top                                        \
-                     padding_left=10                                     \
-                     padding_right=10                                    \
-                     color=$BAR_COLOR                                    \
-                     topmost=off                                         \
-                     sticky=on                                           \
-                     font_smoothing=off                                  \
-                     y_offset=0                                         \
-                     shadow=$SHADOW                                      \
-                     notch_width=200                                     \
-                                                                         \
-           --default drawing=on                                          \
-                     updates=when_shown                                  \
-                     label.font="$FONT:Semibold:13.0"                    \
-                     icon.font="$FONT:Bold:14.0"                         \
-                     icon.color=$ICON_COLOR                              \
-                     label.color=$LABEL_COLOR                            \
-                     icon.padding_left=$PADDINGS                         \
-                     icon.padding_right=$PADDINGS                        \
-                     label.padding_left=$PADDINGS                        \
-                     label.padding_right=$PADDINGS                       \
-                     background.padding_right=$PADDINGS                  \
-                     background.padding_left=$PADDINGS                   \
-                     popup.background.border_width=$POPUP_BORDER_WIDTH   \
-                     popup.background.corner_radius=$POPUP_CORNER_RADIUS \
-                     popup.background.border_color=$POPUP_BORDER_COLOR   \
-                     popup.background.color=$POPUP_BACKGROUND_COLOR      \
-                     popup.background.shadow.drawing=$SHADOW
+sketchybar --default updates=when_shown                       \
+                     drawing=on                               \
+                     icon.font="$NERD_FONT:Regular:14.0"      \
+                     icon.color=0xffffffff                    \
+                     label.font="$FONT:Medium:14.0"            \
+                     label.color=0xffffffff                   \
+                     label.padding_left=4                     \
+                     label.padding_right=4                    \
+                     icon.padding_left=4                      \
+                     icon.padding_right=4
 
-# Left
-source "$ITEM_DIR/apple.sh"
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/front_app.sh"
+source $ITEM_DIR/apple.sh
+source $ITEM_DIR/spaces.sh
+source $ITEM_DIR/window_title.sh
+source $ITEM_DIR/clock.sh
+source $ITEM_DIR/battery.sh
+source $ITEM_DIR/cpu.sh
+source $ITEM_DIR/wifi.sh
+# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
+# source "$PLUGIN_DIR/Dynamic-Island-Sketchybar/item.sh"
 
-# Right
-source "$ITEM_DIR/power.sh"
-source "$ITEM_DIR/calendar.sh"
-source "$ITEM_DIR/cpu.sh"
-
-############## FINALIZING THE SETUP ##############
 sketchybar --update
 
-echo "sketchybar configuation loaded.."
+echo "sketchybar configuration loaded.."
