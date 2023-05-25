@@ -6,6 +6,11 @@ end
 
 local default = {
   defaults = {
+    file_browser = {
+      extensions = {
+        hijack_netrw = true,
+      }
+    },
     vimgrep_arguments = {
       "rg",
       "--color=never",
@@ -53,6 +58,8 @@ local default = {
   },
 }
 telescope.setup(default)
+require("telescope").load_extension "file_browser"
+
 --
 -- local M = {}
 -- M.setup = function(override_flag)

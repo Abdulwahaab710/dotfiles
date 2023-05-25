@@ -49,6 +49,8 @@ set dictionary='/usr/share/dict/words'      " Set the path to the dictionary
 set viewoptions=cursor,slash,unix
 set shell=$SHELL                            " Change vim's shell to use $SHELL
 
+set signcolumn=yes
+
 let g:python3_host_prog = '/Users/abdulwahaabahmed/.pyenv/versions/neovim3/bin/python'
 
 " =========================================
@@ -162,7 +164,7 @@ nnoremap <C-w>- 20<C-w>
 " Silver Searcher
 " ===============
 " bind K to grep word under cursor
-nnoremap <leader>k :FzfRg <C-R><C-W><CR>
+nnoremap <leader>G :FzfRg <C-R><C-W><CR>
 
 nnoremap <Space> za
 
@@ -199,6 +201,7 @@ nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_sag
 nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 " -- show signature help
 nnoremap <silent> gs <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+
 " }}}
 
 " autocmd -------------------------------------------------------------------{{{
@@ -264,7 +267,7 @@ endfunction
 
 set foldtext=CustomFold()
 set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+" set foldexpr=nvim_treesitter#foldexpr()
 autocmd BufReadPost,FileReadPost * normal zM
 
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif

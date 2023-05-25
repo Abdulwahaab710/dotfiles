@@ -1,3 +1,4 @@
+require("nvim-lsp-installer").setup()
 local has_lspconfig, lspconfig = pcall(require, 'lspconfig')
 
 if not has_lspconfig then return end
@@ -9,7 +10,7 @@ lspkind.init()
 if has_cmp then
   cmp.setup {
     mapping = {
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<CR>'] = cmp.mapping.confirm({ select = false }),
       ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
       ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -84,7 +85,7 @@ vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
 }) ]]
 
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local function on_attach(client, bufnr)
   -- Redraw the tab line as soon as possible, so LSP client statuses show up;
@@ -128,6 +129,7 @@ if not configs.ruby_lsp then
   }
 end
 
+
 local servers = {
   'pyright',
   'jedi_language_server',
@@ -135,7 +137,8 @@ local servers = {
   'rust_analyzer',
   'tsserver',
   'rubocop_lsp',
-  'ruby_lsp'
+  'ruby_lsp',
+  'tailwindcss'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

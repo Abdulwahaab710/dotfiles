@@ -22,6 +22,10 @@ return require('packer').startup(function(use)
   -- " Code Completion and snippets --------------------{{{
   use { 'wbthomason/packer.nvim' }
   use {
+    'williamboman/nvim-lsp-installer',
+    config = function() require("nvim-lsp-installer").setup() end
+  }
+  use {
     'neovim/nvim-lspconfig',
     requires = {
       "ray-x/lsp_signature.nvim",
@@ -31,7 +35,8 @@ return require('packer').startup(function(use)
   use {
     'ray-x/navigator.lua',
     requires = {
-      'ray-x/guihua.lua', run = 'cd lua/fzy && make'
+        { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
+        { 'neovim/nvim-lspconfig' },
     },
     config = function() require 'navigator'.setup() end,
   }
@@ -40,15 +45,61 @@ return require('packer').startup(function(use)
   use { 'hrsh7th/cmp-nvim-lsp' }
   use { 'hrsh7th/cmp-buffer' }
   use { 'hrsh7th/cmp-path' }
-  use { 'hrsh7th/cmp-cmdline' }
+  -- use { 'hrsh7th/cmp-cmdline' }
   use { 'hrsh7th/nvim-cmp' }
-  use { 'williamboman/nvim-lsp-installer' }
   use { 'github/copilot.vim' }
+  use {
+    "thmsmlr/gpt.nvim",
+    config = function()
+      require('gpt').setup({
+        api_key = os.getenv("OPENAI_API_KEY")
+      })
+
+      opts = { silent = true, noremap = true }
+      vim.keymap.set('v', '<C-g>r', require('gpt').replace, {
+        silent = true,
+        noremap = true,
+        desc = "[G]pt [R]ewrite"
+      })
+      vim.keymap.set('v', '<C-g>p', require('gpt').visual_prompt, {
+        silent = false,
+        noremap = true,
+        desc = "[G]pt [P]rompt"
+      })
+      vim.keymap.set('n', '<C-g>p', require('gpt').prompt, {
+        silent = true,
+        noremap = true,
+        desc = "[G]pt [P]rompt"
+      })
+      vim.keymap.set('n', '<C-g>c', require('gpt').cancel, {
+        silent = true,
+        noremap = true,
+        desc = "[G]pt [C]ancel"
+      })
+      vim.keymap.set('i', '<C-g>p', require('gpt').prompt, {
+        silent = true,
+        noremap = true,
+        desc = "[G]pt [P]rompt"
+      })
+    end
+  }
   use {
     'L3MON4D3/LuaSnip',
     requires = { 'rafamadriz/friendly-snippets' },
   }
   use { 'saadparwaiz1/cmp_luasnip' }
+  --[[ use({
+    "folke/noice.nvim",
+    event = "VimEnter",
+    config = function()
+      require("noice").setup()
+    end,
+    requires = {
+     "MunifTanjim/nui.nvim",
+     "rcarriga/nvim-notify",
+     'hrsh7th/nvim-cmp'
+    }
+  }) ]]
 
   -- Linting
   -- use { 'jose-elias-alvarez/null-ls.nvim' }
@@ -105,6 +156,14 @@ return require('packer').startup(function(use)
   use { 'nvim-lua/popup.nvim' }
   use { "nvim-telescope/telescope.nvim" }
   use { 'nvim-telescope/telescope-fzy-native.nvim' }
+  use { 'nvim-telescope/telescope-file-browser.nvim' }
+  use {
+    "nvim-telescope/telescope-frecency.nvim",
+    config = function()
+      require"telescope".load_extension("frecency")
+    end,
+    requires = {"kkharji/sqlite.lua"}
+  }
   use { 'liuchengxu/vista.vim' }
   use { 'xolox/vim-misc' }
   use { 'mbbill/undotree' }
@@ -178,18 +237,24 @@ return require('packer').startup(function(use)
   use { 'junegunn/goyo.vim' }
   use { 'junegunn/limelight.vim' }
   use { 'dhruvasagar/vim-table-mode' }
-  use { 'tools-life/taskwiki', run = 'pip3 install --upgrade -r requirements.txt' }
+  use {
+    'tools-life/taskwiki',
+    run = 'pip3 install --upgrade packaging && pip3 install --upgrade -r requirements.txt',
+    requires = {
+      'vimwiki/vimwiki',
+    },
+  }
   use { 'ekickx/clipboard-image.nvim', branch = 'main' }
-  -- use { 'abdulwahaab710/vimwiki-sync' }
   use { "ellisonleao/glow.nvim" }
   use { 'mickael-menu/zk-nvim' }
-  use {
-    'jakewvincent/mkdnflow.nvim',
-    rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
-    config = function()
-        require('mkdnflow').setup({})
-    end
-  }
+  -- use {
+  --   'jakewvincent/mkdnflow.nvim',
+  --   rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
+  --   config = function()
+  --       require('mkdnflow').setup({})
+  --   end
+  -- }
+  use { 'nullchilly/fsread.nvim' }
   --[[ use {
     'lukas-reineke/headlines.nvim',
     config = function()
