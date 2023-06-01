@@ -173,7 +173,8 @@ return require('packer').startup(function(use)
     requires = {
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-vim-test"
+      "nvim-neotest/neotest-vim-test",
+      "zidhuss/neotest-minitest",
     }
   }
   use { 'terryma/vim-multiple-cursors' }
@@ -205,8 +206,9 @@ return require('packer').startup(function(use)
   -- " Theme related plugins ---------------------------{{{
   -- " Plug 'vim-airline/vim-airline-themes'
   -- " Plug 'vim-airline/vim-airline'
-  use { 'romgrk/barbar.nvim' }
-  use { 'glepnir/galaxyline.nvim', branch = 'main' }
+  -- use { 'romgrk/barbar.nvim' }
+  use { 'nvim-lualine/lualine.nvim' }
+  -- use { 'glepnir/galaxyline.nvim', branch = 'main' }
   -- use { 'RRethy/nvim-base16' }
   use { 'lukas-reineke/indent-blankline.nvim' }
   use { 'ryanoasis/vim-devicons' } -- " TODO: Migrate to lua
@@ -226,7 +228,8 @@ return require('packer').startup(function(use)
   }
   use { 'andymass/vim-matchup' }
   use { 'Pocco81/TrueZen.nvim', branch = 'main' }
-  use { 'sam4llis/nvim-tundra' }
+  use { 'catppuccin/nvim' }
+  -- use { 'nyoom-engineering/oxocarbon.nvim' }
   -- " }}}
 
   -- " Tools -------------------------------------------{{{

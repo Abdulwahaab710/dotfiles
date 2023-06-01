@@ -1,3 +1,14 @@
+-- vim.keymap.set('n', '<leader>T', function ()
+--   local neotest = require("neotest")
+--   neotest.run.run(vim.fn.expand("%"))
+--   neotest.summary.open()
+-- end)
+-- vim.keymap.set('n', '<leader>t', function ()
+--   local neotest = require("neotest")
+--   neotest.run.run()
+--   neotest.summary.open()
+-- end)
+
 vim.api.nvim_set_keymap('n', 'gf', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
 --- In lsp attach function
 -- local map = vim.api.nvim_buf_set_keymap

@@ -241,7 +241,7 @@ augroup configgroup
     autocmd BufEnter *.md setlocal filetype=markdown
     autocmd BufRead *.tex let g:tex_conceal = ""
     autocmd BufNewFile ~/vimwiki/HackeroneReportInvestigations/*.wiki :silent 0r !chruby 2.7.1 && ~/.config/nvim/bin/generate-report-investigation '%'
-    autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/generate-diary-template '%'
+    autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.config/nvim/bin/diary-template-generator/target/debug/diary-template-generator '%'
     autocmd BufNewFile,BufRead ~/vimwiki/diary/diary.wiki :VimwikiDiaryGenerateLinks
   augroup end
 " }}}
@@ -328,6 +328,13 @@ set fillchars=vert:\│,eob:\  " replaces ~ with space for endofbuffer
 
 " Plugins configs -----------------------------------------------------------{{{
 lua require('lua-config')
+
+" -- copilot remap to <C-J>
+let g:vimwiki_table_mappings = 0
+silent! unmap <buffer> <Tab>
+imap <silent><script><expr> <Tab> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+
 
 function! SearchWiki()
   lua require("telescope.builtin").live_grep({ prompt_title = "< Notes >", cwd = "~/vimwiki/",  })
