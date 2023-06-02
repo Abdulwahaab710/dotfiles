@@ -1,14 +1,8 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 if [ -f $HOME/xterm-256color-italic.ti ]; then
   export TERM="xterm-256color-italic"
 else
   export TERM="xterm-256color"
 fi
-
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -50,8 +44,9 @@ autoload -Uz _zinit
 
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
-zinit ice depth=1; zinit light romkatv/powerlevel10k
 # }}}}
+
+eval "$(starship init zsh)"
 
 # aliases ---------------------------------------------{{{{
 alias fix='rm ~/.zcondump*;exec zsh;'
@@ -275,15 +270,14 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv virtualenv-init -)"
 fi
 
-[[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 && chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+[[ -f /opt/homebrew/opt/chruby/share/chruby/chruby.sh ]] && ! (type chruby > /dev/null 2>&1) && chruby () { source /opt/homebrew/opt/chruby/share/chruby/chruby.sh }
+# [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 && chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
 [[ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 && chruby () { source /usr/local/opt/chruby/share/chruby/chruby.sh; chruby "$@"; }
 
-type chruby >/dev/null 2>&1 || chruby 2.7.5
+type chruby >/dev/null 2>&1 && chruby; chruby 3
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 ### End of Zinit's installer chunk
 
 [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
-
-[[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
