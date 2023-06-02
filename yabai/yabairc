@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 
-# bar settings
-# yabai -m config status_bar                   on
-# yabai -m config status_bar_text_font         "Helvetica Neue:Bold:12.0"
-# yabai -m config status_bar_icon_font         "Hack Nerd Font:Regular:12.0"
-# yabai -m config status_bar_background_color  0xff202020
-# yabai -m config status_bar_foreground_color  0xffa8a8a8
-# yabai -m config status_bar_space_icon_strip  I II III IV V VI VII VIII IX X
-# yabai -m config status_bar_power_icon_strip   
-# yabai -m config status_bar_space_icon        
-# yabai -m config status_bar_clock_icon        
+function get_top_padding_value() {
+  local display_details=$(yabai -m query --displays --display)
+  local screen_width=$(echo $display_details | jq '.frame | .w')
+  local screen_height=$(echo $display_details | jq '.frame | .h')
+  if [ $screen_width -eq 1800 ] && [ $screen_height -eq 1169 ]; then
+    echo 0
+  else
+    echo 30
+  fi
+}
 
 # global settings
 yabai -m config mouse_follows_focus          on
@@ -20,7 +20,9 @@ yabai -m config window_opacity               off
 yabai -m config window_shadow                on
 yabai -m config window_border                on
 yabai -m config window_border_width          4
-yabai -m config active_window_border_color   0xff775759
+yabai -m config window_border_radius         11
+# yabai -m config active_window_border_color   0xff775759
+yabai -m config active_window_border_color   0xffa5d37c
 yabai -m config normal_window_border_color   0xff505050
 yabai -m config insert_window_border_color   0xffd75f5f
 yabai -m config active_window_opacity        1.0
@@ -33,13 +35,12 @@ yabai -m config mouse_action2                resize
 
 # general space settings
 yabai -m config layout                       bsp
-# yabai -m config top_padding                  40
-# yabai -m config bottom_padding               40
-yabai -m config top_padding                  26
+yabai -m config top_padding                  $(get_top_padding_value)
 yabai -m config bottom_padding               0
 yabai -m config left_padding                 35
 yabai -m config right_padding                35
 yabai -m config window_gap                   2
+yabai -m config window_animation_duration    2
 
 # Space labels
 yabai -m space 1 --label "Primary"
@@ -91,21 +92,36 @@ yabai -m rule --add app="^System Preferences$"  space=6
 
 echo "yabai configuration loaded.."
 
-# Refresh spaces widget on space change
-yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
-# Refresh spaces widget on display focus change
-yabai -m signal --add event=display_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
-# Refresh process widget on space change
-yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
-# Uncomment next line to enable spaces widget refresh on your 2nd monitor
-# yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-2-jsx\"'"
+yabai -m signal --add event=display_changed action="yabai -m config top_padding \$(yabai -m query --displays --display | jq \".frame | if (.h == 1169 and .w == 1800) then 0 else 30 end\")"
 
-# Refresh process widget on when focused application changes
-yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
-# Refresh spaces widget on when focused application changes
-yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+#############
+# Übersicht
+#############
 
-# Refresh process widget on when an application window is closed
-yabai -m signal --add event=window_destroyed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
-# Refresh spaces widget on when an application window is closed
-yabai -m signal --add event=window_destroyed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+# # Refresh spaces widget on space change
+# yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+# # Refresh spaces widget on display focus change
+# yabai -m signal --add event=display_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+# # Refresh process widget on space change
+# yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
+# # Uncomment next line to enable spaces widget refresh on your 2nd monitor
+# # yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-2-jsx\"'"
+#
+# # Refresh process widget on when focused application changes
+# yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
+# # Refresh spaces widget on when focused application changes
+# yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+#
+# # Refresh process widget on when an application window is closed
+# yabai -m signal --add event=window_destroyed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-process-jsx\"'"
+# # Refresh spaces widget on when an application window is closed
+# yabai -m signal --add [event=window_destroyed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"simple-bar-spaces-jsx\"'"
+
+
+#############
+# Sketchybar
+#############
+
+yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
+yabai -m signal --add event=window_created action="sketchybar --trigger windows_on_spaces"
+yabai -m signal --add event=window_destroyed action="sketchybar --trigger windows_on_spaces"
