@@ -1,3 +1,6 @@
 [submodule ".hammerspoon/stackline"]
 	path = .hammerspoon/stackline
 	url = https://github.com/AdamWagner/stackline.git
+[submodule "sketchybar/plugins/Dynamic-Island-Sketchybar"]
+	path = sketchybar/plugins/Dynamic-Island-Sketchybar
+	url = https://github.com/crissNb/Dynamic-Island-Sketchybar.git

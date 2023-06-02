@@ -4,16 +4,19 @@ PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 ITEM_DIR="$HOME/.config/sketchybar/items"
 
 # run helper program
-# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
-# ISLANDHELPER=git.crissnb.islandhelper
-# killall islandhelper
-# $HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar/helper/islandhelper $ISLANDHELPER &
+DYNAMIC_ISLAND_DIR="$HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar"
 
+# Define Dynamic island custom configs here
+source "$DYNAMIC_ISLAND_DIR/config.sh" # Loads Dynamic-Island config
+
+# run helper program
+ISLANDHELPER=git.crissnb.islandhelper
+killall islandhelper
+cd $DYNAMIC_ISLAND_DIR/helper && make
+$DYNAMIC_ISLAND_DIR/helper/islandhelper $ISLANDHELPER &
 
 source $HOME/.config/sketchybar/colors.sh
 source $HOME/.config/sketchybar/icons.sh
-# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
-# source "$PLUGIN_DIR/Dynamic-Island-Sketchybar/config.sh"
 
 export FONT="IBM Plex Mono"
 export NERD_FONT="JetBrainsMono Nerd Font"
@@ -44,8 +47,8 @@ source $ITEM_DIR/clock.sh
 source $ITEM_DIR/battery.sh
 source $ITEM_DIR/cpu.sh
 source $ITEM_DIR/wifi.sh
-# TODO: UNCOMMENT WHEN DYNAMIC ISLAND HAS BEEN FIXED
-# source "$PLUGIN_DIR/Dynamic-Island-Sketchybar/item.sh"
+source "$DYNAMIC_ISLAND_DIR/item.sh" # Loads Dynamic-Island item
+
 
 sketchybar --update
 
