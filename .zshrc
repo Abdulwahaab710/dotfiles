@@ -8,6 +8,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# eval "$(starship init zsh)"
+
 fpath=("/usr/local/bin/" $fpath)
 
 setopt AUTO_CD
@@ -60,7 +62,7 @@ alias ubuntu='docker run -it --rm dockerfile/ubuntu'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
 alias ll='exa -bghHliSFa'
 alias py='python'
-alias tmux='tmux -2'
+# alias tmux='tmux -2'
 alias gitset='git push --set-upstream'
 
 if [ -n $TMUX  ]; then
@@ -112,7 +114,7 @@ update() {
 }
 
 s() {
-    branch="$(git branch | fzf -d 15 --query="$1" --select-1 --exit-0)"
+    branch="$(git branch | fzf-tmux -p --reverse --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
       BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
@@ -120,7 +122,7 @@ s() {
     fi
 }
 sr() {
-    branch="$(git branch -a | fzf -d 15 --query="$1" --select-1 --exit-0)"
+    branch="$(git branch -a | fzf-tmux -p --reverse --query="$1" --select-1 --exit-0)"
     if [ ! -z $branch ]
     then
       BRANCH_NAME="$(echo -e "${branch}" | sed -e 's/^[[:space:]]*//')"
@@ -129,7 +131,7 @@ sr() {
 }
 
 ts() {
-    session="$(tmux ls | fzf -d 15 --query="$1" --select-1 --exit-0)"
+    session="$(tmux ls | fzf-tmux -p --reverse --query="$1" --select-1 --exit-0)"
     if [ ! -z $session ]
     then
       SESSION_NAME="$(echo -e "${session}" | sed -e 's/^[[:space:]]*//' | sed -e 's/: .*//')"
@@ -151,7 +153,7 @@ push_upstram_origin() {
 
 sp() {
     DIRECTORIES=$((cd ~/src/github.com ;ls -dl1 */**) | rg '[^/;]+/[^/;]+$' -o);
-    PROJECT_NAME=$(echo $DIRECTORIES | fzf -d 15 --query="$1" --select-1 --exit-0)
+    PROJECT_NAME=$(echo $DIRECTORIES | fzf-tmux -p --reverse --query="$1" --select-1 --exit-0)
     if [ ! -z $PROJECT_NAME ]
     then
       cd "$HOME/src/github.com/$PROJECT_NAME"
@@ -277,7 +279,36 @@ fi
 type chruby >/dev/null 2>&1 && chruby; chruby 3
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
 if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 ### End of Zinit's installer chunk
 
 [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+
+[[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
+
+function nvims() {
+  items=("default" $(ls ~/.config | rg 'nvim-'))
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}
+
+function switch_nvim_config() {
+  items=("default" $(ls ~/.config | rg 'nvim-'))
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  export NVIM_APPNAME=$config
+}
+
+# bindkey -s ^a "nvims\n"

@@ -72,6 +72,7 @@ end
 
 
 if hs.application("skhd") == nil then
+  print("skhd not running")
   -- focus window
   hs.hotkey.bind("alt", "h", function() yabai({"-m", "window", "--focus", "west"}) end)
   hs.hotkey.bind("alt", "j", function() yabai({"-m", "window", "--focus", "south"}) end)
