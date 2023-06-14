@@ -1,4 +1,3 @@
-require("nvim-lsp-installer").setup()
 local has_lspconfig, lspconfig = pcall(require, 'lspconfig')
 
 if not has_lspconfig then return end
@@ -31,31 +30,31 @@ if has_cmp then
         require 'luasnip'.lsp_expand(args.body)
       end
     },
-		formatting = {
-			fields = { "kind", "abbr", "menu" },
-			format = function(entry, vim_item)
-				local kind = lspkind.cmp_format({
-					mode = "symbol_text",
-					maxwidth = 50,
-				})(entry, vim_item)
-				local strings = vim.split(kind.kind, "%s", { trimempty = true })
-				kind.kind = " " .. strings[1] .. " "
-				kind.menu = "    (" .. strings[2] .. ")"
+    formatting = {
+      fields = { "kind", "abbr", "menu" },
+      format = function(entry, vim_item)
+        local kind = lspkind.cmp_format({
+          mode = "symbol_text",
+          maxwidth = 50,
+        })(entry, vim_item)
+        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        kind.kind = " " .. strings[1] .. " "
+        kind.menu = "    (" .. strings[2] .. ")"
 
-				return kind
-			end,
-		},
+        return kind
+      end,
+    },
     -- formatting = {
-      -- format = lspkind.cmp_format {
-      --   with_text = true,
-      --   menu = {
-      --     buffer = "[BUF]",
-      --     nvim_lsp = "[LSP]",
-      --     nvim_lua = "[API]",
-      --     path = "[PATH]",
-      --     luasnip = "[SNIP]",
-      --   },
-      -- },
+    -- format = lspkind.cmp_format {
+    --   with_text = true,
+    --   menu = {
+    --     buffer = "[BUF]",
+    --     nvim_lsp = "[LSP]",
+    --     nvim_lua = "[API]",
+    --     path = "[PATH]",
+    --     luasnip = "[SNIP]",
+    --   },
+    -- },
     -- },
     window = {
       completion = cmp.config.window.bordered({
