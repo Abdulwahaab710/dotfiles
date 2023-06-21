@@ -243,6 +243,7 @@ vimwiki () {
 }
 
 # Bindkeys --------------------------------------------{{{
+bindkey -s '^f' "/Users/abdulwahaabahmed/src/github.com/abdulwahaab710/dotfiles/bin/.local/tmux-sessionizer^M"
 bindkey -s jj '\e'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
