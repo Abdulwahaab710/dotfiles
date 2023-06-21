@@ -4,6 +4,11 @@ local db = require('dashboard')
 local windowHeight = api.nvim_get_option("lines")
 local spaceRequiredToCenter = math.floor(windowHeight / 2) - 12
 
+vim.g.indent_blankline_filetype_exclude = {
+  "dashboard",
+  "Trouble",
+}
+
 local headerAscii = {
   "           ▄ ▄                   ",
   "       ▄   ▄▄▄     ▄ ▄▄▄ ▄ ▄     ",
@@ -22,13 +27,6 @@ local emmptyLine = string.rep(" ", vim.fn.strwidth(headerAscii[1]))
 for i = 1, spaceRequiredToCenter do
   table.insert(headerAscii, 1, emmptyLine)
 end
-
--- table.insert(headerAscii, 1, emmptyLine)
--- table.insert(headerAscii, 2, emmptyLine)
---
--- headerAscii[#headerAscii + 1] = emmptyLine
--- headerAscii[#headerAscii + 1] = emmptyLine
-
 
 db.setup({
   theme = 'doom',

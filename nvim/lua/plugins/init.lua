@@ -1,24 +1,3 @@
--- local execute = vim.api.nvim_command
--- local fn = vim.fn
---
--- local packer_install_dir = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
---
--- local plug_url_format = 'https://github.com/%s'
---
--- local packer_repo = string.format(plug_url_format, 'wbthomason/packer.nvim')
--- local install_cmd = string.format('10split |term git clone --depth=1 %s %s', packer_repo, packer_install_dir)
---
--- vim.diagnostic.config({ virtual_lines = { only_current_line = true } })
---
--- if fn.empty(fn.glob(packer_install_dir)) > 0 then
---   vim.api.nvim_echo({ { 'Installing packer.nvim', 'Type' } }, true, {})
---   execute(install_cmd)
---   execute 'packadd packer.nvim'
---   execute 'PackerSync'
--- end
---
--- vim.cmd [[packadd packer.nvim]]
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -32,7 +11,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- return require('packer').startup(function()
 -- " Code Completion and snippets --------------------{{{
 local plugins = {
   { 'wbthomason/packer.nvim' },
@@ -129,7 +107,7 @@ local plugins = {
   {
     "folke/trouble.nvim",
     dependencies = {
-      "kyazdani42/nvim-web-devicons",
+      "nvim-tree/nvim-web-devicons",
       "folke/lsp-colors.nvim",
     },
   },
@@ -172,8 +150,15 @@ local plugins = {
   { 'Shougo/vimshell.vim' },
   { 'ujihisa/repl.vim' },
   { 'bogado/file-line' },
-  { 'junegunn/fzf', dir = '~/.fzf', build = './install --all' },
-  { 'junegunn/fzf.vim' },
+  {
+    'junegunn/fzf',
+    dir = '~/.fzf',
+    -- build = './install --all',
+    build = 'fzf#install()',
+    dependencies = {
+      'junegunn/fzf.vim'
+    },
+  },
   { 'nvim-lua/popup.nvim' },
   { "nvim-telescope/telescope.nvim" },
   { 'nvim-telescope/telescope-fzy-native.nvim' },
@@ -221,17 +206,28 @@ local plugins = {
 
   -- " Theme related plugins ---------------------------{{{
   { 'nvim-lualine/lualine.nvim' },
+  {'romgrk/barbar.nvim',
+    dependencies = {
+      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+    },
+    init = function() vim.g.barbar_auto_setup = false end,
+    opts = {
+      -- lazy.nvim will automatically call setup for you. put your options here, anything missing will use the default:
+      -- animation = true,
+      -- insert_at_start = true,
+      -- …etc.
+    },
+    version = '^1.0.0', -- optional: only update when a new 1.x version is released
+  },
   { 'lukas-reineke/indent-blankline.nvim' },
-  { 'ryanoasis/vim-devicons' }, -- " TODO: Migrate to lua
-  { 'kyazdani42/nvim-web-devicons' }, -- " lua
-  { 'jeffkreeftmeijer/vim-dim', branch = 'main' },
+  -- { 'ryanoasis/vim-devicons' }, -- " TODO: Migrate to lua
   { 'nvim-lua/plenary.nvim' },
   { 'folke/todo-comments.nvim', branch = 'main' },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     dependencies = {
-      'lewis6991/spellsitter.nvim', -- TODO: Remove when updating to neovim v8
       'nvim-treesitter/playground',
       'nvim-treesitter/nvim-treesitter-refactor'
     },
@@ -239,10 +235,6 @@ local plugins = {
   { 'andymass/vim-matchup' },
   { 'Pocco81/TrueZen.nvim', branch = 'main' },
   { 'catppuccin/nvim' },
-  -- " },},},
-
-  -- " Tools -------------------------------------------{{{
-  { 'mhinz/vim-rfc' },
   -- " },},},
 
   -- " Note Taking Plugins -----------------------------{{{

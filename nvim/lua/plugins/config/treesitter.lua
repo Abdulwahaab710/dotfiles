@@ -14,12 +14,6 @@ require 'nvim-treesitter.configs'.setup {
   }
 }
 
-require('spellsitter').setup {
-  -- Whether enabled, can be a list of filetypes, e.g. {'python', 'lua'}
-  enable = true,
-  debug = false
-}
-
 local npairs = require('nvim-autopairs')
 local endwise = require('nvim-autopairs.ts-rule').endwise
 

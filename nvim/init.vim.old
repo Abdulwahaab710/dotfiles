@@ -136,11 +136,6 @@ imap <left>  <nop>
 imap <right> <nop>
 nnoremap Q  <nop>
 
-" Open the definition in a new tab
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-" Open the definition in a vertical split Option+Shift+]
-nmap ‘ :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-
 " ================
 " Better grepping
 " ================
@@ -246,19 +241,6 @@ augroup configgroup
   augroup end
 " }}}
 
-" omnifuncs -----------------------------------------------------------------{{{
-
-" augroup omnifuncs
-"   autocmd!
-"   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-" augroup end
-
-" set omnifunc=syntaxcomplete#Complete
-" }}}
-
 " Fold ----------------------------------------------------------------------{{{
 
 function! CustomFold()
@@ -299,9 +281,6 @@ set t_Co=256
 let g:impact_transbg=1
 au VimLeave * set guicursor=a:block-blinkon0
 
-" let g:tokyonight_style = "night"
-" let g:tokyonight_italic_functions = 1
-" let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 hi Comment gui=italic cterm=italic
 hi htmlArg gui=italic cterm=italic
 
@@ -548,7 +527,7 @@ function! Fzf_dev()
     return s:prepend_icon(l:files)
   endfunction
 
-  function! s:prepend_icon(candidates)
+  function! s:prepend_icon(candidates)  
     let l:result = []
     for l:candidate in a:candidates
       let l:filename = fnamemodify(l:candidate, ':p:t')
