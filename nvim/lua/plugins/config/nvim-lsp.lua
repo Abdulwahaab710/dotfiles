@@ -130,25 +130,25 @@ local configs = require 'lspconfig.configs'
 if not configs.rubocop_lsp then
   configs.rubocop_lsp = {
     default_config = {
-      cmd = { 'bundle', 'exec', 'rubocop-lsp' };
-      filetypes = { 'ruby' };
+      cmd = { 'bundle', 'exec', 'rubocop-lsp' },
+      filetypes = { 'ruby' },
       root_dir = function(fname)
         return lspconfig.util.find_git_ancestor(fname)
-      end;
-      settings = {};
-    };
+      end,
+      settings = {},
+    },
   }
 end
 if not configs.ruby_lsp then
   configs.ruby_lsp = {
     default_config = {
-      cmd = { 'bundle', 'exec', 'ruby-lsp' };
-      filetypes = { 'ruby' };
+      cmd = { 'bundle', 'exec', 'ruby-lsp' },
+      filetypes = { 'ruby' },
       root_dir = function(fname)
         return lspconfig.util.find_git_ancestor(fname)
-      end;
-      settings = {};
-    };
+      end,
+      settings = {},
+    },
   }
 end
 
@@ -161,7 +161,8 @@ local servers = {
   'tsserver',
   'rubocop_lsp',
   'ruby_lsp',
-  'tailwindcss'
+  'tailwindcss',
+  'lua_ls'
 }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {

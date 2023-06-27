@@ -13,6 +13,13 @@ vim.opt.rtp:prepend(lazypath)
 
 -- " Code Completion and snippets --------------------{{{
 local plugins = {
+  {
+    'j-hui/fidget.nvim',
+    branch = 'legacy',
+    config = function()
+      require('fidget').setup()
+    end
+  },
   { 'wbthomason/packer.nvim' },
   {
     "williamboman/mason.nvim",
@@ -24,7 +31,8 @@ local plugins = {
       ensure_installed = {
         "rust-analyzer",
         "solargraph",
-        "sorbet"
+        "sorbet",
+        "lua_ls"
       }
     },
     config = function()
@@ -42,12 +50,12 @@ local plugins = {
   {
     'ray-x/navigator.lua',
     dependencies = {
-      { 'ray-x/guihua.lua', build = 'cd lua/fzy && make' },
+      { 'ray-x/guihua.lua',     build = 'cd lua/fzy && make' },
       { 'neovim/nvim-lspconfig' },
     },
     config = function() require 'navigator'.setup() end,
   },
-  { 'tami5/lspsaga.nvim', branch = 'main' },
+  { 'tami5/lspsaga.nvim',    branch = 'main' },
   { 'onsails/lspkind-nvim' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-buffer' },
@@ -111,7 +119,7 @@ local plugins = {
       "folke/lsp-colors.nvim",
     },
   },
-  -- " },},},
+  -- " }}}
 
   -- DAP (Debug Adapter Protocol)
   {
@@ -125,7 +133,7 @@ local plugins = {
 
   -- " git plugins -------------------------------------{{{
   { 'lewis6991/gitsigns.nvim', branch = 'main' },
-  -- " },},},
+  -- " }}}
 
   -- " tpope plugins -----------------------------------{{{
   { 'tpope/vim-surround' }, -- " easily surround things...just read docs for info
@@ -135,7 +143,7 @@ local plugins = {
   { 'tpope/vim-fugitive' },
   { 'tpope/vim-rhubarb' },
   { 'tpope/vim-projectionist' },
-  -- " },},},
+  -- " }}}
 
   -- " misc --------------------------------------------{{{
   { 'windwp/nvim-autopairs' },
@@ -146,7 +154,7 @@ local plugins = {
     end
   },
   { 'glepnir/dashboard-nvim' },
-  { 'Shougo/vimproc.vim', build = 'make' },
+  { 'Shougo/vimproc.vim',    build = 'make' },
   { 'Shougo/vimshell.vim' },
   { 'ujihisa/repl.vim' },
   { 'bogado/file-line' },
@@ -198,17 +206,18 @@ local plugins = {
   { 'dstein64/vim-startuptime' },
   { 'junegunn/vim-emoji' },
   { 'voldikss/vim-floaterm' },
-  -- " },},},
+  -- " }}}
 
   -- " Syntax plugins ----------------------------------{{{
   { 'chrisbra/csv.vim' },
-  -- " },},},
+  -- " }}}
 
   -- " Theme related plugins ---------------------------{{{
   { 'nvim-lualine/lualine.nvim' },
-  {'romgrk/barbar.nvim',
+  {
+    'romgrk/barbar.nvim',
     dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status
       'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
     },
     init = function() vim.g.barbar_auto_setup = false end,
@@ -223,7 +232,7 @@ local plugins = {
   { 'lukas-reineke/indent-blankline.nvim' },
   -- { 'ryanoasis/vim-devicons' }, -- " TODO: Migrate to lua
   { 'nvim-lua/plenary.nvim' },
-  { 'folke/todo-comments.nvim', branch = 'main' },
+  { 'folke/todo-comments.nvim',           branch = 'main' },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -235,7 +244,18 @@ local plugins = {
   { 'andymass/vim-matchup' },
   { 'Pocco81/TrueZen.nvim', branch = 'main' },
   { 'catppuccin/nvim' },
-  -- " },},},
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    }
+  },
+  -- " }}}
 
   -- " Note Taking Plugins -----------------------------{{{
   { 'junegunn/goyo.vim' },
