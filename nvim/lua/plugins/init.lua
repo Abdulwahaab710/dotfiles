@@ -20,8 +20,27 @@ local plugins = {
       require('fidget').setup()
     end
   },
-  { 'wbthomason/packer.nvim' },
   {
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
+    dependencies = {
+      -- LSP Support
+      { 'neovim/nvim-lspconfig' }, -- Required
+      {                            -- Optional
+        'williamboman/mason.nvim',
+        build = function()
+          pcall(vim.cmd, 'MasonUpdate')
+        end,
+      },
+      { 'williamboman/mason-lspconfig.nvim' }, -- Optional
+
+      -- Autocompletion
+      { 'hrsh7th/nvim-cmp' },     -- Required
+      { 'hrsh7th/cmp-nvim-lsp' }, -- Required
+      { 'L3MON4D3/LuaSnip' },     -- Required
+    }
+  },
+  --[[ {
     "williamboman/mason.nvim",
     build = ":MasonUpdate", -- :MasonUpdate updates registry contents
     dependencies = {
@@ -55,13 +74,27 @@ local plugins = {
     },
     config = function() require 'navigator'.setup() end,
   },
-  { 'tami5/lspsaga.nvim',    branch = 'main' },
+  { 'tami5/lspsaga.nvim',  branch = 'main' },
   { 'onsails/lspkind-nvim' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/cmp-path' },
   --  { 'hrsh7th/cmp-cmdline' },
   { 'hrsh7th/nvim-cmp' },
+  {
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp",
+
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+      'saadparwaiz1/cmp_luasnip'
+    },
+  }, ]]
+
+
+
   { 'github/copilot.vim' },
   {
     "thmsmlr/gpt.nvim",
@@ -97,17 +130,6 @@ local plugins = {
         desc = "[G]pt [P]rompt"
       })
     end
-  },
-  {
-    "L3MON4D3/LuaSnip",
-    -- follow latest release.
-    -- install jsregexp (optional!).
-    build = "make install_jsregexp",
-
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-      'saadparwaiz1/cmp_luasnip'
-    },
   },
 
   -- Linting
