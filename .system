@@ -30,3 +30,6 @@ sudo defaults write bluetoothaudiod "Enable AAC codec" -bool true
 
 # Change directory for screenshot
 defaults write com.apple.screencapture location $HOME/Documents/Screenshot
+
+
+defaults write /Library/Preferences/com.apple.airport.bt.plist bluetoothCoexMgmt Hybrid
