@@ -1,4 +1,5 @@
 require('settings')
+require('autocmd')
 require('plugins')
 require('remap')
 require('plugins.config')

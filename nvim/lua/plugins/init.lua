@@ -167,6 +167,16 @@ local plugins = {
       'junegunn/fzf.vim'
     },
   },
+  { "nvim-tree/nvim-web-devicons" },
+  -- mandatory
+  { "junegunn/fzf",               build = ":call fzf#install()" },
+  {
+    "linrongbin16/fzfx.nvim",
+    dependencies = { "junegunn/fzf" },
+    config = function()
+      require("fzfx").setup()
+    end
+  },
   { 'nvim-lua/popup.nvim' },
   { "nvim-telescope/telescope.nvim" },
   { 'nvim-telescope/telescope-fzy-native.nvim' },
@@ -238,13 +248,16 @@ local plugins = {
     build = ':TSUpdate',
     dependencies = {
       'nvim-treesitter/playground',
-      'nvim-treesitter/nvim-treesitter-refactor'
+      'nvim-treesitter/nvim-treesitter-refactor',
+      'RRethy/nvim-treesitter-endwise'
     },
   },
   { 'andymass/vim-matchup' },
-  { 'Pocco81/TrueZen.nvim', branch = 'main' },
+  { 'Pocco81/TrueZen.nvim',            branch = 'main' },
   { 'catppuccin/nvim' },
-  {
+  { 'nyoom-engineering/oxocarbon.nvim' },
+
+  --[[ {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {
@@ -254,7 +267,7 @@ local plugins = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
     }
-  },
+  }, ]]
   -- " }}}
 
   -- " Note Taking Plugins -----------------------------{{{
@@ -267,6 +280,9 @@ local plugins = {
     dependencies = {
       'vimwiki/vimwiki',
     },
+  },
+  {
+    'vimwiki/vimwiki',
   },
   { 'ekickx/clipboard-image.nvim', branch = 'main' },
   { "ellisonleao/glow.nvim" },
