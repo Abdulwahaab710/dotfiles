@@ -43,6 +43,8 @@ vim.keymap.set("n", "<leader>T", ":TestFile<CR>")
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>")
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
 
+vim.keymap.set("v", "<leader>n", ":ZkNewFromTitleSelection<CR>")
+
 --[[
 
 nnoremap <Space> za

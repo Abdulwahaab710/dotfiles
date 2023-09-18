@@ -56,6 +56,7 @@ yabai -m config --space 6 layout float
 
 # Unmanaged
 yabai -m rule --add app="^System Preferences$"  manage=off border=off
+yabai -m rule --add subrole="^AXSystemDialog$" manage=off mouse_follows_focus=off
 
 # Primary
 yabai -m rule --add app="Brave Browser"                       space=1
