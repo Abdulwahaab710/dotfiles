@@ -18,9 +18,4 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 local npairs = require('nvim-autopairs')
-local endwise = require('nvim-autopairs.ts-rule').endwise
-
 npairs.setup()
-npairs.add_rules({
-  endwise('def .*$', 'end', 'ruby', 'method_name')
-})

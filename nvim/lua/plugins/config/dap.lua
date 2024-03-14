@@ -1,25 +1,9 @@
--- require('dap-ruby').setup()
+require('dap-ruby').setup()
 require("nvim-dap-virtual-text").setup()
 
-local dap = require('dap')
-dap.adapters.ruby = {
-  type = 'executable';
-  command = 'bundle';
-  args = {'exec', 'readapt', 'stdio'};
-}
+local dap, dapui = require("dap"), require("dapui")
 
-dap.configurations.ruby = {
-  {
-    type = 'ruby';
-    request = 'launch';
-    name = 'Rails';
-    program = 'bundle';
-    programArgs = {'exec', 'rails', 's'};
-    useBundler = true;
-  },
-}
-
-require("dapui").setup({
+dapui.setup({
   icons = { expanded = "▾", collapsed = "▸" },
   mappings = {
     -- Use a table to apply multiple mappings
@@ -54,8 +38,8 @@ require("dapui").setup({
     },
   },
   floating = {
-    max_height = nil, -- These can be integers or a float between 0 and 1.
-    max_width = nil, -- Floats will be treated as percentage of your screen.
+    max_height = nil,  -- These can be integers or a float between 0 and 1.
+    max_width = nil,   -- Floats will be treated as percentage of your screen.
     border = "single", -- Border style. Can be "single", "double" or "rounded"
     mappings = {
       close = { "q", "<Esc>" },
@@ -66,3 +50,26 @@ require("dapui").setup({
     max_type_length = nil, -- Can be integer or nil.
   }
 })
+
+--[[ dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end ]]
+
+local start_debugging = function()
+  dap.continue()
+  require("dapui").open()
+end
+
+-- vnoremap <M-k> <Cmd>lua require("dapui").eval()<CR>
+vim.keymap.set("v", "<leader>k", dapui.eval)
+vim.keymap.set("n", "<F5>", start_debugging)
+vim.keymap.set("n", "<F9>", dap.toggle_breakpoint)

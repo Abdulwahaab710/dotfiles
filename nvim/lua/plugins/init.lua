@@ -20,7 +20,6 @@ local plugins = {
       require('fidget').setup()
     end
   },
-  { 'wbthomason/packer.nvim' },
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate", -- :MasonUpdate updates registry contents
@@ -50,12 +49,12 @@ local plugins = {
   {
     'ray-x/navigator.lua',
     dependencies = {
-      { 'ray-x/guihua.lua', build = 'cd lua/fzy && make' },
+      { 'ray-x/guihua.lua',     build = 'cd lua/fzy && make' },
       { 'neovim/nvim-lspconfig' },
     },
     config = function() require 'navigator'.setup() end,
   },
-  { 'tami5/lspsaga.nvim', branch = 'main' },
+  { 'tami5/lspsaga.nvim',    branch = 'main' },
   { 'onsails/lspkind-nvim' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-buffer' },
@@ -154,7 +153,7 @@ local plugins = {
     end
   },
   { 'glepnir/dashboard-nvim' },
-  { 'Shougo/vimproc.vim', build = 'make' },
+  { 'Shougo/vimproc.vim',    build = 'make' },
   { 'Shougo/vimshell.vim' },
   { 'ujihisa/repl.vim' },
   { 'bogado/file-line' },
@@ -169,7 +168,7 @@ local plugins = {
   },
   { "nvim-tree/nvim-web-devicons" },
   -- mandatory
-  { "junegunn/fzf", build = ":call fzf#install()" },
+  { "junegunn/fzf",               build = ":call fzf#install()" },
   {
     "linrongbin16/fzfx.nvim",
     dependencies = { "junegunn/fzf" },
@@ -227,7 +226,7 @@ local plugins = {
   {
     'romgrk/barbar.nvim',
     dependencies = {
-      'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+      'lewis6991/gitsigns.nvim',     -- OPTIONAL: for git status
       'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
     },
     init = function() vim.g.barbar_auto_setup = false end,
@@ -242,7 +241,7 @@ local plugins = {
   { 'lukas-reineke/indent-blankline.nvim' },
   -- { 'ryanoasis/vim-devicons' }, -- " TODO: Migrate to lua
   { 'nvim-lua/plenary.nvim' },
-  { 'folke/todo-comments.nvim', branch = 'main' },
+  { 'folke/todo-comments.nvim',           branch = 'main' },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -253,7 +252,7 @@ local plugins = {
     },
   },
   { 'andymass/vim-matchup' },
-  { 'Pocco81/TrueZen.nvim', branch = 'main' },
+  { 'Pocco81/TrueZen.nvim',            branch = 'main' },
   { 'catppuccin/nvim' },
   { 'nyoom-engineering/oxocarbon.nvim' },
 
@@ -290,7 +289,6 @@ local plugins = {
     'vimwiki/vimwiki',
     config = function()
       -- let g:vimwiki_ext2syntax = {}
-
     end,
   },
   { 'ekickx/clipboard-image.nvim', branch = 'main' },
