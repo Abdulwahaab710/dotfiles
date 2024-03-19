@@ -33,20 +33,8 @@ db.setup({
   config = {
     header = headerAscii,
     center = {
-      {
-        desc = '  Recent Files',
-        group = 'RecentFiles',
-        action = 'Telescope oldfiles',
-        key = 'o',
-      },
-      {
-        desc = '  File Browser',
-        group = 'FileBrowser',
-        action = 'Telescope file_browser',
-        key = 'b',
-      },
-      { desc = '  Update plugins', group = '@property', action = 'PackerUpdate', key = 'u' },
-      { desc = '  Today\'s Diary', group = 'Diary', action = 'VimwikiMakeDiaryNote', key = 'd' },
+      { desc = '  Recent Files', group = 'RecentFiles', action = 'Telescope oldfiles',     key = 'o', },
+      { desc = '  File Browser', group = 'FileBrowser', action = 'Telescope file_browser', key = 'b', },
       {
         icon = '  ',
         icon_hl = '@variable',
@@ -55,6 +43,10 @@ db.setup({
         action = 'Telescope find_files find_command=rg,--hidden,--files',
         key = 'f',
       },
+      { desc = '  Update plugins', group = '@property', action = 'PackerUpdate',         key = 'u' },
+      { desc = '  Today\'s Diary', group = 'Diary',     action = 'VimwikiMakeDiaryNote', key = 'd' },
+      { desc = '  Wiki Index',     group = 'Wiki',      action = 'VimwikiIndex',         key = 'w', },
+      { desc = '  Notes search',   group = 'Notes',     action = 'ZkNotes',              key = 'n', },
     },
   },
 })

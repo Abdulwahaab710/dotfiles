@@ -13,6 +13,15 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   {
+    pattern = { vimwiki_pattern },
+    command = "setlocal noswapfile",
+    group = vimwiki_group
+  }
+)
+
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  {
     pattern = { vim.fn.expand("~/vimwiki/diary/diary.wiki") },
     command = "VimwikiDiaryGenerateLinks",
     group = vimwiki_group
@@ -28,4 +37,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*" },
   command = [[%s/\s\+$//e]],
+})
+
+vim.api.nvim_create_autocmd({ "VimLeave", "VimLeavePre" }, {
+  callback = function(ev, opts)
+    -- os.execute("kitty @ --to $KITTY_LISTEN_ON set-font-size '0'")
+    os.execute("tmux set-option status on")
+    os.execute("tmux list-panes -F '\\#F' | grep -q Z && tmux resize-pane -Z")
+  end,
 })

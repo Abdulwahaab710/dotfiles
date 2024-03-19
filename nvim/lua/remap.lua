@@ -45,6 +45,15 @@ vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
 
 vim.keymap.set("v", "<leader>n", ":ZkNewFromTitleSelection<CR>")
 
+local group = vim.api.nvim_create_augroup("textfile_group", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    vim.keymap.set("v", "<F7>", ":ChatGPTRun grammar_correction<CR>", {})
+  end,
+  pattern = { "text", "markdown", "md", "wiki" },
+  group = group
+})
+
 --[[
 
 nnoremap <Space> za

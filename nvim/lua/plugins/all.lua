@@ -33,6 +33,7 @@ return {
       "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
     },
   },
+<<<<<<< HEAD:nvim/lua/plugins/all.lua
   {
     'ray-x/navigator.lua',
     dependencies = {
@@ -41,6 +42,17 @@ return {
     },
   },
   { 'tami5/lspsaga.nvim',  branch = 'main' },
+=======
+  -- {
+  --   'ray-x/navigator.lua',
+  --   dependencies = {
+  --     { 'ray-x/guihua.lua',     build = 'cd lua/fzy && make' },
+  --     { 'neovim/nvim-lspconfig' },
+  --   },
+  --   config = function() require 'navigator'.setup() end,
+  -- },
+  { 'tami5/lspsaga.nvim',    branch = 'main' },
+>>>>>>> c926e22 (Update nvim configs):nvim/lua/plugins/init.lua
   { 'onsails/lspkind-nvim' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-buffer' },
@@ -233,5 +245,61 @@ return {
   -- " }}}
 };
 
+<<<<<<< HEAD:nvim/lua/plugins/all.lua
 -- vim.g.vimwiki_ext2syntax = { ['.wiki'] = 'media' }
 -- return plugins
+=======
+  -- " Note Taking Plugins -----------------------------{{{
+  { "preservim/vim-pencil" },
+  {
+    "folke/twilight.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+  {
+    "folke/zen-mode.nvim",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+  --[[ { 'junegunn/goyo.vim' },
+  { 'junegunn/limelight.vim' }, ]] -- replace by twilight and zenmode
+  { 'dhruvasagar/vim-table-mode' },
+  {
+    'lukas-reineke/headlines.nvim',
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = true, -- or `opts = {}`
+  },
+  {
+    'tools-life/taskwiki',
+    build = 'pip3 install --upgrade packaging && pip3 install --upgrade -r requirements.txt',
+    dependencies = {
+      'vimwiki/vimwiki',
+    },
+  },
+  {
+    'vimwiki/vimwiki',
+    config = function()
+      -- let g:vimwiki_ext2syntax = {}
+    end,
+  },
+  { 'ekickx/clipboard-image.nvim', branch = 'main' },
+  { "ellisonleao/glow.nvim" },
+  { 'mickael-menu/zk-nvim' },
+  { 'nullchilly/fsread.nvim' },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+}
+
+vim.g.vimwiki_ext2syntax = { ['.wiki'] = 'media' }
+return require("lazy").setup(plugins, opts)
+>>>>>>> c926e22 (Update nvim configs):nvim/lua/plugins/init.lua
