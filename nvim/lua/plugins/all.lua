@@ -1,18 +1,5 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
-
 -- " Code Completion and snippets --------------------{{{
-local plugins = {
+return {
   {
     'j-hui/fidget.nvim',
     branch = 'legacy',
@@ -52,9 +39,8 @@ local plugins = {
       { 'ray-x/guihua.lua',     build = 'cd lua/fzy && make' },
       { 'neovim/nvim-lspconfig' },
     },
-    config = function() require 'navigator'.setup() end,
   },
-  { 'tami5/lspsaga.nvim',    branch = 'main' },
+  { 'tami5/lspsaga.nvim',  branch = 'main' },
   { 'onsails/lspkind-nvim' },
   { 'hrsh7th/cmp-nvim-lsp' },
   { 'hrsh7th/cmp-buffer' },
@@ -63,39 +49,16 @@ local plugins = {
   { 'hrsh7th/nvim-cmp' },
   { 'github/copilot.vim' },
   {
-    "thmsmlr/gpt.nvim",
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
     config = function()
-      require('gpt').setup({
-        api_key = os.getenv("OPENAI_API_KEY")
-      })
-
-      opts = { silent = true, noremap = true },
-          vim.keymap.set('v', '<C-g>r', require('gpt').replace, {
-            silent = true,
-            noremap = true,
-            desc = "[G]pt [R]ewrite"
-          })
-      vim.keymap.set('v', '<C-g>p', require('gpt').visual_prompt, {
-        silent = false,
-        noremap = true,
-        desc = "[G]pt [P]rompt"
-      })
-      vim.keymap.set('n', '<C-g>p', require('gpt').prompt, {
-        silent = true,
-        noremap = true,
-        desc = "[G]pt [P]rompt"
-      })
-      vim.keymap.set('n', '<C-g>c', require('gpt').cancel, {
-        silent = true,
-        noremap = true,
-        desc = "[G]pt [C]ancel"
-      })
-      vim.keymap.set('i', '<C-g>p', require('gpt').prompt, {
-        silent = true,
-        noremap = true,
-        desc = "[G]pt [P]rompt"
-      })
-    end
+      require("chatgpt").setup()
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
   },
   {
     "L3MON4D3/LuaSnip",
@@ -268,34 +231,7 @@ local plugins = {
     }
   }, ]]
   -- " }}}
+};
 
-  -- " Note Taking Plugins -----------------------------{{{
-  { 'junegunn/goyo.vim' },
-  { 'junegunn/limelight.vim' },
-  { 'dhruvasagar/vim-table-mode' },
-  {
-    'lukas-reineke/headlines.nvim',
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    config = true, -- or `opts = {}`
-  },
-  {
-    'tools-life/taskwiki',
-    build = 'pip3 install --upgrade packaging && pip3 install --upgrade -r requirements.txt',
-    dependencies = {
-      'vimwiki/vimwiki',
-    },
-  },
-  {
-    'vimwiki/vimwiki',
-    config = function()
-      -- let g:vimwiki_ext2syntax = {}
-    end,
-  },
-  { 'ekickx/clipboard-image.nvim', branch = 'main' },
-  { "ellisonleao/glow.nvim" },
-  { 'mickael-menu/zk-nvim' },
-  { 'nullchilly/fsread.nvim' },
-}
-
-vim.g.vimwiki_ext2syntax = { ['.wiki'] = 'media' }
-return require("lazy").setup(plugins, opts)
+-- vim.g.vimwiki_ext2syntax = { ['.wiki'] = 'media' }
+-- return plugins

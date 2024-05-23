@@ -1,5 +1,0 @@
-require('plugins')
-require('plugins.config')
-require('theme')
-require('colors')
-require('key_bindings')

@@ -26,7 +26,7 @@
   "guihua.lua": { "branch": "master", "commit": "9fb6795474918b492d9ab01b1ebaf85e8bf6fe0b" },
   "headlines.nvim": { "branch": "master", "commit": "618ef1b2502c565c82254ef7d5b04402194d9ce3" },
   "indent-blankline.nvim": { "branch": "master", "commit": "821a7acd88587d966f7e464b0b3031dfe7f5680c" },
-  "lazy.nvim": { "branch": "main", "commit": "28126922c9b54e35a192ac415788f202c3944c9f" },
+  "lazy.nvim": { "branch": "main", "commit": "83493db50a434a4c5c648faf41e2ead80f96e478" },
   "limelight.vim": { "branch": "master", "commit": "86aaec1700b27618d33d6182f44691d84d2cb6e5" },
   "lsp-colors.nvim": { "branch": "main", "commit": "2bbe7541747fd339bdd8923fc45631a09bb4f1e5" },
   "lsp_lines.nvim": { "branch": "main", "commit": "cf2306dd332e34a3e91075b40bdd4f6db824b2ee" },
