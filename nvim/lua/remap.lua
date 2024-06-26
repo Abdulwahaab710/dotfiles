@@ -1,4 +1,3 @@
-vim.g.mapleader = ";"
 vim.api.nvim_set_keymap('n', 'gf', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
 if vim.fn.getcwd() == os.getenv("HOME") then
   -- redefine fzf call: vim.cmd( "let $FZF_DEFAULT_COMMAND ...

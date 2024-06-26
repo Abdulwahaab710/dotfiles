@@ -127,6 +127,7 @@ alias gfc='git clone'
 alias gfcr='git clone --recurse-submodules'
 alias gfm='git pull'
 alias gfr='git pull --rebase'
+alias gfrm='git pull --rebase origin $(git symbolic-ref refs/remotes/origin/HEAD | xargs basename)'
 alias gg='git grep'
 alias ggL='git grep --files-without-matches'
 alias ggi='git grep --ignore-case'
@@ -193,4 +194,13 @@ alias docker_stop_all='$BIN/docker stop $(docker ps -aq)'
 alias wiki='$BIN/nvim $HOME/vimwiki/index.wiki'
 alias n='$BIN/nnn'
 alias lock='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
-alias r='bundle exec rails'
+rails_cmd () {
+  if [ -f "dev.yml" ]; then
+    echo "[info] dev.yml found, using dev environment."
+    dev $@
+  else
+    echo "[info] using bundler."
+    bundle exec rails $@
+  fi
+}
+alias r=rails_cmd

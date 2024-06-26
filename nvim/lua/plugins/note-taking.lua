@@ -1,3 +1,5 @@
+vim.g.vimwiki_ext2syntax = { ['.wiki'] = 'media' }
+
 return {
   -- " Note Taking Plugins -----------------------------{{{
   { 'junegunn/goyo.vim' },

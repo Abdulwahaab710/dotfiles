@@ -61,7 +61,7 @@ require("catppuccin").setup({
     }
   end,
   integrations = {
-    cmp = true,
+    -- cmp = true,
     gitsigns = true,
     nvimtree = true,
     telescope = true,
@@ -73,5 +73,11 @@ require("catppuccin").setup({
 
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
--- vim.opt.background = "dark"
--- vim.cmd.colorscheme "oxocarbon"
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", {ctermbg=0, fg="#fab388", bg="#224CBD"})
