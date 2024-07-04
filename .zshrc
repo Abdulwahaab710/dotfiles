@@ -10,6 +10,7 @@ fi
 
 # eval "$(starship init zsh)"
 
+fpath+=~/.zfunc
 fpath=("/usr/local/bin/" $fpath)
 
 setopt AUTO_CD
@@ -313,3 +314,7 @@ function switch_nvim_config() {
 }
 
 # bindkey -s ^a "nvims\n"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

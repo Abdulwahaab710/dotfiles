@@ -1,7 +1,7 @@
 # open terminal
 cmd - return : /Applications/Kitty.app/Contents/MacOS/kitty --single-instance -d ~
 
-cmd + ctrl + shift - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+cmd + ctrl + shift - r : yabai --restart-service
 
 # focus window
 alt - h : yabai -m window --focus west

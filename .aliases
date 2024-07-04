@@ -204,3 +204,4 @@ rails_cmd () {
   fi
 }
 alias r=rails_cmd
+alias scratchpad='nvim -c "new" -c "setlocal spell spelllang=en_us" -c "setlocal spell!" -c "setlocal ft=markdown"'

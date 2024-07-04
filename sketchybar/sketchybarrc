@@ -4,16 +4,16 @@ PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
 ITEM_DIR="$HOME/.config/sketchybar/items"
 
 # run helper program
-DYNAMIC_ISLAND_DIR="$HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar"
+# DYNAMIC_ISLAND_DIR="$HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar"
 
 # Define Dynamic island custom configs here
-source "$DYNAMIC_ISLAND_DIR/config.sh" # Loads Dynamic-Island config
+# source "$DYNAMIC_ISLAND_DIR/config.sh" # Loads Dynamic-Island config
 
 # run helper program
-ISLANDHELPER=git.crissnb.islandhelper
-killall islandhelper
-cd $DYNAMIC_ISLAND_DIR/helper && make
-$DYNAMIC_ISLAND_DIR/helper/islandhelper $ISLANDHELPER &
+# ISLANDHELPER=git.crissnb.islandhelper
+# killall islandhelper
+# cd $DYNAMIC_ISLAND_DIR/helper && make
+# $DYNAMIC_ISLAND_DIR/helper/islandhelper $ISLANDHELPER &
 
 source $HOME/.config/sketchybar/colors.sh
 source $HOME/.config/sketchybar/icons.sh
@@ -47,7 +47,7 @@ source $ITEM_DIR/clock.sh
 source $ITEM_DIR/battery.sh
 source $ITEM_DIR/cpu.sh
 source $ITEM_DIR/wifi.sh
-source "$DYNAMIC_ISLAND_DIR/item.sh" # Loads Dynamic-Island item
+# source "$DYNAMIC_ISLAND_DIR/item.sh" # Loads Dynamic-Island item
 
 
 sketchybar --update

@@ -11,6 +11,8 @@ function get_top_padding_value() {
   fi
 }
 
+yabai -m rule --add app=".*" layer=normal
+
 # global settings
 yabai -m config mouse_follows_focus          on
 yabai -m config focus_follows_mouse          autoraise
@@ -57,6 +59,14 @@ yabai -m config --space 6 layout float
 # Unmanaged
 yabai -m rule --add app="^System Preferences$"  manage=off border=off
 yabai -m rule --add subrole="^AXSystemDialog$" manage=off mouse_follows_focus=off
+yabai -m rule --add app="^Prism$" manage=off border=off
+yabai -m rule --add app="^Plexamp$" manage=off border=off layer=normal
+yabai -m rule --add app="^Arc$" title="" manage=off
+yabai -m rule --add app="^1Password$" manage=off
+
+# Automatically float non-resizable windows, such as palettes, system settings etc.
+# yabai -m signal --add event=window_created action='yabai -m query --windows --window $YABAI_WINDOW_ID | /Users/boli/.nix-profile/bin/jq -er ".\"can-resize\" or .\"is-floating\"" || yabai -m window $YABAI_WINDOW_ID --toggle float'
+
 
 # Primary
 yabai -m rule --add app="Brave Browser"                       space=1
