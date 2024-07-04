@@ -75,6 +75,12 @@ return {
     config = function ()
       local cmp = require('cmp')
       cmp.setup({
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'buffer' },
+          { name = 'path' },
+          { name = 'luasnip'}
+        },
         mapping = cmp.mapping.preset.insert({
           -- `Enter` key to confirm completion
           ['<CR>'] = cmp.mapping.confirm({select = false}),
@@ -134,6 +140,22 @@ return {
       'rafamadriz/friendly-snippets',
       'saadparwaiz1/cmp_luasnip'
     },
+    config = function()
+      for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/custom/snippets/*.lua", true)) do
+        loadfile(ft_path)()
+      end
+
+      --[[ imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'
+      " -1 for jumping backwards.
+      inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+
+      snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+      snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+      " For changing choices in choiceNodes (not strictly necessary for a basic setup).
+      imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+      smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>' ]]
+    end
   },
   {
     "folke/trouble.nvim",
