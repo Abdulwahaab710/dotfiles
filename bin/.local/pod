@@ -1,0 +1,48 @@
+#!/bin/zsh
+
+# This script is used to make it easier to interact with podman
+
+MACHINE_DISK_SIZE=60
+
+case $1 in
+  up)
+    PODMAN_MACHINE_RUNNING_ALREADY=$(pgrep -q -f "podman machine start")
+    if [ $PODMAN_MACHINE_RUNNING_ALREADY ]; then
+      echo "Podman machine is already running"
+      exit 0
+    fi
+    podman machine start
+  ;;
+  reset)
+    # podman machine rm -f
+    # podman machine init --disk-size MACHINE_DISK_SIZE
+    podman machine reset --force
+  ;;
+  init)
+    podman machine init --disk-size $MACHINE_DISK_SIZE
+  ;;
+  b)
+    TAG=${2:-${PWD##*/}}
+    podman build -t $TAG .
+  ;;
+  r)
+    TAG=${3:-${PWD##*/}}
+    LPORTS=${2:-"127.0.0.1:1234:1001"}
+    podman run -p $LPORTS -it --rm $TAG
+  ;;
+  br)
+    TAG=${3:-${PWD##*/}}
+    LPORTS=${2:-"127.0.0.1:1234:1001"}
+    echo "Running podman build -t $TAG . && podman run -it --rm $TAG -p $LPORTS"
+    podman build -t $TAG --platform linux/amd64 . && podman run -p $LPORTS -it -v .:/app --rm $TAG
+  ;;
+  *)
+    echo "Usage: pod {up|b|r|br}"
+    echo "up: Start the podman machine"
+    echo "b: Build the current directory"
+    echo "r: Run the current directory"
+    echo "br: Build and run the current directory"
+    echo "if you want to set the port, you can do so by passing it as the second argument"
+    echo "Example: pod {r|br} 1234"
+    ;;
+esac
