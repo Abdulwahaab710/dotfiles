@@ -245,6 +245,7 @@ vimwiki () {
 
 # Bindkeys --------------------------------------------{{{
 bindkey -s '^f' "/Users/abdulwahaabahmed/src/github.com/abdulwahaab710/dotfiles/bin/.local/tmux-sessionizer^M"
+# bindkey -s '^d' "tmux display-popup -E -h 80% -w 80% \"nvim -c VimwikiMakeDiaryNote; exit\"^M"
 bindkey -s jj '\e'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
