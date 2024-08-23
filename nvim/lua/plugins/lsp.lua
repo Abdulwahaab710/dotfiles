@@ -15,6 +15,13 @@ end,
 -- Keybinding to toggle inline diagnostics (ii)
 vim.api.nvim_set_keymap('n', '<Leader>ii', ':lua vim.cmd("DiagnosticsToggleVirtualText")<CR>', { noremap = true, silent = true })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.rb",
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
+
 return {
   {
     'j-hui/fidget.nvim',
