@@ -62,7 +62,7 @@ remap({'ctrl', 'cmd', 'alt', 'shift'}, 'j', pressFn({'cmd', 'alt', 'shift'}, 'do
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'k', pressFn({'cmd', 'alt', 'shift'}, 'up'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'l', pressFn({'cmd', 'alt', 'shift'}, 'right'))
 
-function yabai(args)
+--[[ function yabai(args)
   hs.task.new("/opt/homebrew/bin/yabai",nil, function(ud, ...)
     print("stream", hs.inspect(table.pack(...)))
     return true
@@ -296,4 +296,4 @@ vim:enterWithSequence('jk')
 
 --------------------------------
 -- END VIM CONFIG
--------------------------------- ]]
+-------------------------------- ]] -- ]]
