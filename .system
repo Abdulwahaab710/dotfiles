@@ -23,10 +23,10 @@ for app in cfprefsd Dock finder systemuiserver; do
 done
 
 # Enable aptx codec
-sudo defaults write bluetoothaudiod "Enable AptX codec" -bool true 
+sudo defaults write bluetoothaudiod "Enable AptX codec" -bool true
 
 # Enable aac codec
-sudo defaults write bluetoothaudiod "Enable AAC codec" -bool true 
+sudo defaults write bluetoothaudiod "Enable AAC codec" -bool true
 
 # Change directory for screenshot
 defaults write com.apple.screencapture location $HOME/Documents/Screenshot

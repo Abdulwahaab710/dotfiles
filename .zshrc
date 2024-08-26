@@ -61,7 +61,7 @@ alias mk=make
 alias kali='docker run -it --rm kalilinux/kali-linux-docker'
 alias ubuntu='docker run -it --rm dockerfile/ubuntu'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
-alias ll='exa -bghHliSFa'
+alias ll='eza -bghHliSa'
 alias py='python'
 # alias tmux='tmux -2'
 alias gitset='git push --set-upstream'
@@ -244,7 +244,7 @@ vimwiki () {
 }
 
 # Bindkeys --------------------------------------------{{{
-bindkey -s '^f' "/Users/abdulwahaabahmed/src/github.com/abdulwahaab710/dotfiles/bin/.local/tmux-sessionizer^M"
+bindkey -s '^f' "$HOME/src/github.com/abdulwahaab710/dotfiles/bin/.local/tmux-sessionizer^M"
 # bindkey -s '^d' "tmux display-popup -E -h 80% -w 80% \"nvim -c VimwikiMakeDiaryNote; exit\"^M"
 bindkey -s jj '\e'
 autoload edit-command-line; zle -N edit-command-line

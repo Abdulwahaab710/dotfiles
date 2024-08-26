@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/zsh
 
 # Pretty print with colors and formatting [info, success, error]
 # Usage: print_info STATUS MESSAGE
@@ -20,21 +20,21 @@ print_warning() {
 
 # Install and setup zsh
 # Usage: install_zsh
-install_zsh() {
-  zsh
-  print_info "Cloning zprezto..."
-  git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-  print_success "zprezto cloned successfully!"
-  print_info "Setting zsh as default shell..."
-  setopt EXTENDED_GLOB
-  for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
-    ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
-  done
-  print_success "zsh set as default shell successfully!"
-  print_info "Setting zsh as default shell..."
-  chsh -s /bin/zsh
-  print_success "zsh set as default shell successfully!"
-}
+# install_zsh() {
+#   zsh
+#   print_info "Cloning zprezto..."
+#   git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+#   print_success "zprezto cloned successfully!"
+#   print_info "Setting zsh as default shell..."
+#   setopt EXTENDED_GLOB
+#   for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+#     ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+#   done
+#   print_success "zsh set as default shell successfully!"
+#   print_info "Setting zsh as default shell..."
+#   chsh -s /bin/zsh
+#   print_success "zsh set as default shell successfully!"
+# }
 
 # Install Homebrew
 # Usage: install_homebrew
@@ -63,6 +63,9 @@ install_homebrew_packages() {
   print_success "Homebrew packages installed successfully!"
 }
 
+install_tpm() {
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+}
 
 # Link dotfiles
 # Usage: link_dotfiles
@@ -81,8 +84,10 @@ link_dotfiles() {
   ln -fs "$PWD/starship.toml" "$HOME/.config/starship.toml"
   print_success "starship files linked successfully!"
 
+
+  install_tpm
   print_info "Linking files for tmux"
-  ln -fs "$PWD/.tmux.conf" "$HOME/.tmux.conf"
+  ln -fs "$PWD/tmux" "$HOME/.config/tmux"
   print_success "tmux files linked successfully!"
 
   print_info "Linking files for nvim"
@@ -121,7 +126,7 @@ macos_system_preferences() {
 }
 
 main() {
-  install_zsh
+  # install_zsh
   install_homebrew
   install_homebrew_packages
   link_dotfiles
