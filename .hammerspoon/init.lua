@@ -1,5 +1,5 @@
-stackline = require "stackline"
-stackline:init()
+-- stackline = require "stackline"
+-- stackline:init()
 
 -- bind alt+ctrl+t to toggle stackline icons
 hs.hotkey.bind({'alt', 'ctrl'}, 't', function()
@@ -61,6 +61,8 @@ remap({'ctrl', 'cmd', 'alt', 'shift'}, 'h', pressFn({'cmd', 'alt', 'shift'}, 'le
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'j', pressFn({'cmd', 'alt', 'shift'}, 'down'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'k', pressFn({'cmd', 'alt', 'shift'}, 'up'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'l', pressFn({'cmd', 'alt', 'shift'}, 'right'))
+
+print("\n\nConfiguration was successfully loaded!\n")
 
 --[[ function yabai(args)
   hs.task.new("/opt/homebrew/bin/yabai",nil, function(ud, ...)

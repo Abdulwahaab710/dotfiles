@@ -64,7 +64,7 @@ vim.g.fzf_command_prefix = "Fzf"
 
 -- Set the python3 host program
 if vim.fn.executable(vim.fn.expand("$HOME/.pyenv/versions/neovim3/bin/python")) == 1 then
-  vim.g.python3_host_prog = vim.fn.expand("$HOME/.pyenv/versions/neovim3/bin/python")
+  vim.g.python3_host_prog = vim.fn.expand("$HOME/.pyenv/versions/py3nvim/bin/python")
 else
   vim.g.python3_host_prog = vim.fn.expand("/opt/homebrew/bin/python3")
 end

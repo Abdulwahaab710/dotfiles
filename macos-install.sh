@@ -109,12 +109,24 @@ link_dotfiles() {
   print_success "sketchybar files linked successfully!"
 
   print_info "Linking files for hammerspoon"
-  ln -fs "$PWD/hammerspoon" "$HOME/.hammerspoon"
+  ln -fs "$PWD/.hammerspoon" "$HOME/.hammerspoon"
   print_success "hammerspoon files linked successfully!"
 
   print_info "Linking files for wezterm"
   ln -fs "$PWD/wezterm" "$HOME/.config/wezterm"
   print_success "wezterm files linked successfully!"
+}
+
+# Set up python virtual environment for neovim
+# https://neovim.io/doc/user/provider.html#python-virtualenv
+# Usage: setup_python_virtualenv_for_neovim
+setup_python_virtualenv_for_neovim() {
+  print_info "Setting up python virtual environment for neovim..."
+  pyenv install 3.9.4
+  pyenv virtualenv 3.9.4 py3nvim
+  pyenv activate py3nvim
+  python3 -m pip install pynvim --break-system-packages
+  print_success "Python virtual environment for neovim set up successfully!"
 }
 
 # macos_system_preferences

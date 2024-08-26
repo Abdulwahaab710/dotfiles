@@ -78,7 +78,8 @@ alias sync_branches='git fetch --all --prune && git branch -vv --no-color | grep
 source ~/.aliases
 # }}}}
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+command -v fzf > /dev/null && source <(fzf --zsh)
+
 export FZF_DEFAULT_OPTS='--extended'
 if command -v fd  > /dev/null; then
   export FZF_DEFAULT_COMMAND='fd --type file'
