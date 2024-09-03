@@ -60,8 +60,8 @@ key-mapping.preset = 'qwerty'
 inner.horizontal = 4
 inner.vertical =   4
 outer.left =       2
-outer.bottom =     2
-outer.top =        [{ monitor."LG HDR WQHD" = 42}, 8]
+outer.bottom =     0
+outer.top =        [{ monitor."LG HDR WQHD" = 42}, 0]
 outer.right =      2
 
 # Each monitor has 3 workspaces
