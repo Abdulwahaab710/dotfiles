@@ -86,8 +86,16 @@ if command -v fd  > /dev/null; then
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
+export GPG_TTY=$(tty)
+export PYENV_ROOT="$HOME/.pyenv"
+export GOPATH=$HOME/src/github.com
+
+export PATH=$GOPATH/bin:$PATH
+export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH=$PATH:$HOME/swap
+export PATH="$HOME/src/github.com/abdulwahaab710/dotfiles/bin:$PATH"
 export PATH="$HOME/.config/zsh/fp:$PATH"
+
 export CHEATCOLORS=true
 export EDITOR=nvim
 export VISUAL=nvim
@@ -96,12 +104,7 @@ export LANG="en_US.UTF-8"
 
 
 # Added by Krypton
-export GPG_TTY=$(tty)
-export GOPATH=$HOME/src/github.com
-export PATH=$GOPATH/bin:$PATH
 export KUBECONFIG=$HOME/.kube/config
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 
 # functions -------------------------------------------{{{{
 update() {
