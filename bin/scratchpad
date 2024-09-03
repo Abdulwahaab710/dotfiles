@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+APP_ID="md.obsidian"
+
+focus_notepad() {
+  open -a Obsidian
+}
+
+notepad_focused() {
+  if [ "$(aerospace list-windows --focused --format "%{app-bundle-id}")" == "$APP_ID" ]; then
+    true
+  else
+    false
+  fi
+}
+
+unfocus_notepad() {
+  aerospace close
+}
+
+if notepad_focused; then
+  unfocus_notepad
+else
+  focus_notepad
+fi
