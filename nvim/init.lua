@@ -12,8 +12,7 @@ end
 
 vim.g.mapleader = ";"
 vim.opt.rtp:prepend(lazypath)
-require("lazy").setup({
-  import = "plugins",
+require("lazy").setup("plugins", {
   change_detection = {
     notify = false,
   },
