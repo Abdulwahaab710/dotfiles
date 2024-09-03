@@ -9,8 +9,8 @@ config.color_scheme = 'Catppuccin Mocha'
 config.font = wezterm.font 'PragmataProMonoLiga Nerd Font'
 config.font_size = 15
 
-config.window_background_opacity = 0.8
--- config.macos_window_background_blur = 15
+config.window_background_opacity = 0.7
+config.macos_window_background_blur = 25
 
 config.window_decorations = "RESIZE"
 
