@@ -52,7 +52,6 @@ zinit light zdharma-continuum/fast-syntax-highlighting
 eval "$(starship init zsh)"
 
 # aliases ---------------------------------------------{{{{
-alias fix='rm ~/.zcondump*;exec zsh;'
 alias k=kubectl
 alias d=docker
 alias rtest='bundle exec rspec'
@@ -101,9 +100,6 @@ export EDITOR=nvim
 export VISUAL=nvim
 export GIT_EDITOR="nvim"
 export LANG="en_US.UTF-8"
-
-
-# Added by Krypton
 export KUBECONFIG=$HOME/.kube/config
 
 # functions -------------------------------------------{{{{
@@ -115,7 +111,6 @@ update() {
   brew cleanup
   sudo gem update --system
   sudo gem update
-  $EDITOR -c 'PlugClean | PlugUpdate | PlugUpgrade' ~/.config/nvim/init.vim
 }
 
 s() {
@@ -280,19 +275,15 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 [[ -f /opt/homebrew/opt/chruby/share/chruby/chruby.sh ]] && ! (type chruby > /dev/null 2>&1) && chruby () { source /opt/homebrew/opt/chruby/share/chruby/chruby.sh }
-# [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 && chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
-[[ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 && chruby () { source /usr/local/opt/chruby/share/chruby/chruby.sh; chruby "$@"; }
 
 type chruby >/dev/null 2>&1 && chruby; chruby 3
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
 if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-### End of Zinit's installer chunk
+### End of Zinits installer chunk
 
 [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
-
-[[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
 
 function nvims() {
   items=("default" $(ls ~/.config | rg 'nvim-'))
@@ -319,7 +310,3 @@ function switch_nvim_config() {
 }
 
 # bindkey -s ^a "nvims\n"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
