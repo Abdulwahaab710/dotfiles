@@ -36,8 +36,8 @@ vim.keymap.set("n", "<leader>bn", ":bnext<CR>")
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
 vim.keymap.set("n", "<leader>bf", ":FzfBuffers<CR>")
 
-vim.keymap.set("n", "<leader>t", ":TestNearest<CR>")
-vim.keymap.set("n", "<leader>T", ":TestFile<CR>")
+-- vim.keymap.set("n", "<leader>t", ":TestNearest<CR>")
+-- vim.keymap.set("n", "<leader>T", ":TestFile<CR>")
 
 vim.keymap.set("n", "<leader>bn", ":bnext<CR>")
 vim.keymap.set("n", "<leader>bp", ":bprevious<CR>")
@@ -50,6 +50,14 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set("v", "<F7>", ":ChatGPTRun grammar_correction<CR>", {})
   end,
   pattern = { "text", "markdown", "md", "wiki" },
+  group = group
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    vim.api.nvim_set_keymap("i", "<C-y>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+  end,
+  pattern = { "vimwiki.markdown" },
   group = group
 })
 

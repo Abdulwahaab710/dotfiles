@@ -6,6 +6,9 @@ end
 
 local default = {
   defaults = {
+    find_files = {
+      hidden = true,
+    },
     file_browser = {
       extensions = {
         hijack_netrw = true,
@@ -56,6 +59,11 @@ local default = {
     -- Developer configurations: Not meant for general override
     buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
   },
+  pickers = {
+    find_files = {
+      hidden = true
+    }
+  }
 }
 telescope.setup(default)
 require("telescope").load_extension "file_browser"

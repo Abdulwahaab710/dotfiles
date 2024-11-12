@@ -4,6 +4,7 @@ local ls = require "luasnip"
 
 local s = ls.snippet
 local i = ls.insert_node
+local t = ls.text_node
 
 local fmt = require("luasnip.extras.fmt").fmt
 
@@ -23,4 +24,13 @@ ls.add_snippets("ruby", {
 
   s("mod", fmt("module {}\n\t{}\nend", { i(1, "module_name"), i(0, "body") })),
   s("do", fmt("do |{}|\n\t{}\nend", { i(1, "args"), i(0, "body") })),
+
+  s("test", fmt("test \"{}\" do\n\t{}\nend", { i(1, "test_name"), i(0, "body") })),
+
+  s("gemfile", fmt([[
+    # frozen_string_literal: true
+
+    source "https://rubygems.org"
+    git_source(:github) {{ |repo| "https://github.com/#{{repo}}.git" }}
+  ]], {}))
 })

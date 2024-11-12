@@ -4,7 +4,7 @@ return {
     -- " }}}
 
     -- " tpope plugins -----------------------------------{{{
-      { 'tpope/vim-surround' }, -- " easily surround things...just read docs for info
+      -- { 'tpope/vim-surround' }, -- " easily surround things...just read docs for info
       { 'tpope/vim-dispatch' },
       { 'tpope/vim-dadbod' },
       { 'tpope/vim-eunuch' },
@@ -14,6 +14,29 @@ return {
       -- " }}}
 
       -- " misc --------------------------------------------{{{
+        {
+          "kylechui/nvim-surround",
+          version = "*", -- Use for stability; omit to use `main` branch for the latest features
+          event = "VeryLazy",
+          config = function()
+            require("nvim-surround").setup({
+              -- Configuration here, or leave empty to use defaults
+              keymaps = {
+                insert = "<C-g>s",
+                insert_line = "<C-g>S",
+                normal = "ys",
+                normal_cur = "yss",
+                normal_line = "yS",
+                normal_cur_line = "ySS",
+                visual = "S",
+                visual_line = "gS",
+                delete = "ds",
+                change = "cs",
+                change_line = "cS",
+              }
+            })
+          end
+        },
         { 'windwp/nvim-autopairs' },
         {
           'numToStr/Comment.nvim',
@@ -59,16 +82,7 @@ return {
         { 'liuchengxu/vista.vim' },
         { 'xolox/vim-misc' },
         { 'mbbill/undotree' },
-        { 'janko-m/vim-test' },
-        {
-          "nvim-neotest/neotest",
-          dependencies = {
-            "nvim-lua/plenary.nvim",
-            "antoinemadec/FixCursorHold.nvim",
-            "nvim-neotest/neotest-vim-test",
-            "zidhuss/neotest-minitest",
-          },
-        },
+        -- { 'janko-m/vim-test' },
         { 'terryma/vim-multiple-cursors' },
         { 'christoomey/vim-tmux-navigator' },
         {

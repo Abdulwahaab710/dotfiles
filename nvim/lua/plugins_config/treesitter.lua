@@ -17,5 +17,7 @@ require 'nvim-treesitter.configs'.setup {
   }
 }
 
+-- vim.treesitter.query.set("ruby", "highlights", "(string_content) @spell")
+
 local npairs = require('nvim-autopairs')
 npairs.setup()

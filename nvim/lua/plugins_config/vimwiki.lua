@@ -1,8 +1,3 @@
-local g = vim.g
-g.vimwiki_markdown_link_ext = 1
-
-g.vimwiki_table_mappings = 0
-
 vim.cmd([[
 function! VimwikiLinkHandler(link)
     let link = a:link

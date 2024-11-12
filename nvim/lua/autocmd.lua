@@ -1,11 +1,20 @@
 local vimwiki_group = vim.api.nvim_create_augroup("VimWiki", { clear = true })
 
-local vimwiki_pattern = vim.fn.expand("$HOME/vimwiki/diary/") .. "*.wiki"
+local vimwiki_pattern = vim.fn.expand("$HOME/src/github.com/abdulwahaab710/vimwiki/diary/") .. "*.md"
 vim.api.nvim_create_autocmd(
   "BufNewFile",
   {
     pattern = { vimwiki_pattern },
-    command = "silent 0r !~/.config/bin/diary-template-generator/target/debug/diary-template-generator '%' ",
+    command = "silent 0r !/Users/abdulwahaab/src/github.com/Abdulwahaab710/diary-template-generator/target/release/diary-template-generator '%' ",
+    group = vimwiki_group
+  }
+)
+
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  {
+    pattern = { vimwiki_pattern },
+    command = "setlocal filetype=markdown",
     group = vimwiki_group
   }
 )
@@ -22,7 +31,7 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   {
-    pattern = { vim.fn.expand("~/vimwiki/diary/diary.wiki") },
+    pattern = { vim.fn.expand("~/vimwiki/diary/diary.md") },
     command = "VimwikiDiaryGenerateLinks",
     group = vimwiki_group
   }
