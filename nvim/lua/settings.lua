@@ -10,6 +10,8 @@ vim.opt.expandtab      = true                          -- tabs are spaces
 vim.opt.foldenable     = true                          -- enable folding
 vim.opt.foldlevelstart = 10                            -- open most folds by default
 vim.opt.foldnestmax    = 10                            -- 10 nested fold max
+vim.opt.foldmethod     = "expr"
+vim.opt.foldexpr       = "nvim_treesitter#foldexpr()"
 vim.opt.hlsearch       = true                          -- highlight matches
 vim.opt.incsearch      = true                          -- search as characters are entered
 vim.opt.laststatus     = 3
@@ -29,7 +31,7 @@ vim.opt.splitright     = true                          -- open vertical splits t
 vim.opt.tabstop        = 2
 vim.opt.shiftwidth     = 2                             -- number of visual spaces per TAB
 vim.opt.ttimeoutlen    = 10
-vim.opt.timeoutlen     = 10
+-- vim.opt.timeoutlen     = 100
 vim.opt.ttyfast        = true
 vim.opt.wildignore     = "*.o,*.class,*.pyc,*.git"
 vim.opt.wildmenu       = true                          -- visual autocomplete for command menu
@@ -63,8 +65,10 @@ vim.g.vimwiki_key_mappings = {
 vim.g.fzf_command_prefix = "Fzf"
 
 -- Set the python3 host program
-if vim.fn.executable(vim.fn.expand("$HOME/.pyenv/versions/neovim3/bin/python")) == 1 then
+if vim.fn.executable(vim.fn.expand("$HOME/.pyenv/versions/py3nvim/bin/python")) == 1 then
   vim.g.python3_host_prog = vim.fn.expand("$HOME/.pyenv/versions/py3nvim/bin/python")
 else
   vim.g.python3_host_prog = vim.fn.expand("/opt/homebrew/bin/python3")
 end
+
+vim.diagnostic.config({ virtual_text = false })

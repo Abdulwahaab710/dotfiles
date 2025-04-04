@@ -1,4 +1,4 @@
--- Command to toggle inline diagnostics
+--[[ -- Command to toggle inline diagnostics
 vim.api.nvim_create_user_command(
 'DiagnosticsToggleVirtualText',
 function()
@@ -13,7 +13,7 @@ end,
 )
 
 -- Keybinding to toggle inline diagnostics (ii)
-vim.api.nvim_set_keymap('n', '<Leader>ii', ':lua vim.cmd("DiagnosticsToggleVirtualText")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>ii', ':lua vim.cmd("DiagnosticsToggleVirtualText")<CR>', { noremap = true, silent = true }) ]]
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.rb",
@@ -40,7 +40,8 @@ return {
         "rust-analyzer",
         "solargraph",
         "sorbet",
-        "lua_ls"
+        "lua_ls",
+        -- "shellcheck",
       }
     },
     config = function()
@@ -53,7 +54,8 @@ return {
         rust_analyzer = {},
         solargraph = {},
         sorbet = {},
-        lua_ls = {}
+        lua_ls = {},
+        -- shellcheck = {},
       }
 
       mason_lspconfig.setup {
@@ -69,6 +71,16 @@ return {
             filetypes = (servers[server_name] or {}).filetypes,
           }
         end
+      }
+
+      require'lspconfig'.lua_ls.setup {
+          settings = {
+              Lua = {
+                  diagnostics = {
+                      globals = { 'vim' }
+                  }
+              }
+          }
       }
     end
   },
@@ -164,55 +176,55 @@ return {
       smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>' ]]
     end
   },
-  {
-    "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
-    cmd = "Trouble",
-    keys = {
-      {
-        "<leader>xx",
-        "<cmd>Trouble diagnostics toggle<cr>",
-        desc = "Diagnostics (Trouble)",
-      },
-      {
-        "<leader>xX",
-        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-        desc = "Buffer Diagnostics (Trouble)",
-      },
-      {
-        "<leader>cs",
-        "<cmd>Trouble symbols toggle focus=false<cr>",
-        desc = "Symbols (Trouble)",
-      },
-      {
-        "<leader>cl",
-        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-        desc = "LSP Definitions / references / ... (Trouble)",
-      },
-      {
-        "<leader>xL",
-        "<cmd>Trouble loclist toggle<cr>",
-        desc = "Location List (Trouble)",
-      },
-      {
-        "<leader>xQ",
-        "<cmd>Trouble qflist toggle<cr>",
-        desc = "Quickfix List (Trouble)",
-      },
-    },
-
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      "folke/lsp-colors.nvim",
-    },
-    config = function ()
-      require("trouble").setup({
-        auto_close = true, -- auto close when there are no items
-        auto_open = true, -- auto open when there are items
-      })
-
-    end
-  },
+  -- {
+  --   "folke/trouble.nvim",
+  --   opts = {}, -- for default options, refer to the configuration section for custom setup.
+  --   cmd = "Trouble",
+  --   keys = {
+  --     {
+  --       "<leader>xx",
+  --       "<cmd>Trouble diagnostics toggle<cr>",
+  --       desc = "Diagnostics (Trouble)",
+  --     },
+  --     {
+  --       "<leader>xX",
+  --       "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+  --       desc = "Buffer Diagnostics (Trouble)",
+  --     },
+  --     {
+  --       "<leader>cs",
+  --       "<cmd>Trouble symbols toggle focus=false<cr>",
+  --       desc = "Symbols (Trouble)",
+  --     },
+  --     {
+  --       "<leader>cl",
+  --       "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+  --       desc = "LSP Definitions / references / ... (Trouble)",
+  --     },
+  --     {
+  --       "<leader>xL",
+  --       "<cmd>Trouble loclist toggle<cr>",
+  --       desc = "Location List (Trouble)",
+  --     },
+  --     {
+  --       "<leader>xQ",
+  --       "<cmd>Trouble qflist toggle<cr>",
+  --       desc = "Quickfix List (Trouble)",
+  --     },
+  --   },
+  --
+  --   dependencies = {
+  --     "nvim-tree/nvim-web-devicons",
+  --     "folke/lsp-colors.nvim",
+  --   },
+  --   config = function ()
+  --     require("trouble").setup({
+  --       auto_close = true, -- auto close when there are no items
+  --       auto_open = true, -- auto open when there are items
+  --     })
+  --
+  --   end
+  -- },
   {
     "VonHeikemen/lsp-zero.nvim",
     branch="v3.x",
@@ -259,12 +271,11 @@ return {
         {nargs = "?", complete = function() return {"all"} end})
       end
 
-
-      vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false
-      }
-      )
+      --[[ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          virtual_text = true
+        }
+      ) ]]
 
       require('lspconfig').lua_ls.setup {
         settings = {
@@ -308,7 +319,7 @@ return {
       cmp.setup({
         mapping = cmp.mapping.preset.insert({
           -- Navigate between snippet placeholder
-          ['<C-f>'] = cmp_action.luasnip_jump_forward(),
+          -- ['<C-f>'] = cmp_action.luasnip_jump_forward(),
           ['<C-b>'] = cmp_action.luasnip_jump_backward(),
         }),
         formatting = {
@@ -337,8 +348,14 @@ return {
       "neovim/nvim-lspconfig",
       "ray-x/lsp_signature.nvim",
       "onsails/lspkind.nvim"
-      -- "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
     },
+  },
+  {
+      "rachartier/tiny-inline-diagnostic.nvim",
+      event = "LspAttach", -- Or `VeryLazy`
+      priority = 1000, -- needs to be loaded in first
+      config = function()
+          require('tiny-inline-diagnostic').setup()
+      end
   }
-
 }

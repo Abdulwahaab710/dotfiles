@@ -13,6 +13,10 @@ if vim.fn.filereadable('config/routes.rb') == 1 then -- This looks like a Rails 
         type = 'job',
         alternate = 'test/jobs/{}_job_test.rb',
       },
+      ['app/services/*.rb'] = {
+        type = 'service',
+        alternate = 'test/services/{}_test.rb',
+      },
       ['app/helpers/*_helper.rb'] = {
         type = 'helper',
         alternate = 'app/controllers/{}_controller.rb',

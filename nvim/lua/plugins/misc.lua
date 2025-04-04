@@ -14,29 +14,29 @@ return {
       -- " }}}
 
       -- " misc --------------------------------------------{{{
-        {
-          "kylechui/nvim-surround",
-          version = "*", -- Use for stability; omit to use `main` branch for the latest features
-          event = "VeryLazy",
-          config = function()
-            require("nvim-surround").setup({
-              -- Configuration here, or leave empty to use defaults
-              keymaps = {
-                insert = "<C-g>s",
-                insert_line = "<C-g>S",
-                normal = "ys",
-                normal_cur = "yss",
-                normal_line = "yS",
-                normal_cur_line = "ySS",
-                visual = "S",
-                visual_line = "gS",
-                delete = "ds",
-                change = "cs",
-                change_line = "cS",
-              }
-            })
-          end
-        },
+        -- {
+        --   "kylechui/nvim-surround",
+        --   version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        --   event = "VeryLazy",
+        --   config = function()
+        --     require("nvim-surround").setup({
+        --       -- Configuration here, or leave empty to use defaults
+        --       keymaps = {
+        --         insert = "<C-g>s",
+        --         insert_line = "<C-g>S",
+        --         normal = "ys",
+        --         normal_cur = "yss",
+        --         normal_line = "yS",
+        --         normal_cur_line = "ySS",
+        --         visual = "S",
+        --         visual_line = "gS",
+        --         delete = "ds",
+        --         change = "cs",
+        --         change_line = "cS",
+        --       }
+        --     })
+        --   end
+        -- },
         { 'windwp/nvim-autopairs' },
         {
           'numToStr/Comment.nvim',
@@ -58,27 +58,26 @@ return {
             'junegunn/fzf.vim'
           },
         },
+        -- Optional for icons.
         { "nvim-tree/nvim-web-devicons" },
-        -- mandatory
-        { "junegunn/fzf",               build = ":call fzf#install()" },
+        -- Optional for 'fzf' command.
+        {
+          "junegunn/fzf",
+          build = function()
+            vim.fn["fzf#install"]()
+          end,
+        },
+
         {
           "linrongbin16/fzfx.nvim",
-          dependencies = { "junegunn/fzf" },
+          -- Optional to avoid break changes between major versions.
+          version = "v7.*",
+          dependencies = { "nvim-tree/nvim-web-devicons", 'junegunn/fzf' },
           config = function()
             require("fzfx").setup()
-          end
+          end,
         },
         { 'nvim-lua/popup.nvim' },
-        { "nvim-telescope/telescope.nvim" },
-        { 'nvim-telescope/telescope-fzy-native.nvim' },
-        { 'nvim-telescope/telescope-file-browser.nvim' },
-        {
-          "nvim-telescope/telescope-frecency.nvim",
-          config = function()
-            require "telescope".load_extension("frecency")
-          end,
-          dependencies = { "kkharji/sqlite.lua" },
-        },
         { 'liuchengxu/vista.vim' },
         { 'xolox/vim-misc' },
         { 'mbbill/undotree' },

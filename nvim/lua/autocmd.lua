@@ -31,7 +31,16 @@ vim.api.nvim_create_autocmd(
 vim.api.nvim_create_autocmd(
   { "BufNewFile", "BufRead" },
   {
-    pattern = { vim.fn.expand("~/vimwiki/diary/diary.md") },
+    pattern = { vimwiki_pattern },
+    command = "setlocal wrap",
+    group = vimwiki_group
+  }
+)
+
+vim.api.nvim_create_autocmd(
+  { "BufNewFile", "BufRead" },
+  {
+    pattern = { vim.fn.expand("$HOME/src/github.com/abdulwahaab710/vimwiki/diary/diary.md") },
     command = "VimwikiDiaryGenerateLinks",
     group = vimwiki_group
   }

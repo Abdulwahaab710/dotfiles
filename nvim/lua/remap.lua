@@ -1,17 +1,5 @@
 vim.api.nvim_set_keymap('n', 'gf', ':lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
-if vim.fn.getcwd() == os.getenv("HOME") then
-  -- redefine fzf call: vim.cmd( "let $FZF_DEFAULT_COMMAND ...
-  vim.cmd("command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, {'options': []}, <bang>0)")
-
-  vim.keymap.set("n", "<c-p>", ":FzfFiles<CR>", {});
-else
-  -- redefine find_files: function custom_find_files() ...
-  vim.keymap.set("n", "<c-p>", require('telescope.builtin').find_files, {});
-end
-vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers, {})
-
--- map \ to grep
-vim.keymap.set('n', '\\', require('telescope.builtin').live_grep, {})
+vim.g.mapleader = ";"
 vim.keymap.set("n", "<C-f>",
   "<cmd>silent !CALL_FROM_NVIM=1 /Users/abdulwahaabahmed/src/github.com/abdulwahaab710/dotfiles/bin/.local/tmux-sessionizer<CR>")
 
@@ -60,6 +48,8 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "vimwiki.markdown" },
   group = group
 })
+
+vim.keymap.set("n", "<Space>", "za")
 
 --[[
 
