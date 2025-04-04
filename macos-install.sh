@@ -94,6 +94,10 @@ link_dotfiles() {
   ln -s "$PWD/nvim" "$HOME/.config/nvim"
   print_success "nvim files linked successfully!"
 
+  print_info "Linking files for vifm"
+  ln -fs "$PWD/vifm" "$HOME/.config/vifm"
+  print_success "vifm files linked successfully!"
+
   print_info "Linking files for git"
   ln -fs "$PWD/.gitconfig" "$HOME/.gitconfig"
   ln -fs "$PWD/.gitignore" "$HOME/.gitignore"

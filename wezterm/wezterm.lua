@@ -7,6 +7,7 @@ local config = wezterm.config_builder()
 config.color_scheme = 'Catppuccin Mocha'
 
 config.font = wezterm.font 'PragmataProMonoLiga Nerd Font'
+
 config.font_size = 15
 
 config.window_decorations = "RESIZE"

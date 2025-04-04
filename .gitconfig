@@ -1,0 +1,44 @@
+[user]
+	name = Abdulwahaab Ahmed
+	email = abdulwahaab.ahmed@shopify.com
+; [gpg]
+; 	program = /opt/homebrew/bin/krgpg
+; [commit]
+; 	gpgSign = true
+; [tag]
+; 	forceSignAnnotated = true
+[alias]
+	commit = commit -S
+[core]
+	excludesfile = /Users/abdulwahaabahmed/.gitignore_global
+[merge]
+	tool = fugitive
+[mergetool "nvim"]
+	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+[include]
+	path = /Users/abdulwahaabahmed/.config/dev/gitconfig
+	path = /Users/abdulwahaab/.config/dev/gitconfig
+[mergetool "fugitive"]
+	cmd = nvim -d -c \"wincmd l\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
+[safe]
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaabahmed/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
+	directory = /Users/abdulwahaab/.shopify-build-tmp/repository.git
