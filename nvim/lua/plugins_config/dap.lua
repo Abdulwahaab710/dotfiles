@@ -73,3 +73,27 @@ end
 vim.keymap.set("v", "<leader>k", dapui.eval)
 vim.keymap.set("n", "<F5>", start_debugging)
 vim.keymap.set("n", "<F9>", dap.toggle_breakpoint)
+
+require("dap").adapters["pwa-node"] = {
+  type = 'server',
+  host = '::1',
+  port = '${port}',
+  executable = {
+    command = 'js-debug-adapter',
+    args = {
+      '${port}',
+    },
+  },
+}
+
+require("dap").configurations.javascript = {
+  {
+    type = "pwa-node",
+    request = "launch",
+    name = "Launch file",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+  },
+}
+
+require("dap").configurations.typescript = require("dap").configurations.javascript

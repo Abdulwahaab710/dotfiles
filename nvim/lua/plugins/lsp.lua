@@ -24,12 +24,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 return {
   {
-    'j-hui/fidget.nvim',
-    config = function()
-      require('fidget').setup()
-    end
-  },
-  {
     "williamboman/mason.nvim",
     build = ":MasonUpdate", -- :MasonUpdate updates registry contents
     dependencies = {
@@ -95,6 +89,9 @@ return {
       local cmp = require('cmp')
       cmp.setup({
         sources = {
+          per_filetype = {
+            codecompanion = { "codecompanion" },
+          },
           { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'path' },
