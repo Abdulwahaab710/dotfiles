@@ -1,4 +1,4 @@
-require("catppuccin").setup({
+--[[ require("catppuccin").setup({
   flavour = "mocha", -- latte, frappe, macchiato, mocha
   background = {     -- :h background
     light = "latte",
@@ -72,7 +72,36 @@ require("catppuccin").setup({
 })
 
 -- setup must be called before loading
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "catppuccin" ]]
+
+-- Default options:
+require('kanagawa').setup({
+    compile = false,             -- enable compiling the colorscheme
+    undercurl = true,            -- enable undercurls
+    commentStyle = { italic = true },
+    functionStyle = {},
+    keywordStyle = { italic = true},
+    statementStyle = { bold = true },
+    typeStyle = {},
+    transparent = true,         -- do not set background color
+    dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+    terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+    colors = {                   -- add/modify theme and palette colors
+        palette = {},
+        theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+    },
+    overrides = function(colors) -- add/modify highlights
+        return {}
+    end,
+    theme = "dragon",              -- Load "wave" theme when 'background' option is not set
+    background = {               -- map the value of 'background' option to a theme
+        dark = "dragon",           -- try "dragon" !
+        light = "lotus"
+    },
+})
+
+-- setup must be called before loading
+vim.cmd.colorscheme "kanagawa"
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
@@ -81,3 +110,26 @@ for type, icon in pairs(signs) do
 end
 
 vim.api.nvim_set_hl(0, "LspSignatureActiveParameter", {ctermbg=0, fg="#fab388", bg="#224CBD"})
+
+vim.api.nvim_create_user_command("LightTheme",
+  function()
+    require("kanagawa").setup({
+      transparent = false,
+    })
+    vim.cmd("colorscheme kanagawa")
+    vim.cmd("set background=light")
+  end,
+  {}
+)
+
+vim.api.nvim_create_user_command("DarkTheme",
+  function()
+    require("kanagawa").setup({
+      transparent = true,
+    })
+    vim.cmd("colorscheme kanagawa")
+    vim.cmd("set background=dark")
+  end,
+  {}
+)
+

@@ -51,15 +51,11 @@ return {
   },
   {
     'tools-life/taskwiki',
+    enable = false,
     build = 'pip3 install --upgrade packaging --break-system-packages && pip3 install --upgrade --break-system-packages -r requirements.txt',
     dependencies = {
       'vimwiki/vimwiki',
     },
-  },
-  {
-    'vimwiki/vimwiki',
-    config = function()
-    end,
   },
   { 'ekickx/clipboard-image.nvim', branch = 'main' },
   { "ellisonleao/glow.nvim" },

@@ -31,7 +31,7 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
 # You can set 0 to disable the padding feature
-accordion-padding = 30
+accordion-padding = 300
 
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center'] # mouse lazily follows focused monitor (default in i3)
 # or
@@ -45,6 +45,11 @@ default-root-container-layout = 'tiles'
 #               tall monitor (anything higher than wide) gets vertical orientation
 default-root-container-orientation = 'auto'
 
+# You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
+# Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
+# Also see: https://nikitabobko.github.io/AeroSpace/goodness#disable-hide-app
+automatically-unhide-macos-hidden-apps = false
+
 # Possible values: (qwerty|dvorak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 key-mapping.preset = 'qwerty'
@@ -56,13 +61,14 @@ key-mapping.preset = 'qwerty'
 #                 In this example, 24 is a default value when there is no match.
 #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
 #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+
 [gaps]
-inner.horizontal = 4
+inner.horizontal = 0
 inner.vertical =   4
-outer.left =       2
+outer.left =       0
 outer.bottom =     0
-outer.top =        [{ monitor."LG HDR WQHD" = 42}, 0]
-outer.right =      2
+# outer.top =        [{ monitor."LG HDR WQHD" = 42}, 0]
+outer.right =      0
 
 # Each monitor has 3 workspaces
 # [workspace-to-monitor-force-assignment]
@@ -118,6 +124,11 @@ alt-l = 'focus right'
 
 alt-f = 'fullscreen'
 alt-shift-f = 'macos-native-fullscreen'
+
+alt-shift-left = 'join-with left'
+alt-shift-down = 'join-with down'
+alt-shift-up = 'join-with up'
+alt-shift-right = 'join-with right'
 
 # Cycle between workspaces
 alt-left = 'workspace prev'
@@ -176,10 +187,10 @@ alt-tab = 'workspace-back-and-forth'
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
+cmd-enter = 'exec-and-forget wezterm start --cwd $HOME'
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
-
-cmd-enter = 'exec-and-forget wezterm start --cwd $HOME'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -205,12 +216,24 @@ run = 'layout floating'
 check-further-callbacks = true
 
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = 'move-node-to-workspace 2'
+if.app-id = 'com.google.Chrome'
+if.window-title-regex-substring = 'Picture-in-picture'
+run = 'layout floating'
+check-further-callbacks = true
 
 [[on-window-detected]]
-if.app-id = 'com.google.Chrome'
+if.app-id = 'org.mozilla.firefox'
+if.window-title-regex-substring = 'Picture-in-Picture'
+run = 'layout floating'
+check-further-callbacks = true
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'finder'
+run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'net.kovidgoyal.kitty'
@@ -221,9 +244,27 @@ if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
 if.app-id = 'md.obsidian'
 run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
 if.app-id = 'com.install4j.7318-9294-3757-1226.70' # Burp Suite Professional
 run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'app.tuple.app'
+run = 'move-node-to-workspace 5'
+
+[workspace-to-monitor-force-assignment]
+1 = ['DELL', 'LG HDR 4K', 'LG Ultra HD', 'built-in']
+2 = 'built-in'
+3 = 'built-in'
+4 = ['DELL', 'LG HDR 4K', 'LG Ultra HD', 'built-in']

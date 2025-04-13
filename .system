@@ -33,3 +33,7 @@ defaults write com.apple.screencapture location $HOME/Documents/Screenshot
 
 
 defaults write /Library/Preferences/com.apple.airport.bt.plist bluetoothCoexMgmt Hybrid
+
+# You can move windows by holding ctrl+cmd and dragging any part of the window (not necessarily the window title)
+# Source: https://www.reddit.com/r/MacOS/comments/k6hiwk/keyboard_modifier_to_simplify_click_drag_of/
+defaults write -g NSWindowShouldDragOnGesture -bool true

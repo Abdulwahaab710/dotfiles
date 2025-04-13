@@ -1,5 +1,4 @@
 format = """
-[](bg:#1e1e2e fg:#cba6f7)\
 $os\
 $username\
 [](bg:#45475a fg:#CBA6F7)\
@@ -86,6 +85,8 @@ format = '[ $symbol ($version) ]($style)'
 symbol = ""
 style = "bg:#313244 fg:#cba6f7"
 format = '[ $symbol $branch ]($style)'
+truncation_length = 20
+truncation_symbol = '…'
 
 [git_status]
 style = "bg:#313244 fg:#cba6f7"

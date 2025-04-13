@@ -1,7 +1,6 @@
 require 'plugins_config.clipboard-image'
 require 'plugins_config.gitsigns'
 require 'plugins_config.status-line'
-require 'plugins_config.telescope'
 require 'plugins_config.todo-comments'
 require 'plugins_config.treesitter'
 require 'plugins_config.true-zen'

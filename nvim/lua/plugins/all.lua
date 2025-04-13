@@ -34,6 +34,7 @@ return {
   { 'andymass/vim-matchup' },
   { 'Pocco81/TrueZen.nvim',            branch = 'main' },
   { 'catppuccin/nvim' },
+  { "rebelot/kanagawa.nvim" },
   { 'nyoom-engineering/oxocarbon.nvim' },
 
   --[[ {

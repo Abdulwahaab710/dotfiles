@@ -57,8 +57,6 @@ alias d=docker
 alias rtest='bundle exec rspec'
 alias gpu=push_upstram_origin
 alias mk=make
-alias kali='docker run -it --rm kalilinux/kali-linux-docker'
-alias ubuntu='docker run -it --rm dockerfile/ubuntu'
 alias rsa='railgun status -a -H -o name | xargs -n1 railgun stop'
 alias ll='eza -bghHliSa'
 alias py='python'
@@ -87,9 +85,8 @@ fi
 
 export GPG_TTY=$(tty)
 export PYENV_ROOT="$HOME/.pyenv"
-export GOPATH=$HOME/src/github.com
-
-export PATH=$GOPATH/bin:$PATH
+# export GOPATH=$HOME/src/github.com
+# export PATH=$GOPATH/bin:$PATH
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH=$PATH:$HOME/swap
 export PATH="$HOME/src/github.com/abdulwahaab710/dotfiles/bin:$PATH"
@@ -310,3 +307,11 @@ function switch_nvim_config() {
 }
 
 # bindkey -s ^a "nvims\n"
+
+[[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
+
+# cloudplatform: add Shopify clusters to your local kubernetes config
+export KUBECONFIG=${KUBECONFIG:+$KUBECONFIG:}/Users/abdulwahaab/.kube/config:/Users/abdulwahaab/.kube/config.shopify.cloudplatform
+
+# Created by `pipx` on 2025-02-25 21:57:44
+export PATH="$PATH:/Users/abdulwahaab/.local/bin"
