@@ -51,7 +51,7 @@ return {
         { 'bogado/file-line' },
         {
           'junegunn/fzf',
-          dir = '~/.fzf',
+          -- dir = '~/.fzf',
           -- build = './install --all',
           build = 'fzf#install()',
           dependencies = {

@@ -310,8 +310,32 @@ function switch_nvim_config() {
 
 [[ -f /opt/dev/sh/chruby/chruby.sh ]] && { type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; } }
 
-# cloudplatform: add Shopify clusters to your local kubernetes config
-export KUBECONFIG=${KUBECONFIG:+$KUBECONFIG:}/Users/abdulwahaab/.kube/config:/Users/abdulwahaab/.kube/config.shopify.cloudplatform
-
 # Created by `pipx` on 2025-02-25 21:57:44
-export PATH="$PATH:/Users/abdulwahaab/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
+
+yt() {
+    if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
+        echo "Usage: yt [-t | --timestamps] youtube-link"
+        echo "Use the '-t' flag to get the transcript with timestamps."
+        return 1
+    fi
+
+    transcript_flag="--transcript"
+    if [ "$1" = "-t" ] || [ "$1" = "--timestamps" ]; then
+        transcript_flag="--transcript-with-timestamps"
+        shift
+    fi
+    local video_link="$1"
+    fabric-ai -y "$video_link" $transcript_flag
+}
+
+yt-summary() {
+  if [ "$#" -eq 0 ] || [ "$#" -gt 2 ]; then
+      echo "Usage: yt-summary youtube-link"
+      return 1
+  fi
+
+  local video_link="$1"
+
+  fabric-ai -y $video_link --stream --pattern youtube_summary
+}

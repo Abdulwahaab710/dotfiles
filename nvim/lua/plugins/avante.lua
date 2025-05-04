@@ -99,6 +99,26 @@
 
 -- local openai = require("avante.providers.openai")
 
+local openai_key_path = vim.fn.expand("openai_key")
+local provider
+local vendors = {}
+
+if vim.fn.executable(openai_key_path) == 1 then
+  provider = "shopify-ai"
+  vendors["shopify-ai"] = {
+    __inherited_from = 'openai',
+    endpoint = "https://proxy.shopify.ai/v1/",
+    model = "anthropic:claude-3-5-sonnet",
+    api_key_name = "cmd:openai_key cat",
+  }
+else
+  provider = "copilot-sonnet"
+  vendors["copilot-sonnet"] = {
+    __inherited_from = 'copilot',
+    model = "claude-3.7-sonnet",
+  }
+end
+
 return {
   {
     "yetone/avante.nvim",
@@ -108,7 +128,7 @@ return {
 
       -- add any opts here
       -- for example
-      provider = "shopify-ai",
+      provider = provider,
       -- openai = {
       --   endpoint = "https://api.openai.com/v1",
       --   model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -118,14 +138,7 @@ return {
       --   --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
       -- },
 
-      vendors = {
-        ["shopify-ai"] = {
-          __inherited_from = 'openai',
-          endpoint = "https://proxy.shopify.ai/v1/",
-          model = "anthropic:claude-3-5-sonnet",
-          api_key_name = "cmd:openai_key cat",
-        },
-      }
+      vendors = vendors,
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
