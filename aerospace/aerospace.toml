@@ -11,22 +11,35 @@ after-login-command = []
 # so it won't be run twice on AeroSpace restart
 # after-startup-command = ['exec-and-forget sketchybar']
 after-startup-command = [
-  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0'
-  # 'exec-and-forget sketchybar'
+  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0',
+  'exec-and-forget sketchybar'
 ]
 
+exec-on-workspace-change = [
+  # '/bin/bash',
+  # '-c',
+  # 'sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  '/bin/bash',
+  '-c',
+  '$HOME/.config/aerospace/scripts/on-ws-change.sh'
+]
 
 # Notify Sketchybar about workspace change
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
-]
+# exec-on-workspace-change = [
+#   '/bin/bash',
+#   '-c',
+#   'sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+# ]
+
 
 # Start AeroSpace at login
 start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
-enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+# enable-normalization-flatten-containers = true
+# enable-normalization-opposite-orientation-for-nested-containers = true
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
@@ -35,7 +48,12 @@ accordion-padding = 300
 
 # on-focused-monitor-changed = ['move-mouse monitor-lazy-center'] # mouse lazily follows focused monitor (default in i3)
 # or
-# on-focus-changed = ['move-mouse window-lazy-center'] # Mouse lazily follows any focus (window or workspace)
+# Mouse lazily follows any focus (window or workspace)
+on-focus-changed = [
+  'move-mouse window-lazy-center',
+  'exec-and-forget /bin/bash -c /opt/homebrew/bin/sketchybar --trigger front_app_switched',
+  'exec-and-forget sketchybar --trigger update_windows'
+]
 
 # Possible values: tiles|accordion
 default-root-container-layout = 'tiles'
@@ -67,8 +85,8 @@ inner.horizontal = 0
 inner.vertical =   4
 outer.left =       0
 outer.bottom =     0
-# outer.top =        [{ monitor."LG HDR WQHD" = 42}, 0]
-outer.right =      0
+outer.top =        [{ monitor."LG HDR WQHD" = 42}, 8]
+outer.right =      2
 
 # Each monitor has 3 workspaces
 # [workspace-to-monitor-force-assignment]
@@ -179,8 +197,13 @@ alt-shift-9 = 'move-node-to-workspace 9'
 # alt-d = 'exec-and-forget wezterm start -- nvim -c VimwikiMakeDiaryNote'
 alt-d = 'exec-and-forget $HOME/src/github.com/abdulwahaab710/dotfiles/bin/scratchpad'
 
-cmd-h = [] # Disable "hide application"
+cmd-h = 'split horizontal'
+alt-v = 'split vertical'
+# cmd-h = [] # Disable "hide application"
+cmd-m = [] # Disable "minimize"
 cmd-alt-h = [] # Disable "hide others"
+
+alt-m = 'exec-and-forget sketchybar --trigger aerospace_switch'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -190,12 +213,21 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 cmd-enter = 'exec-and-forget wezterm start --cwd $HOME'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-semicolon = 'mode service'
+alt-semicolon = [
+  'mode service',
+  'exec-and-forget sketchybar --trigger send_message MESSAGE="Aerospace in Service Mode" HOLD="true"',
+]
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
+esc = [
+  'reload-config',
+  'mode main',
+  'exec-and-forget sketchybar --reload',
+  'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=4.0',
+  'exec-and-forget sleep 0.5 && sketchybar --trigger send_message MESSAGE="Aerospace Reloaded"',
+]
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
@@ -228,7 +260,20 @@ run = 'layout floating'
 check-further-callbacks = true
 
 [[on-window-detected]]
-if.app-id = 'org.mozilla.firefox'
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Finder'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 1'
 
 [[on-window-detected]]
@@ -243,6 +288,7 @@ run = 'move-node-to-workspace 1'
 if.app-id = 'com.github.wez.wezterm'
 run = 'move-node-to-workspace 1'
 
+# Note taking workspace
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
 run = 'move-node-to-workspace 2'
@@ -256,12 +302,24 @@ if.app-id = 'md.obsidian'
 run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
+if.app-id = 'com.agiletortoise.Drafts-OSX'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
 if.app-id = 'com.install4j.7318-9294-3757-1226.70' # Burp Suite Professional
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 if.app-id = 'app.tuple.app'
 run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'com.chromatix.app'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.electron.goose'
+run = 'move-node-to-workspace 2'
 
 [workspace-to-monitor-force-assignment]
 1 = ['DELL', 'LG HDR 4K', 'LG Ultra HD', 'built-in']
