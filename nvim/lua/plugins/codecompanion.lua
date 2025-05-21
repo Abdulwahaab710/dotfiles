@@ -5,6 +5,16 @@ return {
   dependencies = {
     "j-hui/fidget.nvim",
     "banjo/contextfiles.nvim",
+    {
+      "OXY2DEV/markview.nvim",
+      lazy = false,
+      opts = {
+        preview = {
+          filetypes = { "markdown", "codecompanion" },
+          ignore_buftypes = {},
+        },
+      },
+    },
   },
   event = "BufEnter",
   cond = function()

@@ -25,8 +25,22 @@ end
 
 
 local setup = {
+  extensions = {
+    contextfiles = {
+      opts = {},
+    },
+    mcphub = {
+      callback = "mcphub.extensions.codecompanion",
+      opts = {
+        show_result_in_chat = true,  -- Show mcp tool results in chat
+        make_vars = true,            -- Convert resources to #variables
+        make_slash_commands = true,  -- Add prompts as /slash commands
+      }
+    }
+  },
   prompt_library = {
-    ["Cursor Rules"] = {
+
+    --[[ ["Cursor Rules"] = {
       strategy = "chat",
       description = "Chat with cursor rules",
       opts = {
@@ -38,7 +52,7 @@ local setup = {
           role = "system",
           --[[ opts = {
             contains_code = true,
-          }, ]]
+          }, ]\]
           content = function(context)
             local ctx = require("contextfiles.extensions.codecompanion")
 
@@ -55,6 +69,33 @@ local setup = {
           },
           content = ""
         }
+      },
+    } ]]
+    ["Cursor Rules"] = {
+      strategy = "chat",
+      description = "Chat with context files",
+      opts = {
+        -- ...
+      },
+      prompts = {
+        {
+          role = "user",
+          opts = {
+            contains_code = true,
+          },
+          content = function(context)
+            local ctx = require("codecompanion").extensions.contextfiles
+
+            local ctx_opts = {
+              -- ...
+            }
+            local format_opts = {
+              -- ...
+            }
+
+            return ctx.get(context.filename, ctx_opts, format_opts)
+          end,
+        },
       },
     }
   },

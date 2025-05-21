@@ -56,17 +56,6 @@ return {
         ensure_installed = vim.tbl_keys(servers),
       }
 
-      mason_lspconfig.setup_handlers {
-        function(server_name)
-          require("lspconfig")[server_name].setup {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
-          }
-        end
-      }
-
       require'lspconfig'.lua_ls.setup {
           settings = {
               Lua = {
@@ -134,8 +123,8 @@ return {
 
   },
   --  { 'hrsh7th/cmp-cmdline' },
-  { 'github/copilot.vim' },
-  {
+  -- { 'github/copilot.vim' },
+  --[[ {
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
     config = function()
@@ -146,7 +135,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim"
     }
-  },
+  }, ]]
   {
     "L3MON4D3/LuaSnip",
     -- follow latest release.
@@ -267,12 +256,6 @@ return {
         end,
         {nargs = "?", complete = function() return {"all"} end})
       end
-
-      --[[ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-        vim.lsp.diagnostic.on_publish_diagnostics, {
-          virtual_text = true
-        }
-      ) ]]
 
       require('lspconfig').lua_ls.setup {
         settings = {

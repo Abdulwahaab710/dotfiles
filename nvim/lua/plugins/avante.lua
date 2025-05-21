@@ -124,7 +124,7 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     version = false, -- Never set this value to "*"! Never!
-    opts = {
+    --[[ opts = {
 
       -- add any opts here
       -- for example
@@ -139,10 +139,33 @@ return {
       -- },
 
       vendors = vendors,
-    },
+    }, ]]
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    config = function()
+      require("avante").setup({
+          -- Dynamically generate system prompt including available MCP tools
+          provider = provider,
+          vendors = vendors,
+          system_prompt = function()
+              local hub = require("mcphub").get_hub_instance()
+              if hub and hub:is_ready() then
+                  return hub:get_active_servers_prompt() -- Generates prompt listing active tools
+              else
+                  return "Default system prompt."
+              end
+          end,
+          behaviour = {
+            enable_token_counting = false,
+          },
+
+          -- Define MCP interaction as a custom tool for Avante agents
+          custom_tools = {
+              require("mcphub.extensions.avante").mcp_tool()
+          }
+      })
+    end,
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
