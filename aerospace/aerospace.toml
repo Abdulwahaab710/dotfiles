@@ -85,7 +85,7 @@ inner.horizontal = 0
 inner.vertical =   4
 outer.left =       0
 outer.bottom =     0
-outer.top =        [{ monitor."LG HDR WQHD" = 42}, 8]
+outer.top =        [{ monitor."LG HDR WQHD" = 42}, { monitor."DELL P2723QE" = 40}, 0]
 outer.right =      2
 
 # Each monitor has 3 workspaces
@@ -228,16 +228,15 @@ esc = [
   'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=4.0',
   'exec-and-forget sleep 0.5 && sketchybar --trigger send_message MESSAGE="Aerospace Reloaded"',
 ]
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
+r = ['flatten-workspace-tree', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
-f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
-backspace = ['close-all-windows-but-current', 'mode main']
+f = ['layout floating tiling', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change'] # Toggle between floating and tiling layout
+backspace = ['close-all-windows-but-current', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change']
 
-alt-shift-h = ['join-with left', 'mode main']
-alt-shift-j = ['join-with down', 'mode main']
-alt-shift-k = ['join-with up', 'mode main']
-alt-shift-l = ['join-with right', 'mode main']
-
+alt-shift-h = ['join-with left', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change']
+alt-shift-j = ['join-with down', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change']
+alt-shift-k = ['join-with up', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change']
+alt-shift-l = ['join-with right', 'mode main', 'exec-and-forget sketchybar --trigger aerospace_mode_change']
 
 # Change Chrome PiP layout to floating
 # From: https://github.com/nikitabobko/AeroSpace/issues/246#issuecomment-2283321474
@@ -262,6 +261,10 @@ check-further-callbacks = true
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
 if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.electron.goose'
 run = ['layout floating']
 
 [[on-window-detected]]
