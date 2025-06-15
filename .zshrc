@@ -1,8 +1,4 @@
-if [ -f $HOME/xterm-256color-italic.ti ]; then
-  export TERM="xterm-256color-italic"
-else
-  export TERM="xterm-256color"
-fi
+export TERM="xterm-256color"
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -84,6 +80,7 @@ if command -v fd  > /dev/null; then
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 fi
 
+export NIX_CONF_DIR="$HOME/.config/nix"
 export GPG_TTY=$(tty)
 export PYENV_ROOT="$HOME/.pyenv"
 # export GOPATH=$HOME/src/github.com
@@ -279,7 +276,11 @@ type chruby >/dev/null 2>&1 && chruby; chruby 3
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
-if [ -e /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/abdulwahaabahmed/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+ # Nix
+ if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+ fi
+ # End Nix
 ### End of Zinits installer chunk
 
 [[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
