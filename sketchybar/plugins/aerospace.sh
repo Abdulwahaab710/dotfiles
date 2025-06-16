@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-# A color config for hover and highlight effects
-# Example
-# export BAR_COLOR=0x40000000
-# export ITEM_BG_COLOR=0xff353c3f
-# export ACCENT_COLOR=0xffffffff
-# export BACKGROUND=0xff101314
+# make sure it's executable with:
+# chmod +x ~/.config/sketchybar/plugins/aerospace.sh
 source "$CONFIG_DIR/colors.sh"
 
 FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused --format "%{workspace}")
@@ -30,7 +26,7 @@ if [ "$SENDER" == "mouse.exited" ]; then
     background.drawing=off \
     label.color="$ACCENT_COLOR" \
     icon.color="$ACCENT_COLOR" \
-    background.color="$BAR_COLOR"
+    background.color="$TRANSPARENT"
   exit 0
 fi
 
@@ -92,6 +88,6 @@ else
       background.drawing=off \
       label.color="$ACCENT_COLOR" \
       icon.color="$ACCENT_COLOR" \
-      background.color="$BAR_COLOR"
+      background.color="$TRANSPARENT"
   fi
 fi

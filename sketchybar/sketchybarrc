@@ -1,70 +1,26 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
-PLUGIN_DIR="$HOME/.config/sketchybar/plugins"
-ITEM_DIR="$HOME/.config/sketchybar/items"
+export PLUGIN_DIR="$CONFIG_DIR/plugins"
+export ITEM_DIR="$CONFIG_DIR/items"
 
-# run helper program
-# DYNAMIC_ISLAND_DIR="$HOME/.config/sketchybar/plugins/Dynamic-Island-Sketchybar"
+source "$CONFIG_DIR/colors.sh"
 
-# Define Dynamic island custom configs here
-# source "$DYNAMIC_ISLAND_DIR/config.sh" # Loads Dynamic-Island config
+source "$CONFIG_DIR/bar.sh"
+source "$CONFIG_DIR/defaults.sh"
 
-# run helper program
-# ISLANDHELPER=git.crissnb.islandhelper
-# killall islandhelper
-# cd $DYNAMIC_ISLAND_DIR/helper && make
-# $DYNAMIC_ISLAND_DIR/helper/islandhelper $ISLANDHELPER &
+source "$ITEM_DIR/spaces.sh"
+source "$ITEM_DIR/front_app.sh"
 
-source $HOME/.config/sketchybar/colors.sh
-source $HOME/.config/sketchybar/icons.sh
+# source "$ITEM_DIR/music.sh"
 
-export FONT="IBM Plex Mono"
-export NERD_FONT="JetBrainsMono Nerd Font"
-
-sketchybar --bar height=37        \
-                 blur_radius=100  \
-                 position=top     \
-                 padding_left=10  \
-                 padding_right=10 \
-                 color=0x15000000 \
-                 shadow=on
-
-sketchybar --default updates=when_shown                       \
-                     drawing=on                               \
-                     icon.font="$NERD_FONT:Regular:14.0"      \
-                     icon.color=0xffffffff                    \
-                     label.font="$FONT:Medium:14.0"            \
-                     label.color=0xffffffff                   \
-                     label.padding_left=4                     \
-                     label.padding_right=4                    \
-                     icon.padding_left=4                      \
-                     icon.padding_right=4
-
-sketchybar --add event aerospace_workspace_change
-
-for sid in $(aerospace list-workspaces --all); do
-    sketchybar --add item space.$sid left \
-        --subscribe space.$sid aerospace_workspace_change \
-        --set space.$sid \
-        background.color=0x44ffffff \
-        background.corner_radius=5 \
-        background.height=20 \
-        background.drawing=off \
-        label="$sid" \
-        click_script="aerospace workspace $sid" \
-        script="$CONFIG_DIR/plugins/aerospace.sh $sid"
-done
-
-source $ITEM_DIR/apple.sh
-source $ITEM_DIR/spaces.sh
-source $ITEM_DIR/window_title.sh
-source $ITEM_DIR/clock.sh
-source $ITEM_DIR/battery.sh
-source $ITEM_DIR/cpu.sh
-source $ITEM_DIR/wifi.sh
-# source "$DYNAMIC_ISLAND_DIR/item.sh" # Loads Dynamic-Island item
-
+source "$ITEM_DIR/calendar.sh"
+source "$ITEM_DIR/cron.sh"
+source "$ITEM_DIR/volume.sh"
+source "$ITEM_DIR/battery.sh"
+source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/caffeinate.sh"
+source "$ITEM_DIR/weather.sh"
+# source "$ITEM_DIR/wifi.sh"
 
 sketchybar --update
 
-echo "sketchybar configuration loaded.."
