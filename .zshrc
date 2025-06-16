@@ -47,6 +47,7 @@ autoload -Uz _zinit
 
 zinit light zsh-users/zsh-autosuggestions
 zinit light zdharma-continuum/fast-syntax-highlighting
+zinit load atuinsh/atuin
 # }}}}
 
 eval "$(starship init zsh)"
@@ -95,6 +96,7 @@ export PATH="$HOME/.config/zsh/fp:$PATH"
 export CHEATCOLORS=true
 export EDITOR=nvim
 export VISUAL=nvim
+export MANPAGER='nvim +Man!'
 export GIT_EDITOR="nvim"
 export LANG="en_US.UTF-8"
 export KUBECONFIG=$HOME/.kube/config
@@ -292,6 +294,23 @@ function nvims() {
     config=""
   fi
   NVIM_APPNAME=$config nvim $@
+}
+
+function config() {
+  # This function is used to open the configuration files for various applications in nvim.
+  # Usuage: config <app_name>
+  # Example: config nvim
+
+  dotfolder="$HOME/src/github.com/abdulwahaab710/dotfiles"
+
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: config <app_name>"
+    return 1
+  fi
+
+  app_name=$1
+
+  (cd "$dotfolder/$1" && nvim .)
 }
 
 function switch_nvim_config() {
