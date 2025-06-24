@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sketchybar --set $NAME \
+sketchybar --set "$NAME" \
   icon=" "\
   click_script=""
 
@@ -22,7 +22,7 @@ while IFS= read -r line; do
         current_event=$(echo "$line" | sed 's/^•[[:space:]]*//')
     elif [[ "$line" =~ [[:space:]]*(today|tomorrow)[[:space:]]+at[[:space:]]+[0-9]+:[0-9]+[[:space:]]*(AM|PM) ]]; then
         # This line contains time information - use the last seen event name
-        if [[ -n "$current_event" ]]; then
+        if [[ -n "$current_event" && ! "$current_event" =~ ^\[PLACEHOLDER\] ]]; then
             start_time=$(echo "$line" | grep -o '[0-9]*:[0-9]*[[:space:]]*[AP]M' | head -1 | sed 's/[[:space:]]//g')
             day_indicator=$(echo "$line" | grep -o 'today\|tomorrow')
 
@@ -81,7 +81,7 @@ while IFS= read -r line; do
 done <<< "$events"
 
 if [[ -n "$next_event" ]]; then
-    sketchybar --set $NAME \
+    sketchybar --set "$NAME" \
       label="$next_event" \
       background.drawing=on \
       icon.padding_left=10 \
@@ -90,7 +90,7 @@ if [[ -n "$next_event" ]]; then
       click_script=""
       # click_script="sketchybar --set $NAME label=\"\" background.drawing=off icon.padding_left=0 label.padding_right=0 icon=󰢠"
 else
-    sketchybar --set $NAME \
+    sketchybar --set "$NAME" \
       label="No upcoming meetings" \
       background.drawing=off \
       icon.padding_left=0 \
