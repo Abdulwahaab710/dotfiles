@@ -33,7 +33,7 @@ return {
       ensure_installed = {
         "rust-analyzer",
         "solargraph",
-        "sorbet",
+        -- "sorbet",
         "lua_ls",
         -- "shellcheck",
       }
@@ -47,7 +47,7 @@ return {
         ruby_lsp = {},
         rust_analyzer = {},
         solargraph = {},
-        sorbet = {},
+        -- sorbet = {},
         lua_ls = {},
         -- shellcheck = {},
       }
@@ -55,6 +55,17 @@ return {
       mason_lspconfig.setup {
         ensure_installed = vim.tbl_keys(servers),
       }
+
+      local function sorbet_root_pattern(...)
+        local patterns = { "sorbet/config" }
+        return require("lspconfig.util").root_pattern(unpack(patterns))(...)
+      end
+
+      require'lspconfig'.sorbet.setup({
+        root_dir = function(fname)
+          return sorbet_root_pattern(fname)
+        end,
+      })
 
       require'lspconfig'.lua_ls.setup {
           settings = {

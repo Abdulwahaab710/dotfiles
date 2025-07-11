@@ -25,6 +25,25 @@ end
 
 
 local setup = {
+  adapter = {
+    copilot = function()
+      return require("codecompanion.adapters").extend("copilot", {
+        schema = {
+          model = {
+            default = "claude-3.7-sonnet",
+            choices = {
+              "claude-3.7-sonnet",
+              "claude-3.7-sonnet-thought",
+              "claude-sonnet-4",
+              "gpt-4.1",
+              "o4-mini",
+              "gemini-2.5-pro",
+            },
+          },
+        },
+      })
+    end,
+  },
   extensions = {
     contextfiles = {
       opts = {},
@@ -37,6 +56,14 @@ local setup = {
         make_slash_commands = true,  -- Add prompts as /slash commands
       }
     }
+  },
+  display = {
+    diff = {
+      provider = "mini_diff",
+    },
+    chat = {
+      render_headers = false,
+    },
   },
   prompt_library = {
 

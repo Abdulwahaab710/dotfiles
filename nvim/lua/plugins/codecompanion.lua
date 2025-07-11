@@ -21,12 +21,12 @@ return {
     return vim.fn.executable(openai_key_path)
   end,
   keys = {
-    { "<leader>aa", "<cmd>CodeCompanionActions<cr>", mode = { "n", "x" }, desc = "CodeCompanion Actions" },
-    { "<leader>aC", "<cmd>CodeCompanionChat<cr>", mode = { "n", "x" }, desc = "CodeCompanion Chat" },
-    { "<leader>ac", function ()
+    { "<leader>ca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "x" }, desc = "CodeCompanion Actions" },
+    { "<leader>cC", "<cmd>CodeCompanionChat<cr>", mode = { "n", "x" }, desc = "CodeCompanion Chat" },
+    { "<leader>cc", function ()
       require("codecompanion").prompt("cursorRules")
     end, mode = { "n", "x" }, desc = "CodeCompanion Chat" },
-    { "<leader>ap", "<cmd>CodeCompanion<cr>", mode = { "n", "x" }, desc = "CodeCompanion in prompt" },
+    { "<leader>cp", "<cmd>CodeCompanion<cr>", mode = { "n", "x" }, desc = "CodeCompanion in prompt" },
   },
   init = function()
     require("plugins.codecompanion.fidget-spinner"):init()
