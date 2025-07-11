@@ -45,7 +45,7 @@
     # ".config/starship".source = ../starship;
     # ".config/nvim".source = ../nvim;
     ".config/tmux".source = ../tmux;
-    ".config/vifm".source = ../vifm;
+    # ".config/vifm".source = ../vifm;
     # ".config/sketchybar".source = ~/src/github.com/abdulwahaab710/dotfiles/sketchybar;
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
