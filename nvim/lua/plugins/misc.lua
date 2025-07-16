@@ -96,7 +96,7 @@ return {
         { 'rhysd/vim-grammarous' },
         { 'dstein64/vim-startuptime' },
         { 'junegunn/vim-emoji' },
-        { 'voldikss/vim-floaterm' },
+        -- { 'voldikss/vim-floaterm' },
         -- " }}}
 
         -- " Syntax plugins ----------------------------------{{{

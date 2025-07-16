@@ -1,0 +1,29 @@
+#!/bin/zsh
+
+DIRECTORIES=$((cd ~/src/github.com ;ls -dl1 */**) | rg '[^/;]+/[^/;]+$' -o);
+PROJECT_NAME=$(echo $DIRECTORIES | fzf --reverse --query="$1" --select-1)
+PROJECT_DIRECTORY="$HOME/src/github.com/$PROJECT_NAME"
+
+
+if [[ -z $PROJECT_NAME ]]; then
+    exit 0
+fi
+
+tmux_running=$(pgrep tmux)
+
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $PROJECT_NAME -c $PROJECT_DIRECTORY
+    tmux switch-client -t $PROJECT_NAME
+fi
+
+if ! tmux has-session -t=$PROJECT_NAME 2> /dev/null; then
+    tmux new-session -ds $PROJECT_NAME -c $PROJECT_DIRECTORY
+    tmux attach -t $PROJECT_NAME
+fi
+
+if [[ -z $TMUX ]]; then
+    tmux attach -t $PROJECT_NAME
+    exit 0
+fi
+
+tmux switch-client -t $PROJECT_NAME

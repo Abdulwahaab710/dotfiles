@@ -36,6 +36,7 @@ return {
         -- "sorbet",
         "lua_ls",
         -- "shellcheck",
+        "harper-ls",
       }
     },
     config = function()
@@ -134,7 +135,7 @@ return {
 
   },
   --  { 'hrsh7th/cmp-cmdline' },
-  -- { 'github/copilot.vim' },
+  { 'github/copilot.vim' },
   --[[ {
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
@@ -270,6 +271,33 @@ return {
 
       require('lspconfig').lua_ls.setup {
         settings = {
+         ["harper-ls"] = {
+            userDictPath = "",
+            fileDictPath = "",
+            linters = {
+              SpellCheck = true,
+              SpelledNumbers = false,
+              AnA = true,
+              SentenceCapitalization = true,
+              UnclosedQuotes = true,
+              WrongQuotes = false,
+              LongSentences = true,
+              RepeatedWords = true,
+              Spaces = true,
+              Matcher = true,
+              CorrectNumberSuffix = true
+            },
+            codeActions = {
+              ForceStable = false
+            },
+            markdown = {
+              IgnoreLinkTitle = false
+            },
+            diagnosticSeverity = "hint",
+            isolateEnglish = false,
+            dialect = "American",
+            maxFileLength = 120000
+          },
           Lua = {
             runtime = {
               -- Tell the language server which version of Lua you're using
