@@ -15,6 +15,19 @@
 	tool = fugitive
 [mergetool "nvim"]
 	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    hyperlinks = true  # enable hyperlinks in the pager
+
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+    # dark = true
+    # light = true
 [include]
 	path = /Users/abdulwahaabahmed/.config/dev/gitconfig
 	path = /Users/abdulwahaab/.config/dev/gitconfig
