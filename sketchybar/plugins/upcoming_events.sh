@@ -72,7 +72,12 @@ while IFS= read -r line; do
                             time_until="In ${minutes}m"
                         fi
 
-                        next_event="${current_event} (${start_time}) - ${time_until}"
+                        # Limit current_event to 15 characters
+                        truncated_event="${current_event:0:15}"
+                        if [[ ${#current_event} -gt 15 ]]; then
+                            truncated_event="${truncated_event}..."
+                        fi
+                        next_event="${truncated_event} (${start_time}) - ${time_until}"
                     fi
                 fi
             fi
