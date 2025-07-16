@@ -10,10 +10,84 @@ return {
       },
       config = function()
         require('render-markdown').setup({
-            file_types = { 'markdown', 'vimwiki' },
+            file_types = { 'markdown', 'vimwiki', 'codecompanion' },
+            render_modes = { "n", "no", "c", "t", "i", "ic" },
             heading = {
-              sign = false
+              width = "block",
+              backgrounds = {
+                "MiniStatusLineModeNormal",
+                "MiniStatusLineModeInsert",
+                "MiniStatusLineModeReplace",
+                "MiniStatusLineModeVisual",
+                "MiniStatusLineModeCommand",
+                "MiniStatusLineModeOther",
+              },
+              sign = false,
+              left_pad = 1,
+              right_pad = 0,
+              position = "right",
+              icons = {
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              },
             },
+            code = {
+              disable_background = { "markdown" },
+            },
+--[[
+            code = {
+              sign = false,
+              border = "thin",
+              position = "right",
+              width = "block",
+              above = "▁",
+              -- disable_background = { "markdown" },
+              below = "▔",
+              language_left = "█",
+              language_right = "█",
+              language_border = "▁",
+              left_pad = 2,
+              right_pad = 2,
+            }, ]]
+--[[             heading = {
+              backgrounds = { "DiffChange" },
+              sign = false,
+              border = true,
+              border_prefix = true,
+              left_pad = 0,
+              right_pad = 4,
+              position = "overlay",
+              icons = {
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+                " ",
+              },
+            }, ]]
+             backgrounds = {
+                 'RenderMarkdownH1Bg',
+                 'RenderMarkdownH2Bg',
+                 'RenderMarkdownH3Bg',
+                 'RenderMarkdownH4Bg',
+                 'RenderMarkdownH5Bg',
+                 'RenderMarkdownH6Bg',
+             },
+             -- Highlight for the heading and sign icons.
+             -- Output is evaluated using the same logic as 'backgrounds'.
+             foregrounds = {
+                 'RenderMarkdownH1',
+                 'RenderMarkdownH2',
+                 'RenderMarkdownH3',
+                 'RenderMarkdownH4',
+                 'RenderMarkdownH5',
+                 'RenderMarkdownH6',
+             },
             checkbox = {
                 -- Turn on / off checkbox state rendering
                 enabled = true,

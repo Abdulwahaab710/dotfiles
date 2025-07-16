@@ -6,8 +6,8 @@ if vim.fn.executable(openai_key_path) == 1 then
   provider = "shopify-ai"
   vendors["shopify-ai"] = {
     __inherited_from = 'openai',
-    endpoint = "https://proxy.shopify.ai/v1/",
-    model = "anthropic:claude-3-5-sonnet",
+    endpoint = "https://proxy-shopify-ai.local.shop.dev/v1",
+    model = "anthropic:claude-sonnet-4",
     api_key_name = "cmd:openai_key cat",
   }
 else

@@ -1,7 +1,9 @@
 export TERM="xterm-256color"
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  if [[ -z "${CLAUDECODE}" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  fi
 fi
 
 # eval "$(starship init zsh)"
