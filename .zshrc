@@ -49,6 +49,7 @@ zinit load atuinsh/atuin
 # }}}}
 
 eval "$(starship init zsh)"
+eval "$(atuin init zsh)"
 
 # aliases ---------------------------------------------{{{{
 alias k=kubectl
@@ -265,6 +266,7 @@ bindkey -M vicmd "q" push-line
 
 # it's like, space AND completion.  Gnarlbot.
 bindkey -M viins ' ' magic-space
+bindkey '^r' _atuin_search_widget
 # }}}
 
 if command -v pyenv 1>/dev/null 2>&1; then
