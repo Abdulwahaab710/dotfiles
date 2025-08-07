@@ -1,12 +1,46 @@
 #!/bin/zsh
 
-LOCATION=$(shortcuts run getCoreLocationData -o /dev/stdout)
-CITY=$(echo "$LOCATION" | jq -r ".city")
-LAT=$(echo "$LOCATION" | jq -r ".lat")
-LONG=$(echo "$LOCATION" | jq -r ".long")
-API_KEY=$(echo $LOCATION | jq -r ".api_key")
+# NOTE: Original script fetching weather data from wttr.in
 
-# first comment is description, second is icon number
+# IP=$(curl -s https://ipinfo.io/ip)
+# LOCATION_JSON=$(curl -s https://ipinfo.io/$IP/json)
+# LOCATION="$(echo $LOCATION_JSON | jq '.city' | tr -d '"')"
+# REGION="$(echo $LOCATION_JSON | jq '.region' | tr -d '"')"
+# COUNTRY="$(echo $LOCATION_JSON | jq '.country' | tr -d '"')"
+# # Line below replaces spaces with +
+# LOCATION_ESCAPED="${LOCATION// /+}+${REGION// /+}"
+# WEATHER_JSON=$(curl -s "https://wttr.in/$LOCATION_ESCAPED?format=j1")
+# CELSIUS_SIGN="°C"
+#
+# # Fallback if empty
+# if [[ -z $WEATHER_JSON ]]; then
+#   echo "Weather data not available for $LOCATION"
+#   sketchybar --set $NAME label=$LOCATION
+#
+#   return
+# fi
+#
+# TEMPERATURE=$(echo $WEATHER_JSON | jq '.current_condition[0].temp_C' | tr -d '"')
+# WEATHER_DESCRIPTION=$(echo $WEATHER_JSON | jq '.current_condition[0].weatherDesc[0].value' | tr -d '"' | sed 's/\(.\{25\}\).*/\1.../')
+
+# sketchybar --set $NAME label="$LOCATION   $TEMPERATURE$CELSIUS_SIGN $WEATHER_DESCRIPTION"
+
+IP=$(curl -s https://ipinfo.io/ip)
+LOCATION_JSON=$(curl -s https://ipinfo.io/$IP/json)
+
+LOCATION="$(echo $LOCATION_JSON | jq '.city' | tr -d '"')"
+COORDINATES=$(echo $LOCATION_JSON | jq '.loc' | tr -d '"')
+
+LAT=$(echo $COORDINATES | cut -d',' -f1)
+LONG=$(echo $COORDINATES | cut -d',' -f2)
+
+data=$(curl -s "http://api.weatherapi.com/v1/current.json?key=$API_KEY&q=$LAT,$LONG")
+condition=$(echo $data | jq -r '.current.condition.code')
+temp=$(echo $data | jq -r '.current.temp_c')
+feelslike=$(echo $data | jq -r '.current.feelslike_c')
+humidity=$(echo $data | jq -r '.current.humidity')
+is_day=$(echo $data | jq -r '.current.is_day')
+
 weather_icons_day=(
   [1000]= # Sunny/113
   [1003]= # Partly cloudy/116
@@ -109,16 +143,9 @@ weather_icons_night=(
   [1282]= # Moderate or heavy snow with thunder/395
 )
 
-data=$(curl -s "http://api.weatherapi.com/v1/current.json?key=$API_KEY&q=$LAT,$LONG")
-condition=$(echo $data | jq -r '.current.condition.code')
-temp=$(echo $data | jq -r '.current.temp_c')
-feelslike=$(echo $data | jq -r '.current.feelslike_c')
-humidity=$(echo $data | jq -r '.current.humidity')
-is_day=$(echo $data | jq -r '.current.is_day')
-
 [ "$is_day" = "1" ] && icon=$weather_icons_day[$condition] || icon=$weather_icons_night[$condition]
 
-sketchybar -m \
-  --set weather \
+sketchybar \
+  --set $NAME \
   icon="$icon" \
-  label="${temp}°C, $CITY"
+  label="${temp}°C, $LOCATION"

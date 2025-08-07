@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(message_monitor LANGUAGES CXX)
+
+# 设置 C++ 标准
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 打开警告
+add_compile_options(-Wall -Wextra -Wpedantic)
+
+# 可执行程序放在当前目录下
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+# 添加源文件
+file(GLOB SOURCES CONFIGURE_DEPENDS "*.cpp")
+
+# 添加可执行文件
+add_executable(message_monitor ${SOURCES})

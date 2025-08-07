@@ -1,26 +1,109 @@
-#!/bin/bash
+#!/bin/sh
 
-export PLUGIN_DIR="$CONFIG_DIR/plugins"
-export ITEM_DIR="$CONFIG_DIR/items"
+CONFIG_DIR="$HOME/.config/sketchybar"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+ITEMS_DIR="$CONFIG_DIR/items"
 
-source "$CONFIG_DIR/colors.sh"
+source $CONFIG_DIR/colors.sh
+source $CONFIG_DIR/icons.sh
+source $CONFIG_DIR/settings.sh
 
-source "$CONFIG_DIR/bar.sh"
-source "$CONFIG_DIR/defaults.sh"
+# Setting up and starting the helper process
+# HELPER=git.felix.helper
+# killall helper
+# (cd $CONFIG_DIR/helper && make)
+# $CONFIG_DIR/helper/helper $HELPER > /dev/null 2>&1 &
 
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/front_app.sh"
 
-# source "$ITEM_DIR/music.sh"
+bar=(
+    color=0x8820263a
+    border_color=0x44999999
+    border_width=1
+    position=top
+    height=38
+    margin=-1
+    padding_left=18
+    padding_right=10
+    notch_display_height=0
+    notch_width=200
+    notch_offset=0
+    y_offset=-1
+    # corner_radius=12
+    blur_radius=36
+    shadow=on
+    sticky=on
+    topmost=off
+    display=all
+    hidden=off
+    font_smoothing=off
+)
+sketchybar --bar "${bar[@]}"
 
-source "$ITEM_DIR/calendar.sh"
-source "$ITEM_DIR/cron.sh"
-source "$ITEM_DIR/volume.sh"
-source "$ITEM_DIR/battery.sh"
-source "$ITEM_DIR/cpu.sh"
-source "$ITEM_DIR/caffeinate.sh"
-source "$ITEM_DIR/weather.sh"
-# source "$ITEM_DIR/wifi.sh"
 
+sketchybar --default \
+    background.corner_radius=5 \
+    background.padding_right=5 \
+    background.height=26 \
+    background.color=0x9924273a \
+    icon.font="$FONT_ICON:Medium:15.0" \
+    icon.padding_left=5 \
+    icon.padding_right=5 \
+    label.font="$FONT_LABEL:Medium:12.0" \
+    label.color=0xffffffff \
+    label.y_offset=0 \
+    label.padding_left=0 \
+    label.padding_right=5 \
+    popup.background.color=0xee1c1c1e \
+	popup.background.border_color=0xffcccccc \
+	popup.background.border_width=1 \
+	popup.background.corner_radius=16 \
+	popup.height=34
+
+#
+# LEFT
+#
+source "$ITEMS_DIR/apple.sh"
+
+source "$ITEMS_DIR/caffeinate.sh"
+source "$ITEMS_DIR/aerospace.sh"
+
+source "$ITEMS_DIR/front_app.sh"
+
+source "$ITEMS_DIR/cpu.sh"
+
+source "$ITEMS_DIR/status.sh"
+
+#
+# CENTER
+#
+#source "$ITEMS_DIR/spotify.sh"
+
+# source "$ITEMS_DIR/message.sh"
+# killall messager_monitor
+# (cd $CONFIG_DIR/bin/message_monitor && \
+#  cmake -Bbuild -DCMAKE_BUILD_TYPE=Release && \
+#  cmake --build build --target message_monitor)
+# $CONFIG_DIR/bin/message_monitor/message_monitor Discord > /dev/null 2>&1 &
+
+
+#
+# RIGHT
+#
+#source "$ITEMS_DIR/clock.sh"
+
+source "$ITEMS_DIR/calendar.sh"
+source "$ITEMS_DIR/volume.sh"
+# TODO: Fix Airpods item, it returns the following error:
+# jq: error (at <stdin>:158): Cannot iterate over null (null)
+source "$ITEMS_DIR/airpods.sh" # There is a bug here
+source "$ITEMS_DIR/battery.sh"
+source "$ITEMS_DIR/network.sh"
+source "$ITEMS_DIR/upcoming_events.sh"
+source "$ITEMS_DIR/weather.sh"
+
+# source "$ITEMS_DIR/net.sh"
+
+
+##### Finalizing Setup #####
 sketchybar --update
-
+sketchybar --trigger space_change

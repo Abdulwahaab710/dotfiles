@@ -1,7 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
-sketchybar --add item weather left \
-  --set weather \
-  update_freq=600 \
-  script="$PLUGIN_DIR/weather.sh" \
-  icon.font="Hack Nerd Font:Bold:17.0"
+
+#0xff181926
+sketchybar --add item weather right \
+    --set weather \
+    icon=$LOCATION \
+    icon.color=0xfff5bde6 \
+    icon.font="$FONT_ICON:Bold:15.0" \
+    update_freq=1800 \
+    script="$PLUGIN_DIR/weather.sh" \
+    --subscribe weather system_woke

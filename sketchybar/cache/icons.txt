@@ -1,0 +1,12 @@
+Zen|:zen_browser:
+WezTerm|:wezterm:
+Chromatix|:default:
+Control Center|:default:
+Notification Center|:default:
+loginwindow|:default:
+kindaVim|:default:
+1Password|:one_password:
+Font Book|:default:
+osascript|:default:
+Obsidian|:obsidian:
+UserNotificationCenter|:default:

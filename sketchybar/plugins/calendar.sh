@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-sketchybar --set "$NAME" label="$(date +'%a %d %b %I:%M %p')"
+sketchybar --set $NAME label="$(LC_TIME=en_US.UTF-8 date '+%a • %d-%b 􀐫 %H:%M')" \

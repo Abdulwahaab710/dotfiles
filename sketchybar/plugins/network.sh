@@ -1,22 +1,40 @@
-#!/bin/bash
+#!/bin/sh
 
-UPDOWN=$(ifstat -i "en0" -b 0.1 1 | tail -n1)
-DOWN=$(echo $UPDOWN | awk "{ print \$1 }" | cut -f1 -d ".")
-UP=$(echo $UPDOWN | awk "{ print \$2 }" | cut -f1 -d ".")
 
-DOWN_FORMAT=""
-if [ "$DOWN" -gt "999" ]; then
-  DOWN_FORMAT=$(echo $DOWN | awk '{ printf "%.0f Mbps", $1 / 1000}')
-else
-  DOWN_FORMAT=$(echo $DOWN | awk '{ printf "%.0f kbps", $1}')
-fi
+update() {
+	IP_ADDRESS=$(scutil --nwi | /opt/homebrew/bin/rg address | sed 's/.*://' | tr -d ' ' | head -1)
+	IS_VPN=$(scutil --nwi | /opt/homebrew/bin/rg -m1 'utun' | awk '{ print $1 }')
 
-UP_FORMAT=""
-if [ "$UP" -gt "999" ]; then
-  UP_FORMAT=$(echo $UP | awk '{ printf "%.0f Mbps", $1 / 1000}')
-else
-  UP_FORMAT=$(echo $UP | awk '{ printf "%.0f kbps", $1}')
-fi
+	if [[ $IS_VPN != "" ]]; then
+		ICON=􀤆
+		LABEL="VPN"
+	elif [[ $IP_ADDRESS != "" ]]; then
+		ICON=􀙇
+		LABEL=$IP_ADDRESS
+	else
+		ICON=􀙈
+		LABEL="Not Connected"
+	fi
 
-sketchybar -m --set network_down label="$DOWN_FORMAT" icon.highlight=$(if [ "$DOWN" -gt "0" ]; then echo "on"; else echo "off"; fi) \
-  --set network_up label="$UP_FORMAT" icon.highlight=$(if [ "$UP" -gt "0" ]; then echo "on"; else echo "off"; fi)
+	sketchybar --set $NAME \
+		icon=$ICON \
+		label="$LABEL"
+}
+
+click() {
+  CURRENT_WIDTH="$(sketchybar --query $NAME | jq -r .label.width)"
+
+  WIDTH=0
+  if [ "$CURRENT_WIDTH" -eq "0" ]; then
+    WIDTH=dynamic
+  fi
+
+  sketchybar --animate sin 20 --set $NAME label.width="$WIDTH"
+}
+
+case "$SENDER" in
+  "wifi_change") update
+  ;;
+  "mouse.clicked") click
+  ;;
+esac

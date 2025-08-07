@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "$SENDER" = "front_app_switched" ]; then
-  sketchybar --set "$NAME" label="$INFO" icon="$("$CONFIG_DIR/plugins/icon_map_fn.sh" "$INFO")"
-fi
+ICON_PIC=$(sh "$HOME/.config/sketchybar/cache/get_icon.sh" "$INFO")
+
+sketchybar    -m    --set   "$NAME"         icon="$ICON_PIC" icon.padding_right=5 \
+                    --set   "$NAME".name    label="$INFO"

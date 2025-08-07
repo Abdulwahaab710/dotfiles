@@ -1,0 +1,3 @@
+/Users/abdulwahaabahmed/.config/sketchybar/bin/message_monitor/build/CMakeFiles/message_monitor.dir
+/Users/abdulwahaabahmed/.config/sketchybar/bin/message_monitor/build/CMakeFiles/edit_cache.dir
+/Users/abdulwahaabahmed/.config/sketchybar/bin/message_monitor/build/CMakeFiles/rebuild_cache.dir
