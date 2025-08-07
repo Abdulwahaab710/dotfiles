@@ -91,6 +91,13 @@ return {
         -- map \ to grep
         vim.keymap.set('n', '\\', require('telescope.builtin').live_grep, {})
 
+        -- Rails shortcuts
+        vim.keymap.set('n', '<leader>ff', function ()
+          require('telescope.builtin').find_files({
+            prompt_title = 'Find models',
+            cwd = vim.fn.getcwd() .. '/test/fixtures'
+          })
+        end, {})
         vim.keymap.set('n', '<leader>fm', function ()
           require('telescope.builtin').find_files({
             prompt_title = 'Find models',

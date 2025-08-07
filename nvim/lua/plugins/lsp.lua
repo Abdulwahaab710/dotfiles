@@ -32,7 +32,7 @@ return {
     opts = {
       ensure_installed = {
         "rust-analyzer",
-        "solargraph",
+        -- "solargraph",
         -- "sorbet",
         "lua_ls",
         -- "shellcheck",
@@ -47,7 +47,7 @@ return {
       local servers = {
         ruby_lsp = {},
         rust_analyzer = {},
-        solargraph = {},
+        -- solargraph = {},
         -- sorbet = {},
         lua_ls = {},
         ast_grep = {}

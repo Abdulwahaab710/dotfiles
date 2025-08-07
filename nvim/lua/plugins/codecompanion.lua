@@ -27,9 +27,9 @@ return {
   keys = {
     { "<leader>ca", "<cmd>CodeCompanionActions<cr>", mode = { "n", "x" }, desc = "CodeCompanion Actions" },
     { "<leader>cC", "<cmd>CodeCompanionChat<cr>", mode = { "n", "x" }, desc = "CodeCompanion Chat" },
-    { "<leader>cc", function ()
-      require("codecompanion").prompt("cursorRules")
-    end, mode = { "n", "x" }, desc = "CodeCompanion Chat" },
+    -- { "<leader>cc", function ()
+    --   require("codecompanion").prompt("cursorRules")
+    -- end, mode = { "n", "x" }, desc = "CodeCompanion Chat" },
     { "<leader>cp", "<cmd>CodeCompanion<cr>", mode = { "n", "x" }, desc = "CodeCompanion in prompt" },
   },
   init = function()
