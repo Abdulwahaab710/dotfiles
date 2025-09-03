@@ -25,6 +25,8 @@
 
 # sketchybar --set $NAME label="$LOCATION   $TEMPERATURE$CELSIUS_SIGN $WEATHER_DESCRIPTION"
 
+source "$HOME/.config/sketchybar/.env"
+
 IP=$(curl -s https://ipinfo.io/ip)
 LOCATION_JSON=$(curl -s https://ipinfo.io/$IP/json)
 
@@ -34,7 +36,7 @@ COORDINATES=$(echo $LOCATION_JSON | jq '.loc' | tr -d '"')
 LAT=$(echo $COORDINATES | cut -d',' -f1)
 LONG=$(echo $COORDINATES | cut -d',' -f2)
 
-data=$(curl -s "http://api.weatherapi.com/v1/current.json?key=$API_KEY&q=$LAT,$LONG")
+data=$(curl -s "http://api.weatherapi.com/v1/current.json?key=$WEATHER_API_KEY&q=$LAT,$LONG")
 condition=$(echo $data | jq -r '.current.condition.code')
 temp=$(echo $data | jq -r '.current.temp_c')
 feelslike=$(echo $data | jq -r '.current.feelslike_c')
@@ -148,4 +150,5 @@ weather_icons_night=(
 sketchybar \
   --set $NAME \
   icon="$icon" \
+  icon.font="Hack Nerd Font:Bold:15.0" \
   label="${temp}°C, $LOCATION"

@@ -4,6 +4,9 @@ CONFIG_DIR="$HOME/.config/sketchybar"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 ITEMS_DIR="$CONFIG_DIR/items"
 
+if [ -f "$CONFIG_DIR/.env" ]; then
+    source "$CONFIG_DIR/.env"
+fi
 source $CONFIG_DIR/colors.sh
 source $CONFIG_DIR/icons.sh
 source $CONFIG_DIR/settings.sh

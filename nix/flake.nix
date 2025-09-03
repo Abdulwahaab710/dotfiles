@@ -118,6 +118,10 @@
         "raycast"
         "sf-symbols"
         "zen-browser"
+        "font-maple-mono-nf"
+        "font-hack-nerd-font"
+        "sf-symbols"
+        "font-sf-pro"
       ];
       homebrew.brews = [
         "dimentium/autoraise/autoraise"
