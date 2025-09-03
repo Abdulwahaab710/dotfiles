@@ -50,6 +50,7 @@ zinit load atuinsh/atuin
 
 eval "$(starship init zsh)"
 eval "$(atuin init zsh)"
+eval "$(zoxide init zsh)"
 
 # aliases ---------------------------------------------{{{{
 alias k=kubectl
