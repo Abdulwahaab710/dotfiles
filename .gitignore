@@ -1,3 +1,4 @@
 nvim/plugin/packer_compiled.lua
 tmux/plugins
 nvim/spell
+sketchybar/.env
