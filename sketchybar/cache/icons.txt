@@ -10,3 +10,33 @@ Font Book|:default:
 osascript|:default:
 Obsidian|:obsidian:
 UserNotificationCenter|:default:
+Ghostty|:ghostty:
+Google Chrome|:google_chrome:
+Slack|:slack:
+System Settings|:gear:
+Firefox|:firefox:
+LinkedNotesUIService|:default:
+Sequel Ace|:sequel_ace:
+Insomnia|:insomnia:
+Goose|:default:
+Notes|:notes:
+Tuple|:default:
+Preview|:preview:
+Burp Suite Professional|:default:
+Chromium|:google_chrome:
+MeetingBar|:default:
+Karabiner-NotificationWindow|:default:
+coreautha|:default:
+Spotlight|:spotlight:
+Monosnap|:default:
+Cloudflare WARP|:default:
+SecurityAgent|:default:
+Updater|:default:
+Activity Monitor|:activity_monitor:
+Finder|:finder:
+Karabiner-Updater|:default:
+Cursor|:cursor:
+Archive Utility|:default:
+VLC|:vlc:
+QuickTime Player|:default:
+Screenshot|:default:

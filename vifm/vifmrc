@@ -473,10 +473,10 @@ highlight Socket	cterm=none	ctermfg=110	ctermbg=237
 
 
 " Normal dirs
-fileview */ tree %c -L <depth>
+" fileview */ tree %c -L <depth>
 
 " Hidden dirs
-fileview *./ tree %c -L <depth>
+" fileview *./ tree %c -L <depth>
 
 " .. Parent dir
-fileview ../ tree %c -L <depth>
+" fileview ../ tree %c -L <depth>

@@ -198,11 +198,12 @@ if vim.fn.executable(openai_key_path) == 1 then
     openai = adapter({
       name = "openai",
       url = "https://proxy-shopify-ai.local.shop.dev/vendors/openai/v1/chat/completions",
+      default_model = "gpt-5",
     }),
   }
-  setup["strategies"].chat.adapter = "anthropic"
+  setup["strategies"].chat.adapter = "openai"
   setup["strategies"].inline = {
-    adapter = "anthropic",
+    adapter = "openai",
   }
 end
 
