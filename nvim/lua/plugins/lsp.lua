@@ -37,6 +37,7 @@ return {
         "lua_ls",
         -- "shellcheck",
         "harper-ls",
+        "basedpyright",
       }
     },
     config = function()
@@ -332,6 +333,15 @@ return {
         },
       }
 
+      require("lspconfig").basedpyright.setup({
+         settings = {
+          basedpyright = {
+            analysis = {
+              typeCheckingMode = "basic",
+            },
+          },
+        },
+      })
 
       require("lspconfig").ruby_lsp.setup({
         on_attach = function(client, buffer)
