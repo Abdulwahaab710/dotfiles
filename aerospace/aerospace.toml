@@ -18,7 +18,7 @@ after-startup-command = [
 exec-on-workspace-change = [
   # '/bin/bash',
   # '-c',
-  # 'sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  # 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
   '/bin/bash',
   '-c',
   '$HOME/.config/aerospace/scripts/on-ws-change.sh'

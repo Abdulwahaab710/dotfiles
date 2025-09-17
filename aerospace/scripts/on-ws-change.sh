@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Check if sketchybar is defined
 if command -v sketchybar &> /dev/null; then
-  sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE
+  sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE
 fi
 
 # This seems to only work a single pip window at a time for now
