@@ -65,7 +65,7 @@ attr_network_up=(
 
 
 attr_system_status=(
-	icon=
+	icon=
 	icon.font="$FONT_LABEL:Regular:16.0"
 	icon.padding_right=10
 	background.corner_radius=7
@@ -102,6 +102,6 @@ sketchybar	-m	    --add event 				  hide_stats   					                          
 										--set                 network.up      "${attr_network_up[@]}"
 
 
-# sketchybar    --add   bracket  system_status  separator  cpu.stats  memory  disk  network.down  network.up 
+# sketchybar    --add   bracket  system_status  separator  cpu.stats  memory  disk  network.down  network.up
 #               #--set   system_status \
-#                #       background.color=0x33ffffff 
+#                #       background.color=0x33ffffff
