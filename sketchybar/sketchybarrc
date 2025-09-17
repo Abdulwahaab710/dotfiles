@@ -12,10 +12,10 @@ source $CONFIG_DIR/icons.sh
 source $CONFIG_DIR/settings.sh
 
 # Setting up and starting the helper process
-# HELPER=git.felix.helper
-# killall helper
-# (cd $CONFIG_DIR/helper && make)
-# $CONFIG_DIR/helper/helper $HELPER > /dev/null 2>&1 &
+HELPER=helper
+killall helper
+(cd $CONFIG_DIR/helper && make)
+$CONFIG_DIR/helper/helper $HELPER > /dev/null 2>&1 &
 
 
 bar=(
@@ -57,10 +57,10 @@ sketchybar --default \
     label.padding_left=0 \
     label.padding_right=5 \
     popup.background.color=0xee1c1c1e \
-	popup.background.border_color=0xffcccccc \
-	popup.background.border_width=1 \
-	popup.background.corner_radius=16 \
-	popup.height=34
+    popup.background.border_color=0xffcccccc \
+    popup.background.border_width=1 \
+    popup.background.corner_radius=16 \
+    popup.height=34
 
 #
 # LEFT

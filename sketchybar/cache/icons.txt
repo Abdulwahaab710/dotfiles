@@ -10,33 +10,38 @@ Font Book|:default:
 osascript|:default:
 Obsidian|:obsidian:
 UserNotificationCenter|:default:
-Ghostty|:ghostty:
-Google Chrome|:google_chrome:
-Slack|:slack:
-System Settings|:gear:
-Firefox|:firefox:
-LinkedNotesUIService|:default:
-Sequel Ace|:sequel_ace:
-Insomnia|:insomnia:
-Goose|:default:
-Notes|:notes:
-Tuple|:default:
-Preview|:preview:
-Burp Suite Professional|:default:
-Chromium|:google_chrome:
-MeetingBar|:default:
-Karabiner-NotificationWindow|:default:
 coreautha|:default:
-Spotlight|:spotlight:
-Monosnap|:default:
-Cloudflare WARP|:default:
+calibre|:calibre:
+Finder|:finder:
+Archive Utility|:default:
+Arc|:arc:
+IINA|:iina:
+Safari|:safari:
+LinkedNotesUIService|:default:
+Messages|:messages:
+Xcode|:xcode:
+Photos|:photos:
+Activity Monitor|:activity_monitor:
+Goose|:default:
+NordVPN|:nord_vpn:
 SecurityAgent|:default:
 Updater|:default:
-Activity Monitor|:activity_monitor:
-Finder|:finder:
-Karabiner-Updater|:default:
-Cursor|:cursor:
-Archive Utility|:default:
+Notes|:notes:
+System Settings|:gear:
+Audacity|:audacity:
+Preview|:preview:
+Ice|:default:
+Maps|:maps:
+Discord|:discord:
 VLC|:vlc:
-QuickTime Player|:default:
-Screenshot|:default:
+NetAuthAgent|:default:
+Music|:music:
+TextEdit|:textedit:
+FaceTime|:face_time:
+E-book Viewer|:default:
+Reminders|:reminders:
+Tailscale|:default:
+Twingate|:default:
+Dock|:default:
+Captive Network Assistant|:default:
+Calendar|:calendar:

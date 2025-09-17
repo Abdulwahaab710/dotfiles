@@ -147,7 +147,7 @@ weather_icons_night=(
 
 [ "$is_day" = "1" ] && icon=$weather_icons_day[$condition] || icon=$weather_icons_night[$condition]
 
-sketchybar \
+/opt/homebrew/bin/sketchybar \
   --set $NAME \
   icon="$icon" \
   icon.font="Hack Nerd Font:Bold:15.0" \

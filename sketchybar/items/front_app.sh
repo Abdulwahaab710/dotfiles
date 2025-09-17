@@ -6,14 +6,14 @@ source $CONFIG_DIR/settings.sh
 
 attr_front_app=(
     background.color=0xffa6da95
-    background.padding_left=0     
+    background.padding_left=0
     background.padding_right=0
-    background.corner_radius=5 
-    icon.font="$FONT_ICON:Regular:15.0" 
-    icon.y_offset=1        
+    background.corner_radius=5
+    icon.font="$FONT_ICON:Regular:15.0"
+    icon.y_offset=1
     icon.color=0xff24273a
-    label.drawing=no   
-    script="$PLUGIN_DIR/front_app.sh" 
+    label.drawing=no
+    script="$PLUGIN_DIR/front_app.sh"
 )
 
 attr_front_app_spr=(
