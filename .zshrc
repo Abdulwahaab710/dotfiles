@@ -101,6 +101,7 @@ export MANPAGER='nvim +Man!'
 export GIT_EDITOR="nvim"
 export LANG="en_US.UTF-8"
 export KUBECONFIG=$HOME/.kube/config
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # functions -------------------------------------------{{{{
 update() {

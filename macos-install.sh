@@ -119,6 +119,10 @@ link_dotfiles() {
   print_info "Linking files for wezterm"
   ln -fs "$PWD/wezterm" "$HOME/.config/wezterm"
   print_success "wezterm files linked successfully!"
+
+  print_info "Linking files for lazygit"
+  ln -fs "$PWD/lazygit" "$HOME/.config/lazygit"
+  print_success "lazygit files linked successfully!"
 }
 
 # Set up python virtual environment for neovim
