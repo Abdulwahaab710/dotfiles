@@ -16,6 +16,7 @@ vim.keymap.set("n", "<leader>x", ":x<CR>")
 vim.keymap.set("n", "<leader>n", ":nohl<CR>")
 
 vim.keymap.set({ "n", "v" }, "<leader>gb", ":GBrowse<CR>")
+vim.keymap.set({ "n", "v" }, "<leader>gB", ":GBrowse!<CR>")
 
 vim.keymap.set("n", "k", "gk")
 vim.keymap.set("n", "j", "gj")
