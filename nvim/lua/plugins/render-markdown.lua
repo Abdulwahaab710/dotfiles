@@ -10,6 +10,7 @@ return {
       },
       config = function()
         require('render-markdown').setup({
+            nested = false,
             file_types = { 'markdown', 'vimwiki', 'codecompanion' },
             render_modes = { "n", "no", "c", "t", "i", "ic" },
             heading = {
