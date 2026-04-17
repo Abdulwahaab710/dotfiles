@@ -365,3 +365,6 @@ yt-summary() {
 
   fabric-ai -y $video_link --stream --pattern youtube_summary
 }
+
+export MCP_SERVER_TOKEN="2ce7b736b508785457114c48f6cbc9b4c5a522cde38a766b7331dc1669002a0b"
+export MOCK_SERVICE_MCP_SERVER_TOKEN="b901a1ad9a5d957860e62164043c7953"
