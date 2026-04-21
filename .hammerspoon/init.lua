@@ -6,7 +6,7 @@ hs.hotkey.bind({'alt', 'ctrl'}, 't', function()
     stackline.config:toggle('appearance.showIcons')
 end)
 
-hs.loadSpoon('ControlEscape'):start() -- Load Hammerspoon bits from https://github.com/jasonrudolph/ControlEscape.spoon
+-- hs.loadSpoon('ControlEscape'):start() -- Load Hammerspoon bits from https://github.com/jasonrudolph/ControlEscape.spoon
 
 local function pressFn(mods, key)
 	if key == nil then
