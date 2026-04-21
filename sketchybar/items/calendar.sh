@@ -1,6 +1,6 @@
   #!/bin/sh
 
-  
+
   attr_calendar=(
     icon=􀉉
     icon.color=0xfff6c177
@@ -22,6 +22,7 @@
     padding_right=4
 
     script="$PLUGIN_DIR/calendar.sh"
+    click_script="$PLUGIN_DIR/calendar.sh"
     update_freq=60
 
     popup.horizontal=on
@@ -36,4 +37,20 @@
 
   sketchybar    -m    --add     item    calendar    right                   \
                       --set             calendar    "${attr_calendar[@]}"   \
-                      --subscribe       calendar system_woke mouse.clicked mouse.entered mouse.exited mouse.exited.global
+                      --subscribe       calendar system_woke mouse.entered mouse.exited mouse.exited.global
+
+# Add popup child items for displaying events
+for i in {1..5}; do
+  sketchybar --add item calendar.event.$i popup.calendar \
+             --set calendar.event.$i \
+                   label.font="Maple Mono NF CN:Regular:13" \
+                   label.color=0xff31353f \
+                   label.padding_left=8 \
+                   label.padding_right=8 \
+                   padding_left=4 \
+                   padding_right=4 \
+                   background.height=22 \
+                   background.corner_radius=4 \
+                   background.color=0xffeeeeee \
+                   drawing=off
+done
