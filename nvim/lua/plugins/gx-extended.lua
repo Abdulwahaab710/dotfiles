@@ -44,7 +44,7 @@ return {
               return line and report_id and url or nil
             end,
           },
-          { -- match GSD project ID
+          { -- match GSD project ID (#gsd:123456) in markdown files
             patterns = { '*.md' },
             name = "Vault GSD project",
             match_to_url = function(line_string)
