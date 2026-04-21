@@ -1,5 +1,4 @@
 -- local openai_cmd = "cmd:openai_key cat"
-local openai = require("codecompanion.adapters.openai")
 local openai_key_path = vim.fn.expand("openai_key")
 
 --[[ local function adapter(base_name, url, model)
@@ -25,17 +24,17 @@ local openai_key_path = vim.fn.expand("openai_key")
 end ]]
 
     local function adapter(options)
-      local base = require("codecompanion.adapters." .. options.name)
-      local openai = require("codecompanion.adapters.openai")
-      local default_model = options.default_model or base.schema.model.default
+      -- local base = require("codecompanion.adapters." .. options.name)
+      -- local openai = require("codecompanion.adapters.openai")
+      local default_model = options.default_model
 
-      return require("codecompanion.adapters").extend(base, {
+      return require("codecompanion.adapters").extend(options.name, {
         url = options.url,
         env = {
           api_key = openai_cmd,
         },
-        handlers = openai.handlers,
-        headers = openai.headers,
+        -- handlers = openai.handlers,
+        -- headers = openai.headers,
         parameters = {
           model = "${model}",
         },
