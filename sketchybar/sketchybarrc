@@ -23,7 +23,7 @@ bar=(
     border_color=0x44999999
     border_width=1
     position=top
-    height=38
+    height=39
     margin=-1
     padding_left=18
     padding_right=10
@@ -79,6 +79,7 @@ source "$ITEMS_DIR/status.sh"
 #
 # CENTER
 #
+source "$ITEMS_DIR/notification.sh"
 #source "$ITEMS_DIR/spotify.sh"
 
 # source "$ITEMS_DIR/message.sh"
@@ -94,6 +95,7 @@ source "$ITEMS_DIR/status.sh"
 #
 #source "$ITEMS_DIR/clock.sh"
 
+source "$ITEMS_DIR/claude_code.sh"
 source "$ITEMS_DIR/calendar.sh"
 source "$ITEMS_DIR/volume.sh"
 # TODO: Fix Airpods item, it returns the following error:
