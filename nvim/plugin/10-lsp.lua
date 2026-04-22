@@ -14,16 +14,11 @@ vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
   'https://github.com/williamboman/mason.nvim',
   'https://github.com/williamboman/mason-lspconfig.nvim',
-  { src = 'https://github.com/VonHeikemen/lsp-zero.nvim', version = 'v3.x' },
+  'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim',
   'https://github.com/ray-x/lsp_signature.nvim',
-  'https://github.com/onsails/lspkind.nvim',
   'https://github.com/L3MON4D3/LuaSnip',
   'https://github.com/rafamadriz/friendly-snippets',
-  'https://github.com/hrsh7th/nvim-cmp',
-  'https://github.com/hrsh7th/cmp-path',
-  'https://github.com/hrsh7th/cmp-nvim-lsp',
-  'https://github.com/hrsh7th/cmp-buffer',
-  'https://github.com/saadparwaiz1/cmp_luasnip',
+  { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range('1.*') },
 })
 
 vim.api.nvim_create_autocmd('BufWritePre', {
@@ -38,45 +33,59 @@ for _, ft_path in ipairs(vim.api.nvim_get_runtime_file('lua/custom/snippets/*.lu
 end
 
 require('mason').setup()
-require('lsp-zero').extend_lspconfig()
-
-local lsp_zero = require('lsp-zero')
-lsp_zero.on_attach(function(client, bufnr)
-  lsp_zero.default_keymaps({ buffer = bufnr, preserve_mappings = false })
-end)
-
-require('lsp_signature').setup()
-
-local mason_lspconfig = require('mason-lspconfig')
-local servers = {
-  ruby_lsp = {},
-  rust_analyzer = {},
-  lua_ls = {},
-  ast_grep = {},
-  semgrep = {},
-}
-mason_lspconfig.setup({ ensure_installed = vim.tbl_keys(servers) })
-
-local function sorbet_root_pattern(...)
-  local patterns = { 'sorbet/config' }
-  return require('lspconfig.util').root_pattern(unpack(patterns))(...)
-end
-
-local lspconfig = require('lspconfig')
-
-lspconfig.sorbet.setup({
-  root_dir = function(fname) return sorbet_root_pattern(fname) end,
+require('mason-tool-installer').setup({
+  ensure_installed = { 'tree-sitter-cli' },
+  run_on_start = true,
 })
 
-lspconfig.ast_grep.setup({
+require('blink.cmp').setup({
+  keymap = {
+    preset = 'default',
+    ['<CR>']      = { 'accept', 'fallback' },
+    ['<C-Space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+    ['<C-u>']     = { 'scroll_documentation_up', 'fallback' },
+    ['<C-d>']     = { 'scroll_documentation_down', 'fallback' },
+    ['<C-b>']     = { 'snippet_backward', 'fallback' },
+  },
+  snippets = { preset = 'luasnip' },
+  sources = {
+    default = { 'lsp', 'buffer', 'path', 'snippets' },
+    per_filetype = { codecompanion = { 'codecompanion' } },
+    providers = {
+      codecompanion = {
+        name = 'CodeCompanion',
+        module = 'codecompanion.providers.completion.blink',
+      },
+    },
+  },
+  appearance = { nerd_font_variant = 'mono' },
+})
+
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+capabilities.general = capabilities.general or {}
+capabilities.general.positionEncodings = { 'utf-16' }
+
+vim.lsp.config('*', { capabilities = capabilities })
+
+vim.lsp.config('sorbet', {
+  root_dir = function(bufnr, cb)
+    local root = vim.fs.root(bufnr, { 'sorbet/config' })
+    if root then cb(root) end
+  end,
+})
+
+vim.lsp.config('ast_grep', {
   cmd = { 'ast-grep', 'lsp' },
   filetypes = { 'c', 'cpp', 'rust', 'go', 'java', 'python', 'javascript', 'typescript', 'html', 'css', 'kotlin', 'dart', 'lua', 'ruby', 'erb' },
-  root_dir = require('lspconfig.util').root_pattern('sgconfig.yaml', 'sgconfig.yml'),
+  root_dir = function(bufnr, cb)
+    local root = vim.fs.root(bufnr, { 'sgconfig.yaml', 'sgconfig.yml' })
+    if root then cb(root) end
+  end,
 })
 
-lspconfig.semgrep.setup({ cmd = { 'semgrep lsp' } })
+vim.lsp.config('semgrep', { cmd = { 'semgrep', 'lsp' } })
 
-lspconfig.lua_ls.setup({
+vim.lsp.config('lua_ls', {
   settings = {
     ['harper-ls'] = {
       userDictPath = '',
@@ -110,7 +119,7 @@ lspconfig.lua_ls.setup({
   },
 })
 
-lspconfig.basedpyright.setup({
+vim.lsp.config('basedpyright', {
   settings = {
     basedpyright = { analysis = { typeCheckingMode = 'basic' } },
   },
@@ -120,7 +129,7 @@ local function add_ruby_deps_command(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'ShowRubyDeps', function(opts)
     local params = vim.lsp.util.make_text_document_params()
     local showAll = opts.args == 'all'
-    client.request('rubyLsp/workspace/dependencies', params, function(error, result)
+    client:request('rubyLsp/workspace/dependencies', params, function(error, result)
       if error then
         print('Error showing deps: ' .. error)
         return
@@ -140,41 +149,38 @@ local function add_ruby_deps_command(client, bufnr)
   end, { nargs = '?', complete = function() return { 'all' } end })
 end
 
-lspconfig.ruby_lsp.setup({
-  on_attach = function(client, buffer) add_ruby_deps_command(client, buffer) end,
+vim.lsp.config('ruby_lsp', {
+  on_attach = function(client, bufnr) add_ruby_deps_command(client, bufnr) end,
 })
 
-local cmp = require('cmp')
-local cmp_action = lsp_zero.cmp_action()
-local lspkind = require('lspkind')
-lspkind.init()
-
-cmp.setup({
-  sources = {
-    per_filetype = { codecompanion = { 'codecompanion' } },
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-    { name = 'path' },
-    { name = 'luasnip' },
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'ruby_lsp',
+    'rust_analyzer',
+    'lua_ls',
+    'ast_grep',
+    'semgrep',
+    'sorbet',
+    'basedpyright',
   },
-  mapping = cmp.mapping.preset.insert({
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-d>'] = cmp.mapping.scroll_docs(4),
-    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-  }),
-  formatting = {
-    fields = { 'kind', 'abbr', 'menu' },
-    format = function(entry, vim_item)
-      local kind = lspkind.cmp_format({ mode = 'symbol_text', maxwidth = 50 })(entry, vim_item)
-      local strings = vim.split(kind.kind or '', '%s', { trimempty = true })
-      kind.kind = ' ' .. (strings[1] or '') .. ' '
-      kind.menu = '    (' .. (strings[2] or '') .. ')'
-      return kind
-    end,
-  },
-  snippet = {
-    expand = function(args) require('luasnip').lsp_expand(args.body) end,
-  },
+  automatic_enable = true,
 })
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local opts = { buffer = ev.buf, silent = true }
+    vim.keymap.set('n',       'K',     vim.lsp.buf.hover,                                   opts)
+    vim.keymap.set('n',       'gd',    vim.lsp.buf.definition,                              opts)
+    vim.keymap.set('n',       'gD',    vim.lsp.buf.declaration,                             opts)
+    vim.keymap.set('n',       'gi',    vim.lsp.buf.implementation,                          opts)
+    vim.keymap.set('n',       'go',    vim.lsp.buf.type_definition,                         opts)
+    vim.keymap.set('n',       'gr',    vim.lsp.buf.references,                              opts)
+    vim.keymap.set('n',       'gs',    vim.lsp.buf.signature_help,                          opts)
+    vim.keymap.set('n',       '<F2>',  vim.lsp.buf.rename,                                  opts)
+    vim.keymap.set({'n','x'}, '<F3>',  function() vim.lsp.buf.format({ async = true }) end, opts)
+    vim.keymap.set('n',       '<F4>',  vim.lsp.buf.code_action,                             opts)
+    vim.keymap.set('n',       'gl',    vim.diagnostic.open_float,                           opts)
+  end,
+})
+
+require('lsp_signature').setup()
