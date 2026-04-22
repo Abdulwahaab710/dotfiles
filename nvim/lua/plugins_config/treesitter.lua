@@ -1,23 +1,37 @@
-require 'nvim-treesitter.configs'.setup {
-  ensure_installed = {
-    "ruby", "rust", "javascript", "html", "css", "json", "sql", "lua", "yaml", "toml", "dockerfile", "bash", "python",
-    "git_config", "gitignore", "vim", "markdown", "latex", "regex", "cmake", "cpp", "c", "tsx", "typescript",
-    "go"
-  },                                                   -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "phpdoc", "tree-sitter-phpdoc" }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,                                     -- false will disable the whole extension
-    -- disable = { "c", "rust" },  -- list of language that will be disabled
-  },
-  matchup = {
-    enable = true
-  },
-  endwise = {
-    enable = true
-  }
+local parsers = {
+  'ruby', 'rust', 'javascript', 'html', 'css', 'json', 'sql',
+  'lua', 'yaml', 'toml', 'dockerfile', 'bash', 'python',
+  'git_config', 'gitignore', 'vim', 'vimdoc',
+  'markdown', 'markdown_inline',
+  'latex', 'regex', 'cmake', 'cpp', 'c',
+  'tsx', 'typescript', 'go',
 }
 
--- vim.treesitter.query.set("ruby", "highlights", "(string_content) @spell")
+local filetypes = {
+  'ruby', 'eruby', 'rust', 'javascript', 'javascriptreact',
+  'html', 'css', 'json', 'sql',
+  'lua', 'yaml', 'toml', 'dockerfile', 'bash', 'sh', 'python',
+  'gitconfig', 'gitignore', 'vim', 'help',
+  'markdown',
+  'tex', 'cmake', 'cpp', 'c',
+  'typescriptreact', 'typescript', 'go',
+}
 
-local npairs = require('nvim-autopairs')
-npairs.setup()
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MasonToolsUpdateCompleted',
+  callback = function()
+    local ok, ts = pcall(require, 'nvim-treesitter')
+    if ok and type(ts.install) == 'function' then ts.install(parsers) end
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = filetypes,
+  callback = function()
+    pcall(vim.treesitter.start)
+    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end,
+})
+
+require('nvim-autopairs').setup()

@@ -3,6 +3,7 @@ vim.opt.termguicolors  = true
 vim.opt.relativenumber = true                          -- set relative numbered lines
 vim.opt.number         = true                          -- show line numbers
 vim.opt.ai             = true                          -- Auto indent
+vim.opt.autoread       = true
 vim.opt.backspace      = { "indent", "eol", "start" }
 vim.opt.cursorline     = true                          -- highlight current line
 vim.opt.encoding       = "utf8"
