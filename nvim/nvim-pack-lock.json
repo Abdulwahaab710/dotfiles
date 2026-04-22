@@ -240,11 +240,6 @@
       "rev": "148ee2ca8b06d83fd9bf6f9b9497724ad39a07d6",
       "src": "https://github.com/yorickpeterse/nvim-pqf"
     },
-    "nvim-treesitter": {
-      "rev": "cf12346a3414fa1b06af75c79faebe7f76df080a",
-      "src": "https://github.com/nvim-treesitter/nvim-treesitter",
-      "version": "'master'"
-    },
     "nvim-treesitter-endwise": {
       "rev": "8fe8a95630f4f2c72a87ba1927af649e0bfaa244",
       "src": "https://github.com/RRethy/nvim-treesitter-endwise"
