@@ -9,7 +9,6 @@ vim.api.nvim_create_autocmd('PackChanged', {
 })
 
 vim.pack.add({
-  'https://github.com/github/copilot.vim',
   'https://github.com/zbirenbaum/copilot.lua',
   'https://github.com/coder/claudecode.nvim',
   'https://github.com/ravitemer/mcphub.nvim',
