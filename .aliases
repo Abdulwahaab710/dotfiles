@@ -224,4 +224,11 @@ if command -v lazygit > /dev/null; then
   alias lg='lazygit'
 fi
 
-alias c='~/.local/bin/claude'
+gfco() {
+  if [ -z "$1" ]; then
+    echo "usage: gfco BRANCH [REMOTE]" >&2
+    return 1
+  fi
+  local remote="${2:-origin}"
+  git fetch "$remote" "$1" && git checkout "$1"
+}
