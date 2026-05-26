@@ -53,12 +53,28 @@ get_model_type() {
   esac
 }
 
+get_single_battery() {
+  osascript -l JavaScript - "$1" 2>/dev/null <<'JXA'
+ObjC.import('IOBluetooth')
+function run(argv) {
+  const device = $.IOBluetoothDevice.withAddressString(argv[0].replace(/:/g, '-'))
+  if (!device) return ''
+  return Number(device.batteryPercentSingle) + '%'
+}
+JXA
+}
 
 battery_left="$(echo "$DEVICE_INFO" | jq -r '.device_batteryLevelLeft // empty')"
 battery_right="$(echo "$DEVICE_INFO" | jq -r '.device_batteryLevelRight // empty')"
 battery_case="$(echo "$DEVICE_INFO" | jq -r '.device_batteryLevelCase // empty')"
+battery_main="$(echo "$DEVICE_INFO" | jq -r '.device_batteryLevelMain // .device_batteryLevel // empty')"
+device_address="$(echo "$DEVICE_INFO" | jq -r '.device_address // empty')"
 product_id="$(echo "$DEVICE_INFO" | jq -r '.device_productID // empty')"
 model_type="$(get_model_type "$product_id")"
+
+if [ "$model_type" = "max" ] && [ -z "$battery_main" ] && [ -n "$device_address" ]; then
+  battery_main="$(get_single_battery "$device_address" || true)"
+fi
 
 # Get icon from product ID, fallback to generic AirPods Pro
 icon="${icons[$product_id]:-􀪷}"
@@ -72,6 +88,7 @@ fi
 
 # Build label with available battery info
 label=""
+[ "$model_type" = "max" ] && [ -n "$battery_main" ] && label="$battery_main"
 [ -n "$battery_left" ] && label="$battery_left"
 [ -n "$battery_right" ] && label="$label $battery_right"
 [ -n "$battery_case" ] && label="$label 􀹬$battery_case"
