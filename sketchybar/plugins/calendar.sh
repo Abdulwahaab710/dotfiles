@@ -9,7 +9,9 @@ if [ -z "$SENDER" ]; then
     current_time=$(date +%s)
 
     # Fetch today's events from icalBuddy
-    events=$(icalBuddy -nc -npn -b "" eventsToday 2>/dev/null)
+    events=$(icalBuddy -nc -npn eventsToday 2>/dev/null)
+    events="${events//$'\342\200\257'/ }"
+    events="${events//$'\302\240'/ }"
 
     # Arrays to store upcoming events
     declare -a event_times=()
@@ -22,8 +24,7 @@ if [ -z "$SENDER" ]; then
         # Event line starts with bullet
         if [[ "$line" =~ ^•[[:space:]] ]]; then
             current_event=$(echo "$line" | sed 's/^•[[:space:]]*//')
-        # Time line contains "at HH:MM AM/PM"
-        elif [[ "$line" =~ at[[:space:]]+[0-9]+:[0-9]+[[:space:]]*(AM|PM) ]]; then
+        elif [[ "$line" =~ ^[[:space:]]*((today|tomorrow)[[:space:]]+at[[:space:]]+)?[0-9]+:[0-9]+[[:space:]]*(AM|PM)[[:space:]]+-[[:space:]]+([0-9]+:[0-9]+[[:space:]]*(AM|PM)|[.]{3}) ]]; then
             if [[ -n "$current_event" && ! "$current_event" =~ ^\[PLACEHOLDER\] ]]; then
                 start_time=$(echo "$line" | grep -o '[0-9]*:[0-9]*[[:space:]]*[AP]M' | head -1 | sed 's/[[:space:]]//g')
 

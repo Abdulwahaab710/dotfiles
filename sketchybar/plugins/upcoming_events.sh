@@ -9,6 +9,8 @@ current_time=$(date +%s)
 
 # Get today and tomorrow's events from icalBuddy
 events=$(icalBuddy -nc -npn eventsToday+1)
+events="${events//$'\342\200\257'/ }"
+events="${events//$'\302\240'/ }"
 
 # Process line by line to find events with times
 next_event=""
