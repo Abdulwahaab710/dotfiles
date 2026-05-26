@@ -370,4 +370,8 @@ export MCP_SERVER_TOKEN="2ce7b736b508785457114c48f6cbc9b4c5a522cde38a766b7331dc1
 export MOCK_SERVICE_MCP_SERVER_TOKEN="b901a1ad9a5d957860e62164043c7953"
 export MCP_BEARER_TOKEN="2e1831d4-50c7-4920-863f-42a6ef9a989d"
 
-export INTERNAL_SERVICE_MCP_SERVER_TOKEN="2e1831d4-50c7-4920-863f-42a6ef9a989d"
+# Added by tec agent
+[[ -x /Users/abdulwahaab/.local/state/tec/profiles/base/current/global/init ]] && eval "$(/Users/abdulwahaab/.local/state/tec/profiles/base/current/global/init zsh)"
+
+# cloudplatform: add Shopify clusters to your local kubernetes config
+export KUBECONFIG=${KUBECONFIG:+$KUBECONFIG:}/Users/abdulwahaab/.kube/config:/Users/abdulwahaab/.kube/config.shopify.cloudplatform
