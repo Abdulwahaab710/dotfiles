@@ -1,8 +1,7 @@
 #!/bin/bash
 
 sketchybar --set "$NAME" \
-  icon=" "\
-  click_script=""
+  icon=" "
 
 # Get current time in seconds since epoch
 current_time=$(date +%s)
@@ -14,6 +13,7 @@ events="${events//$'\302\240'/ }"
 
 # Process line by line to find events with times
 next_event=""
+declare -a popup_events=()
 min_diff=999999999
 current_event=""
 
@@ -60,6 +60,9 @@ while IFS= read -r line; do
                 event_epoch=$(date -j -f "%Y-%m-%d %H:%M:%S" "$event_datetime" +%s 2>/dev/null)
 
                 if [[ -n "$event_epoch" ]] && [[ $event_epoch -gt $current_time ]]; then
+                    if [[ "$day_indicator" == "today" ]]; then
+                        popup_events+=("[${start_time}] ${current_event}")
+                    fi
                     diff=$((event_epoch - current_time))
                     if [[ $diff -lt $min_diff ]]; then
                         min_diff=$diff
@@ -93,15 +96,40 @@ if [[ -n "$next_event" ]]; then
       background.drawing=on \
       icon.padding_left=10 \
       label.padding_right=10 \
-      icon=󰃰 \
-      click_script=""
-      # click_script="sketchybar --set $NAME label=\"\" background.drawing=off icon.padding_left=0 label.padding_right=0 icon=󰢠"
+      icon=󰃰
 else
     sketchybar --set "$NAME" \
       label="No upcoming meetings" \
       background.drawing=off \
       icon.padding_left=0 \
       label.padding_right=0 \
-      icon= \
-      click_script=""
+      icon=
+fi
+
+event_count=${#popup_events[@]}
+if [[ $event_count -eq 0 ]]; then
+    sketchybar --set "${NAME}.event.1" \
+      label="No upcoming events today" \
+      drawing=on
+    for i in {2..5}; do
+        sketchybar --set "${NAME}.event.$i" drawing=off
+    done
+else
+    for i in {1..5}; do
+        idx=$((i - 1))
+        if [[ $idx -lt $event_count ]]; then
+            if [[ $i -eq 5 && $event_count -gt 5 ]]; then
+                remaining=$((event_count - 4))
+                sketchybar --set "${NAME}.event.$i" \
+                  label="...and $remaining more events" \
+                  drawing=on
+            else
+                sketchybar --set "${NAME}.event.$i" \
+                  label="${popup_events[$idx]}" \
+                  drawing=on
+            fi
+        else
+            sketchybar --set "${NAME}.event.$i" drawing=off
+        fi
+    done
 fi

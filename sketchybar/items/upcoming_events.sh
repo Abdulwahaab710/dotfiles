@@ -14,28 +14,27 @@ sketchybar --set cron \
   icon.padding_left=12 \
   label.padding_right=12 \
   script="$PLUGIN_DIR/upcoming_events.sh" \
-  click_script="$PLUGIN_DIR/upcoming_events.sh" \
-  popup.horizontal=on \
+  click_script="sketchybar --set \$NAME popup.drawing=toggle" \
+  popup.horizontal=off \
   popup.align=center \
-  popup.height=135 \
-  popup.background.border_width=2 \
-  popup.background.corner_radius=6 \
-  popup.background.border_color=0xffd0d0d0 \
-  popup.background.color=0xfffafafa
+  popup.height=34 \
+  popup.background.border_width=1 \
+  popup.background.corner_radius=12 \
+  popup.background.border_color="$BAR_BORDER_COLOR" \
+  popup.background.color="$POPUP_BACKGROUND_COLOR"
 
 # Add popup child items for displaying all upcoming events
 for i in {1..5}; do
   sketchybar --remove cron.event.$i 2>/dev/null
   sketchybar --add item cron.event.$i popup.cron
   sketchybar --set cron.event.$i \
+             icon.drawing=off \
              label.font="Maple Mono NF CN:Regular:13" \
-             label.color=0xff31353f \
-             label.padding_left=8 \
-             label.padding_right=8 \
-             padding_left=4 \
-             padding_right=4 \
-             background.height=22 \
-             background.corner_radius=4 \
-             background.color=0xffeeeeee \
+             label.color="$TEXT" \
+             label.padding_left=12 \
+             label.padding_right=12 \
+             padding_left=0 \
+             padding_right=0 \
+             background.drawing=off \
              drawing=off
 done
