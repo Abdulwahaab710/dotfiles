@@ -276,9 +276,9 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv virtualenv-init -)"
 fi
 
-[[ -f /opt/homebrew/opt/chruby/share/chruby/chruby.sh ]] && ! (type chruby > /dev/null 2>&1) && chruby () { source /opt/homebrew/opt/chruby/share/chruby/chruby.sh }
+# [[ -f /opt/homebrew/opt/chruby/share/chruby/chruby.sh ]] && ! (type chruby > /dev/null 2>&1) && chruby () { source /opt/homebrew/opt/chruby/share/chruby/chruby.sh }
 
-type chruby >/dev/null 2>&1 && chruby; chruby 3
+# type chruby >/dev/null 2>&1 && chruby; chruby 3
 
 [ -f "$HOME/.zshrc.work"  ] && source "$HOME/.zshrc.work"
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
