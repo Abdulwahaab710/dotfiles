@@ -68,6 +68,7 @@ sketchybar --default \
 source "$ITEMS_DIR/apple.sh"
 
 source "$ITEMS_DIR/caffeinate.sh"
+source "$ITEMS_DIR/autoraise.sh"
 source "$ITEMS_DIR/aerospace.sh"
 
 source "$ITEMS_DIR/front_app.sh"

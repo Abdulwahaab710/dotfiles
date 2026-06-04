@@ -12,7 +12,8 @@ after-login-command = []
 # after-startup-command = ['exec-and-forget sketchybar']
 after-startup-command = [
   'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=3.0',
-  'exec-and-forget sketchybar'
+  'exec-and-forget sketchybar',
+  'exec-and-forget /bin/bash -lc "pgrep -x AutoRaise >/dev/null || pgrep -x autoraise >/dev/null || exec /opt/homebrew/bin/autoraise"'
 ]
 
 exec-on-workspace-change = [
@@ -210,6 +211,7 @@ cmd-m = [] # Disable "minimize"
 cmd-alt-h = [] # Disable "hide others"
 
 alt-m = 'exec-and-forget sketchybar --trigger aerospace_switch'
+alt-a = 'exec-and-forget /bin/bash -lc "if pgrep -x AutoRaise >/dev/null || pgrep -x autoraise >/dev/null; then pkill -x AutoRaise; pkill -x autoraise; else exec /opt/homebrew/bin/autoraise; fi"'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
