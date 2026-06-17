@@ -62,6 +62,13 @@ remap({'ctrl', 'cmd', 'alt', 'shift'}, 'j', pressFn({'cmd', 'alt', 'shift'}, 'do
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'k', pressFn({'cmd', 'alt', 'shift'}, 'up'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'l', pressFn({'cmd', 'alt', 'shift'}, 'right'))
 
+local slackOk, slackErr = pcall(function()
+	require("slack_notifications").start()
+end)
+if not slackOk then
+	print("[slack_notifications] failed to load: " .. tostring(slackErr))
+end
+
 print("\n\nConfiguration was successfully loaded!\n")
 
 --[[ function yabai(args)
